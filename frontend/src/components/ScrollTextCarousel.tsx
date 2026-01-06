@@ -8,7 +8,7 @@ export default function ScrollTextCarousel() {
   const [isVisible, setIsVisible] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const animationFrameRef = useRef<number | undefined>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
 
   const words = [
     'TypeScript',
