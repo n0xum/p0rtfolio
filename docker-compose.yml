@@ -1,0 +1,13 @@
+services:
+  portfolio:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: portfolio
+    restart: unless-stopped
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    external: true
