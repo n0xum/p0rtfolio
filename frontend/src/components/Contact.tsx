@@ -51,9 +51,9 @@ export default function Contact() {
       <section
         id="contact"
         ref={sectionRef}
-        className="min-h-screen flex items-center justify-center px-6 md:px-12 py-24"
+        className="min-h-screen flex items-center justify-center px-6 md:px-12 py-32 lg:py-40"
       >
-        <div className="max-w-4xl w-full">
+        <div className="max-w-3xl w-full">
           <div
             className={`transition-all duration-1000 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
@@ -79,12 +79,12 @@ export default function Contact() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-col md:flex-row md:items-center md:justify-between py-4 border-b border-border dark:border-zinc-800 group hover:border-primary dark:hover:border-zinc-50 transition-colors gap-2"
+                  className="flex flex-col md:flex-row md:items-center md:justify-between py-4 border-b border-border dark:border-zinc-800 group hover:border-accent dark:hover:border-accent-muted transition-colors gap-2"
                 >
                   <span className="text-sm uppercase tracking-wider text-secondary dark:text-zinc-400">
                     {link.label}
                   </span>
-                  <span className="text-primary dark:text-zinc-50 group-hover:text-accent dark:group-hover:text-zinc-300 transition-colors font-mono text-sm break-all md:break-normal">
+                  <span className="text-primary dark:text-zinc-50 group-hover:text-accent dark:group-hover:text-accent-muted transition-colors font-mono text-sm break-all md:break-normal">
                     {link.value} →
                   </span>
                 </a>

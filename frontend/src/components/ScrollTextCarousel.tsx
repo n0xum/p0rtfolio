@@ -5,8 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 export default function ScrollTextCarousel() {
   const [scrollOffset, setScrollOffset] = useState(0);
   const [targetOffset, setTargetOffset] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>();
 
   const words = [
     'TypeScript',
@@ -25,28 +27,68 @@ export default function ScrollTextCarousel() {
     'DDD'
   ];
 
+  // Check for reduced motion preference
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  // Intersection Observer - nur animieren wenn sichtbar
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Scroll Handler mit Throttling
+  useEffect(() => {
+    if (!isVisible || prefersReducedMotion) return;
+
     let lastScrollY = window.scrollY;
+    let ticking = false;
 
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const scrollDelta = currentScrollY - lastScrollY;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          const scrollDelta = currentScrollY - lastScrollY;
 
-      setTargetOffset(prev => prev + scrollDelta * 0.35);
-      lastScrollY = currentScrollY;
+          setTargetOffset(prev => prev + scrollDelta * 0.35);
+          lastScrollY = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isVisible, prefersReducedMotion]);
 
-  // Smooth animation with lerp (linear interpolation)
+  // Smooth animation with lerp - nur wenn sichtbar
   useEffect(() => {
+    if (!isVisible || prefersReducedMotion) return;
+
     const animate = () => {
       setScrollOffset(prev => {
-        // Lerp für weiche Bewegung: current + (target - current) * smoothFactor
         const diff = targetOffset - prev;
-        const smoothFactor = 0.1; // Je kleiner, desto smoother aber auch träger
+        const smoothFactor = 0.1;
 
         if (Math.abs(diff) < 0.01) return targetOffset;
         return prev + diff * smoothFactor;
@@ -62,17 +104,22 @@ export default function ScrollTextCarousel() {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [targetOffset]);
+  }, [targetOffset, isVisible, prefersReducedMotion]);
 
   return (
     <div
       ref={containerRef}
-      className="w-full overflow-hidden border-y border-border dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-900/30 py-4"
+      className="w-full overflow-hidden border-y border-border dark:border-zinc-800 bg-gray-50/30 dark:bg-zinc-900/20 py-4"
+      aria-hidden="true"
     >
       <div
-        className="flex gap-8 whitespace-nowrap will-change-transform"
+        className="flex gap-8 whitespace-nowrap"
         style={{
-          transform: `translateX(-${scrollOffset % (words.length * 150)}px)`
+          transform: prefersReducedMotion
+            ? 'translateX(0)'
+            : `translateX(-${scrollOffset % (words.length * 150)}px)`,
+          willChange: isVisible && !prefersReducedMotion ? 'transform' : 'auto',
+          transition: prefersReducedMotion ? 'none' : undefined,
         }}
       >
         {/* Render words three times for seamless loop */}

@@ -1,3 +1,77 @@
+/* Syntax Highlighting for Code Blocks - MUST be first */
+@import 'highlight.js/styles/github.css';
+
+/* Override with dark theme when dark mode is active */
+.dark .hljs {
+  background: #18181b !important;
+  color: #e4e4e7 !important;
+}
+
+.dark .hljs-comment,
+.dark .hljs-quote {
+  color: #71717a !important;
+}
+
+.dark .hljs-keyword,
+.dark .hljs-selector-tag,
+.dark .hljs-addition {
+  color: #fb7185 !important;
+}
+
+.dark .hljs-number,
+.dark .hljs-string,
+.dark .hljs-meta .hljs-string,
+.dark .hljs-literal,
+.dark .hljs-doctag,
+.dark .hljs-regexp {
+  color: #86efac !important;
+}
+
+.dark .hljs-title,
+.dark .hljs-section,
+.dark .hljs-name,
+.dark .hljs-selector-id,
+.dark .hljs-selector-class {
+  color: #60a5fa !important;
+}
+
+.dark .hljs-attribute,
+.dark .hljs-attr,
+.dark .hljs-variable,
+.dark .hljs-template-variable,
+.dark .hljs-class .hljs-title,
+.dark .hljs-type {
+  color: #fbbf24 !important;
+}
+
+.dark .hljs-symbol,
+.dark .hljs-bullet,
+.dark .hljs-subst,
+.dark .hljs-meta,
+.dark .hljs-meta .hljs-keyword,
+.dark .hljs-selector-attr,
+.dark .hljs-selector-pseudo,
+.dark .hljs-link {
+  color: #c084fc !important;
+}
+
+.dark .hljs-built_in,
+.dark .hljs-deletion {
+  color: #f87171 !important;
+}
+
+.dark .hljs-formula {
+  background: #27272a !important;
+}
+
+.dark .hljs-emphasis {
+  font-style: italic;
+}
+
+.dark .hljs-strong {
+  font-weight: bold;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,17 +88,40 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 body {
-  background-color: #FFFFFF;
-  color: #000000;
+  background-color: #fafafa;
+  color: #1a1a1a;
   overflow-x: hidden;
   line-height: 1.6;
 }
 
+/* Dark mode body */
+.dark body {
+  background-color: #0a0a0a;
+  color: #fafafa;
+}
+
 /* Selection */
 ::selection {
-  background-color: #000000;
-  color: #FFFFFF;
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.dark ::selection {
+  background-color: #60a5fa;
+  color: #0a0a0a;
 }
 
 /* Custom scrollbar - minimal */
@@ -37,12 +134,20 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #E5E5E5;
+  background: #e5e7eb;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #CCCCCC;
+  background: #d1d5db;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #27272a;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
 }
 
 /* Utility classes */

@@ -57,9 +57,9 @@ export default function Experience() {
     <section
       id="experience"
       ref={sectionRef}
-      className="min-h-screen flex items-center justify-center px-6 md:px-12 py-24"
+      className="min-h-screen flex items-center justify-center px-6 md:px-12 py-32 lg:py-40"
     >
-      <div className="max-w-4xl w-full">
+      <div className="max-w-3xl w-full">
         <div
           className={`transition-all duration-1000 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'

@@ -10,11 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'primary': '#000000',
-        'secondary': '#666666',
-        'accent': '#0066FF',
-        'background': '#FFFFFF',
-        'border': '#E5E5E5',
+        'primary': '#1a1a1a',        // Softer than pure black
+        'secondary': '#737373',       // Neutral gray
+        'accent': '#2563eb',          // More subtle blue
+        'accent-muted': '#60a5fa',    // For hover states
+        'background': '#fafafa',      // Off-white instead of pure white
+        'surface': '#f5f5f5',         // For cards/surfaces
+        'border': '#e5e7eb',          // Slightly warmer gray
       },
       fontFamily: {
         'sans': ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],

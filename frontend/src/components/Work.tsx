@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 
 export default function Work() {
   const [isVisible, setIsVisible] = useState(false);
@@ -43,25 +44,29 @@ export default function Work() {
       title: 'Microservice API',
       description: 'Entwicklung eines skalierbaren Microservice-Backends mit Go und PostgreSQL für die interne Verwaltung von Geschäftsprozessen.',
       tech: ['Go', 'PostgreSQL', 'Docker'],
-      type: 'Backend'
+      type: 'Backend',
+      slug: null
     },
     {
       title: 'Dashboard Anwendung',
       description: 'Moderne Dashboard-Anwendung mit Next.js und TypeScript zur Visualisierung von Echtzeit-Daten und Metriken.',
       tech: ['Next.js', 'TypeScript', 'REST API', 'Tailwind'],
-      type: 'Full-Stack'
+      type: 'Full-Stack',
+      slug: null
     },
     {
       title: 'CLI Tool',
       description: 'Kommandozeilen-Tool in Go zur Automatisierung wiederkehrender Entwicklungs- und Deployment-Aufgaben.',
       tech: ['Go', 'CLI', 'Linux'],
-      type: 'Backend'
+      type: 'Backend',
+      slug: 'cli-tool'
     },
     {
       title: 'Portfolio Website',
       description: 'Persönliche Portfolio-Website mit minimalistischem Design, entwickelt mit Next.js und optimiert für Performance.',
       tech: ['Next.js', 'Tailwind CSS', 'TypeScript'],
-      type: 'Frontend'
+      type: 'Frontend',
+      slug: 'portfolio-website'
     }
   ];
 
@@ -69,9 +74,9 @@ export default function Work() {
     <section
       id="work"
       ref={sectionRef}
-      className="min-h-screen flex items-center justify-center px-6 md:px-12 py-24"
+      className="min-h-screen flex items-center justify-center px-6 md:px-12 py-32 lg:py-40"
     >
-      <div className="max-w-4xl w-full">
+      <div className="max-w-3xl w-full">
         <div
           className={`transition-all duration-1000 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
@@ -121,7 +126,7 @@ export default function Work() {
                 >
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-3">
                     <div>
-                      <h4 className="text-xl font-bold group-hover:text-accent dark:group-hover:text-gray-300 transition-colors">
+                      <h4 className="text-xl font-bold group-hover:text-accent dark:group-hover:text-accent-muted transition-colors">
                         {project.title}
                       </h4>
                       <span className="text-xs uppercase tracking-wider text-secondary dark:text-zinc-400">
@@ -139,9 +144,20 @@ export default function Work() {
                       ))}
                     </div>
                   </div>
-                  <p className="text-secondary dark:text-zinc-400 leading-relaxed">
+                  <p className="text-secondary dark:text-zinc-400 leading-relaxed mb-3">
                     {project.description}
                   </p>
+                  {project.slug && (
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="inline-flex items-center gap-2 text-sm text-accent dark:text-accent-muted hover:underline transition-colors"
+                    >
+                      Details ansehen
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </Link>
+                  )}
                 </div>
               ))}
             </div>
