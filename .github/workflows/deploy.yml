@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: n0xum/portfolio
+  IMAGE_NAME: n0xum/p0rtfolio
   CONTAINER_NAME: portfolio
 
 jobs:
