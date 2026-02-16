@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Dialog from './Dialog';
-import ImpressumContent from './ImpressumContent';
-import RechtlichesContent from './RechtlichesContent';
+
+const ImpressumContent = dynamic(() => import('./ImpressumContent'), { ssr: false });
+const RechtlichesContent = dynamic(() => import('./RechtlichesContent'), { ssr: false });
 
 export default function Contact() {
   const [isVisible, setIsVisible] = useState(false);

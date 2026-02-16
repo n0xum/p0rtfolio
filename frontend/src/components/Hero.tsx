@@ -26,7 +26,7 @@ export default function Hero() {
             <div className="flex-shrink-0">
               <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-border dark:border-zinc-700 overflow-hidden bg-gray-50 dark:bg-zinc-900">
                 <Image
-                  src="/images/Profilbild.jpeg"
+                  src="/images/Profilbild.webp"
                   alt="Alexander Kruska - Software Developer"
                   fill
                   className="object-cover"
