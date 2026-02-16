@@ -67,9 +67,8 @@ export default function Contact() {
             </h3>
 
             <p className="text-lg text-secondary dark:text-zinc-400 mb-12 leading-relaxed">
-              Ich bin offen für neue Herausforderungen und freue mich über interessante Projekte.
-              Ob Praktikum, Werkstudententätigkeit oder einfach nur ein Austausch über Technologien –
-              kontaktieren Sie mich gerne.
+              Ich freue mich über den Austausch zu Technologien, Open-Source-Projekten
+              oder gemeinsame Ideen – schreiben Sie mir gerne.
             </p>
 
             <div className="space-y-4 mb-16">
