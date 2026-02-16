@@ -2,10 +2,9 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getProjectBySlug, getAllProjectSlugs } from '@/lib/projects';
 import { fetchGitHubReadme, fetchGitHubRepoInfo } from '@/lib/github';
-import MarkdownRenderer from '@/components/MarkdownRenderer';
+import ReadmeDropdown from '@/components/ReadmeDropdown';
 import CodeSnippet from '@/components/CodeSnippet';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export async function generateStaticParams() {
   const slugs = getAllProjectSlugs();
@@ -175,45 +174,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </div>
       </div>
 
-      {/* Project Image */}
-      {project.image && (
-        <div className="max-w-4xl mx-auto px-6 md:px-12 mb-12">
-          <div className="relative w-full aspect-video rounded-lg border border-border dark:border-zinc-800 shadow-lg overflow-hidden">
-            <Image
-              src={project.image}
-              alt={`${project.title} Screenshot`}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-              className="object-cover"
-              priority
-            />
-          </div>
-        </div>
-      )}
-
-      {/* About Section */}
-      {project.about && (
-        <div className="max-w-4xl mx-auto px-6 md:px-12 mb-12">
-          <div className="bg-surface dark:bg-zinc-900/50 border border-border dark:border-zinc-800 rounded-lg p-8">
-            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-              <svg className="w-6 h-6 text-accent dark:text-accent-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Über dieses Projekt
-            </h2>
-            <div className="prose prose-lg max-w-none">
-              {project.about.split('\n').map((paragraph, i) => (
-                paragraph.trim() && (
-                  <p key={i} className="text-base text-secondary dark:text-zinc-400 leading-relaxed mb-4 last:mb-0">
-                    {paragraph}
-                  </p>
-                )
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Code Snippet */}
       {project.codeSnippet && (
         <div className="max-w-4xl mx-auto px-6 md:px-12 mb-12">
@@ -227,9 +187,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
       {/* README Content */}
       <div className="max-w-4xl mx-auto px-6 md:px-12">
-        <div className="prose-wrapper">
-          <MarkdownRenderer content={readme} />
-        </div>
+        <ReadmeDropdown content={readme} />
       </div>
     </main>
   );

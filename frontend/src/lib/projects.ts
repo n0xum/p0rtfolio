@@ -68,19 +68,6 @@ export const projects: Project[] = [
     githubRepo: 'n0xum/p0rtfolio',
     tech: ['Next.js', 'Tailwind CSS', 'TypeScript'],
     type: 'Frontend',
-    liveUrl: 'https://alexander-kruska.dev',
-    image: '/images/portfolio.png',
-    about: `Dieses Portfolio ist mehr als nur eine digitale Visitenkarte – es ist ein Spiegelbild meiner Entwicklung als Software-Entwickler und meiner Philosophie im Code-Design.
-
-Als angehender Fachinformatiker für Anwendungsentwicklung im dritten Lehrjahr bei Lufthansa Industry Solutions habe ich gelernt, dass guter Code nicht nur funktioniert, sondern auch wartbar, zugänglich und performant sein muss.
-
-Mit diesem Portfolio möchte ich zeigen, dass ich:
-• **Clean Code** schreibe – lesbar, strukturiert, dokumentiert
-• **Performance** ernst nehme – jede Millisekunde zählt
-• **Accessibility** priorisiere – Technologie für alle
-• **Moderne Standards** umsetze – TypeScript, React, Next.js
-
-Dieses Portfolio wurde von Grund auf selbst entwickelt, ohne Templates oder Frameworks außer Next.js und Tailwind CSS. Jede Zeile Code wurde mit Sorgfalt geschrieben, um Best Practices zu demonstrieren und meine Fähigkeiten zu zeigen.`,
     features: [
       'Minimalistisches, responsives Design',
       'Dark Mode Support',
