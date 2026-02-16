@@ -18,6 +18,36 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: 'structify',
+    title: 'structify',
+    description: 'Go-Structs zu PostgreSQL-Schemas konvertieren – mit Web-Editor, Inline-Tags für Constraints, Indexes und Foreign Keys.',
+    githubRepo: 'n0xum/structify',
+    tech: ['Go', 'PostgreSQL', 'Next.js', 'TypeScript', 'Docker'],
+    type: 'Full-Stack',
+    liveUrl: 'https://structify.alexander-kruska.dev',
+    features: [
+      'Go-Structs mit db:-Tags zu SQL-DDL konvertieren',
+      'Constraints: CHECK, DEFAULT, ENUM',
+      'Indexes und Composite Indexes',
+      'Foreign Keys mit ON DELETE / ON UPDATE',
+      'Composite Primary Keys und Foreign Keys',
+      'Interaktiver Web-Editor mit Live-Generierung',
+      'Dokumentationsseite mit Try-it-Buttons',
+      'CI/CD mit GitHub Actions, SonarQube, Docker'
+    ],
+    codeSnippet: {
+      language: 'go',
+      description: 'Go-Struct mit db:-Tags wird automatisch zu PostgreSQL-DDL konvertiert',
+      code: `type User struct {
+\tID       int64  \`db:"pk"\`
+\tUsername string \`db:"unique"\`
+\tEmail    string \`db:"check:length(email) > 0"\`
+\tStatus   string \`db:"enum:active,inactive,banned"\`
+\tActive   bool   \`db:"default:true"\`
+}`
+    }
+  },
+  {
     slug: 'cli-tool',
     title: 'CLI Tool',
     description: 'Kommandozeilen-Tool in Go zur Automatisierung wiederkehrender Entwicklungs- und Deployment-Aufgaben.',

@@ -41,18 +41,11 @@ export default function Work() {
 
   const projects = [
     {
-      title: 'Microservice API',
-      description: 'Entwicklung eines skalierbaren Microservice-Backends mit Go und PostgreSQL für die interne Verwaltung von Geschäftsprozessen.',
-      tech: ['Go', 'PostgreSQL', 'Docker'],
-      type: 'Backend',
-      slug: null
-    },
-    {
-      title: 'Dashboard Anwendung',
-      description: 'Moderne Dashboard-Anwendung mit Next.js und TypeScript zur Visualisierung von Echtzeit-Daten und Metriken.',
-      tech: ['Next.js', 'TypeScript', 'REST API', 'Tailwind'],
+      title: 'structify',
+      description: 'Go-Structs zu PostgreSQL-Schemas konvertieren – mit Web-Editor, Inline-Tags für Constraints, Indexes und Foreign Keys.',
+      tech: ['Go', 'PostgreSQL', 'Next.js', 'Docker'],
       type: 'Full-Stack',
-      slug: null
+      slug: 'structify'
     },
     {
       title: 'CLI Tool',
