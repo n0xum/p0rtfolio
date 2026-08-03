@@ -1,8 +1,7 @@
 services:
   portfolio:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: ghcr.io/n0xum/p0rtfolio:latest
+    pull_policy: always
     container_name: portfolio
     restart: unless-stopped
     networks:
