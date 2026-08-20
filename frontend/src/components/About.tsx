@@ -40,43 +40,39 @@ export default function About() {
           </h2>
           <div className="space-y-6">
             <h3 className="text-3xl md:text-4xl font-bold leading-tight">
-              21-jähriger Software-Entwickler im 3. Ausbildungsjahr
+              IT-Berater mit Schwerpunkt Softwareentwicklung
             </h3>
 
             <div className="prose prose-lg max-w-none">
               <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
-                Derzeit absolviere ich meine Ausbildung zum Fachinformatiker für
-                Anwendungsentwicklung bei <span className="text-primary dark:text-zinc-50 font-medium">Lufthansa Industry Solutions</span> in Frankfurt.
-                Im dritten Lehrjahr konzentriere ich mich auf die Entwicklung skalierbarer
-                Backend-Systeme und moderner Web-Anwendungen.
+                Ich arbeite als IT-Berater und Softwareentwickler bei <span className="text-primary dark:text-zinc-50 font-medium">Lufthansa Industry Solutions</span>.
+                Mein Schwerpunkt liegt auf der Entwicklung robuster Backend-Systeme mit Go, C#, Java und modernen Schnittstellen.
               </p>
 
               <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
-                Meine Leidenschaft gilt der Backend-Entwicklung mit <span className="text-primary dark:text-zinc-50 font-medium">Go (Golang)</span>,
-                wo ich die Performance und Einfachheit der Sprache schätze. Auf der Frontend-Seite
-                setze ich auf <span className="text-primary dark:text-zinc-50 font-medium">Next.js</span>, um moderne, performante
-                Web-Anwendungen zu entwickeln.
+                Dabei verbinde ich Backend-Entwicklung mit <span className="text-primary dark:text-zinc-50 font-medium">Go (Golang)</span>,
+                C# und Java (Spring Boot) mit Frontend-Entwicklung in <span className="text-primary dark:text-zinc-50 font-medium">React</span> und Next.js.
+                Zu meinem Alltag gehören außerdem Datenbanken, Cloud-Infrastruktur, CI/CD und Observability.
               </p>
 
               <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
-                Bei Lufthansa Industry Solutions arbeite ich in agilen Teams an
-                produktionsrelevanten Projekten und lerne täglich neue Technologien und
-                Best Practices in der professionellen Software-Entwicklung.
+                Ich arbeite in agilen Teams an produktionsrelevanten Projekten und unterstütze die Entwicklung
+                und Umsetzung wartbarer Softwarelösungen.
               </p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-border dark:border-zinc-800">
               <div>
-                <div className="text-3xl font-bold mb-1">3.</div>
-                <div className="text-sm text-secondary dark:text-zinc-400">Lehrjahr</div>
+                <div className="text-3xl font-bold mb-1">seit 2023</div>
+                <div className="text-sm text-secondary dark:text-zinc-400">Praxis & Projekte</div>
               </div>
               <div>
-                <div className="text-3xl font-bold mb-1">21</div>
-                <div className="text-sm text-secondary dark:text-zinc-400">Jahre alt</div>
+                <div className="text-3xl font-bold mb-1">Go</div>
+                <div className="text-sm text-secondary dark:text-zinc-400">Backend-Fokus</div>
               </div>
               <div>
-                <div className="text-3xl font-bold mb-1">2</div>
-                <div className="text-sm text-secondary dark:text-zinc-400">Haupttechnologien</div>
+                <div className="text-3xl font-bold mb-1">C#</div>
+                <div className="text-sm text-secondary dark:text-zinc-400">gRPC & Protobuf</div>
               </div>
               <div>
                 <div className="text-3xl font-bold mb-1">∞</div>

@@ -47,9 +47,9 @@ export default function Hero() {
           </div>
 
           <p className="text-xl md:text-2xl text-secondary dark:text-zinc-400 max-w-2xl mb-8 leading-relaxed">
-            Software-Entwickler in Ausbildung bei{' '}
+            Backend Software Engineer bei{' '}
             <span className="text-primary dark:text-zinc-50 font-medium">Lufthansa Industry Solutions</span>.
-            Spezialisiert auf Backend-Entwicklung mit Go und moderne Web-Anwendungen mit Next.js.
+            Spezialisiert auf robuste Services mit Go, C# und Java.
           </p>
 
           <div className="flex gap-6 items-center flex-wrap">

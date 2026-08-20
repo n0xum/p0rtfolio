@@ -25,31 +25,46 @@ export default function Experience() {
 
   const experiences = [
     {
-      period: '2023 - Heute',
-      position: 'Auszubildender Fachinformatiker',
+      period: 'seit 06.2026',
+      position: 'IT-Berater / Softwareentwickler',
       company: 'Lufthansa Industry Solutions',
-      location: 'Frankfurt am Main',
-      description: 'Ausbildung zum Fachinformatiker für Anwendungsentwicklung mit Fokus auf Backend-Entwicklung und moderne Web-Technologien.',
+      category: 'Berufserfahrung',
+      description: 'Backend-Entwicklung in Projekten der Lufthansa Group mit Fokus auf robuste Services, klare Architektur und moderne Schnittstellen.',
       highlights: [
-        'Entwicklung von Microservices mit Go und Spring Boot',
-        'Implementierung von REST APIs',
-        'Frontend-Entwicklung mit Next.js und React',
-        'Mobile App-Entwicklung mit Flutter und Clean Architecture',
-        'Arbeit in agilen Teams nach Scrum-Methodik',
-        'Einsatz von Domain-Driven Design in komplexen Projekten'
+        'Backend-Services in C# mit gRPC und Protocol Buffers in einem Aviation-Großprojekt',
+        'Mitarbeit an zwei Go-Projekten mit Fokus auf technische Umsetzung, ADRs und Compliance, eines davon ab dem Kickoff',
+        'REST-Backend mit Java und Spring Boot sowie Frontend mit React in einem Sustainability-Projekt'
       ]
     },
     {
-      period: '2021 - 2023',
-      position: 'Fachhochschulreife',
-      company: 'Schwerpunkt Informationstechnologie',
-      location: 'Niedersachsen',
-      description: 'Fachoberschule mit Schwerpunkt Informationstechnologie, Grundlagen der Programmierung und Hardware-nahen Entwicklung.',
+      period: '08.2023 – 06.2026',
+      position: 'Ausbildung zum Fachinformatiker für Anwendungsentwicklung',
+      company: 'Lufthansa Industry Solutions · Abschluss: 2,0',
+      category: 'Berufserfahrung',
+      description: 'Praxisnahe Ausbildung mit Schwerpunkt auf Backend-Entwicklung, Web-Technologien und dem Betrieb produktiver Anwendungen.',
       highlights: [
-        'Programmierung mit C# und .NET Framework',
-        'Hardware-Programmierung mit Arduino',
-        'Grundlagen der objektorientierten Programmierung'
+        'Backend-Services in Golang, MongoDB und Redis in einem einjährigen Automotive-Projekt',
+        'Monitoring mit New Relic und Betrieb auf AWS',
+        'Entwurf und Umsetzung von REST-APIs mit Golang und Java (Spring Boot)',
+        'Frontend-Entwicklung mit TypeScript, React und Next.js',
+        'PostgreSQL, Docker, CI/CD-Pipelines und Scrum mit Jira und Confluence'
       ]
+    },
+    {
+      period: '08.2021 – 07.2023',
+      position: 'Fachhochschulreife: Informationstechnik',
+      company: 'Fachoberschule',
+      category: 'Ausbildung',
+      description: 'Fachhochschulreife mit Schwerpunkt Informationstechnik.',
+      highlights: []
+    },
+    {
+      period: '08.2016 – 06.2021',
+      position: 'Erweiterter Realschulabschluss',
+      company: 'Realschule',
+      category: 'Ausbildung',
+      description: 'Erweiterter Realschulabschluss.',
+      highlights: []
     }
   ];
 
@@ -69,7 +84,7 @@ export default function Experience() {
             Erfahrung
           </h2>
           <h3 className="text-3xl md:text-4xl font-bold mb-12">
-            Beruflicher Werdegang
+            Werdegang
           </h3>
 
           <div className="space-y-12">
@@ -83,52 +98,85 @@ export default function Experience() {
                       <h4 className="text-xl font-bold">{exp.position}</h4>
                       <span className="text-sm text-secondary dark:text-zinc-400 font-mono">{exp.period}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-primary dark:text-zinc-50">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-primary dark:text-zinc-50">
                       <span className="font-medium">{exp.company}</span>
-                      <span className="text-secondary dark:text-zinc-400">•</span>
-                      <span className="text-sm text-secondary dark:text-zinc-400">{exp.location}</span>
+                    </div>
+                    <div className="text-xs uppercase tracking-wider text-secondary dark:text-zinc-500 mt-2">
+                      {exp.category}
                     </div>
                   </div>
 
                   <p className="text-secondary dark:text-zinc-400 leading-relaxed">{exp.description}</p>
 
-                  <div className="space-y-2 pt-2">
-                    <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400">
-                      Highlights
-                    </h5>
-                    <ul className="space-y-2">
-                      {exp.highlights.map((highlight, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <span className="text-primary dark:text-zinc-50 mt-1">→</span>
-                          <span className="text-secondary dark:text-zinc-400">{highlight}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {exp.highlights.length > 0 && (
+                    <div className="space-y-2 pt-2">
+                      <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400">
+                        Highlights
+                      </h5>
+                      <ul className="space-y-2">
+                        {exp.highlights.map((highlight, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <span className="text-primary dark:text-zinc-50 mt-1">→</span>
+                            <span className="text-secondary dark:text-zinc-400">{highlight}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
           </div>
 
           <div className="mt-16 p-8 border border-border dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900/20">
-            <h4 className="font-bold mb-4">Ausbildungsschwerpunkte</h4>
-            <div className="grid md:grid-cols-2 gap-6">
+            <h4 className="font-bold mb-6">Technologien & Methoden</h4>
+            <div className="grid md:grid-cols-2 gap-x-8 gap-y-6">
               <div>
-                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-3">
-                  Backend Development
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                  Sprachen
                 </h5>
                 <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
-                  Tiefgehende Kenntnisse in der Entwicklung skalierbarer Backend-Systeme mit Go und Spring Boot.
-                  Erfahrung mit Microservices-Architekturen und REST APIs.
+                  Golang, C#, Java, TypeScript
                 </p>
               </div>
               <div>
-                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-3">
-                  Full-Stack & Mobile
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                  Frameworks & Protokolle
                 </h5>
                 <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
-                  Moderne Frontend-Entwicklung mit Next.js und React sowie Mobile-Entwicklung mit Flutter.
-                  Anwendung von Clean Architecture und Domain-Driven Design.
+                  gRPC, Protocol Buffers, REST, Spring Boot, React, Next.js
+                </p>
+              </div>
+              <div>
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                  Datenbanken
+                </h5>
+                <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
+                  MongoDB, PostgreSQL, Redis
+                </p>
+              </div>
+              <div>
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                  Cloud & Infrastruktur
+                </h5>
+                <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
+                  AWS, Docker, Linux, CI/CD, Git
+                </p>
+              </div>
+              <div>
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                  Observability
+                </h5>
+                <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
+                  New Relic
+                </p>
+              </div>
+              <div>
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                  Methoden & Tools
+                </h5>
+                <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
+                  Scrum, Jira, Confluence, ADRs
                 </p>
               </div>
             </div>
