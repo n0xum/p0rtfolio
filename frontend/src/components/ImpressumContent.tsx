@@ -14,10 +14,10 @@ export default function ImpressumContent() {
           <p>
             E-Mail:{' '}
             <a
-              href="mailto:alexander.kruska@protonmail.com"
+              href="mailto:6e3078756d@pm.me"
               className="text-primary dark:text-zinc-50 hover:underline"
             >
-              alexander.kruska@protonmail.com
+              6e3078756d@pm.me
             </a>
           </p>
         </div>

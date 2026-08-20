@@ -33,8 +33,8 @@ export default function Contact() {
   const contactLinks = [
     {
       label: 'Email',
-      value: 'kontakt@alexander-kruska.dev',
-      href: 'mailto:kontakt@alexander-kruska.dev'
+      value: '6e3078756d@pm.me',
+      href: 'mailto:6e3078756d@pm.me'
     },
     {
       label: 'GitHub',
