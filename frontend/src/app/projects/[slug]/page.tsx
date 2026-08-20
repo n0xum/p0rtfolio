@@ -69,6 +69,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     fetchGitHubRepoInfo(project.githubRepo),
   ]);
 
+  const numberFormatter = new Intl.NumberFormat('de-DE');
+  const stars = repoInfo?.stars ?? 0;
+  const forks = repoInfo?.forks ?? 0;
+  const showStats = repoInfo !== null && (stars > 0 || forks > 0);
+
   return (
     <main className="min-h-screen bg-background dark:bg-zinc-950 pt-24 pb-32">
       {/* Back Navigation */}
@@ -137,19 +142,25 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               </a>
             )}
 
-            {repoInfo && (
+            {showStats && (
               <div className="flex gap-4 text-sm text-secondary dark:text-zinc-400">
-                <span className="flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <span
+                  className="flex items-center gap-1"
+                  aria-label={`${numberFormatter.format(stars)} ${stars === 1 ? 'Stern' : 'Sterne'} auf GitHub`}
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
-                  {repoInfo.stars}
+                  <span>{numberFormatter.format(stars)} {stars === 1 ? 'Stern' : 'Sterne'}</span>
                 </span>
-                <span className="flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <span
+                  className="flex items-center gap-1"
+                  aria-label={`${numberFormatter.format(forks)} ${forks === 1 ? 'Fork' : 'Forks'} auf GitHub`}
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                   </svg>
-                  {repoInfo.forks}
+                  <span>{numberFormatter.format(forks)} {forks === 1 ? 'Fork' : 'Forks'}</span>
                 </span>
               </div>
             )}
@@ -158,7 +169,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           {/* Features */}
           {project.features && project.features.length > 0 && (
             <div className="pt-6 border-t border-border dark:border-zinc-800">
-              <h3 className="text-lg font-semibold mb-4">Features</h3>
+              <h2 className="text-lg font-semibold mb-4">Features</h2>
               <ul className="grid md:grid-cols-2 gap-3">
                 {project.features.map((feature, i) => (
                   <li key={i} className="flex items-start gap-2 text-secondary dark:text-zinc-400">

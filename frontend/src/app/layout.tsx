@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/theme";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://alexander-kruska.dev"),
   title: "Portfolio - Alexander Kruska",
   description: "Backend Software Engineer bei Lufthansa Industry Solutions. Spezialisiert auf robuste Backend-Services mit Go, C# und Java.",
-  keywords: "Portfolio, Webentwicklung, Full-Stack, React, Next.js, TypeScript, Go, Alexander Kruska, Lufthansa Industry Solutions",
   authors: [{ name: "Alexander Kruska" }],
   openGraph: {
     type: "website",
@@ -54,6 +55,7 @@ export default function RootLayout({
             `,
           }}
         />
+        <JsonLd />
       </head>
       <body className="font-sans antialiased bg-background dark:bg-zinc-950 text-primary dark:text-zinc-50 transition-colors">
         <ThemeProvider>{children}</ThemeProvider>

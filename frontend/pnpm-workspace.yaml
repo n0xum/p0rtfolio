@@ -1,9 +1,4 @@
-packages:
-  - .
-ignoredBuiltDependencies:
-  - sharp
-  - unrs-resolver
 allowBuilds:
-  # sharp steht bereits in ignoredBuiltDependencies - explizit halten
   sharp: false
   unrs-resolver: false
+minimumReleaseAge: 1440
