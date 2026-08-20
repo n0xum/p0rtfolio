@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-20T20:27:02Z",
+  "title": "Design System: Alexander Kruska Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Near-Black", "canonical": "#1a1a1a", "tonalRamp": ["#0a0a0a", "#1a1a1a", "#2b2b2b", "#404040", "#5c5c5c", "#8a8a8a", "#c2c2c2", "#f5f5f5"] },
+      "secondary": { "role": "secondary", "displayName": "Neutral Gray", "canonical": "#737373", "tonalRamp": ["#1c1c1c", "#3d3d3d", "#5c5c5c", "#737373", "#8f8f8f", "#adadad", "#cccccc", "#ececec"] },
+      "accent": { "role": "tertiary", "displayName": "Subtle Blue (Tailwind blue-600, unmodified)", "canonical": "#2563eb", "tonalRamp": ["#172554", "#1e3a8a", "#1e40af", "#1d4ed8", "#2563eb", "#3b82f6", "#60a5fa", "#93c5fd"] },
+      "accent-muted": { "role": "tertiary", "displayName": "Muted Blue (Tailwind blue-400, unmodified)", "canonical": "#60a5fa", "tonalRamp": ["#1e3a8a", "#1e40af", "#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe", "#dbeafe"] },
+      "background": { "role": "neutral", "displayName": "Off-White", "canonical": "#fafafa", "tonalRamp": ["#0a0a0a", "#262626", "#525252", "#a3a3a3", "#d4d4d4", "#e5e5e5", "#f5f5f5", "#fafafa"] },
+      "surface": { "role": "neutral", "displayName": "Light Surface", "canonical": "#f5f5f5", "tonalRamp": ["#0a0a0a", "#262626", "#525252", "#a3a3a3", "#d4d4d4", "#e5e5e5", "#f0f0f0", "#f5f5f5"] },
+      "border": { "role": "neutral", "displayName": "Border Gray", "canonical": "#e5e7eb", "tonalRamp": ["#111827", "#374151", "#6b7280", "#9ca3af", "#d1d5db", "#e5e7eb", "#f3f4f6", "#f9fafb"] },
+      "dark-background": { "role": "neutral", "displayName": "Dark Background (raw Tailwind zinc-950, not a custom token)", "canonical": "#0a0a0a", "tonalRamp": ["#09090b", "#18181b", "#27272a", "#3f3f46", "#52525b", "#71717a", "#a1a1aa", "#d4d4d8"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero name/greeting only, the single largest text element on the site." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles: 'Meine Expertise', 'Ausgewählte Arbeiten', 'Lass uns zusammenarbeiten', About's lead statement." },
+      "eyebrow-label": { "displayName": "Eyebrow Label", "purpose": "Uppercase tracked label preceding every section headline (Über mich, Kontakt, Technologien, Projekte)." },
+      "body": { "displayName": "Body", "purpose": "Paragraph copy in About, Contact intro, and rendered README markdown." },
+      "label": { "displayName": "Label", "purpose": "Nav links, contact-link labels, tech-tag chips, timestamps." },
+      "code": { "displayName": "Code / Mono", "purpose": "Code snippet block and contact email/handle values (Monaco stack, unmodified default)." }
+    },
+    "shadows": [
+      { "name": "overlay-lg", "value": "shadow-lg (Tailwind default)", "purpose": "Lifts the mobile nav drawer and the Impressum/Rechtliches modal Dialog panel off the page. The only two places a shadow appears in the entire build." }
+    ],
+    "motion": [
+      { "name": "reveal-fade-slide", "value": "opacity-0 translate-y-4 -> opacity-100 translate-y-0, transition-all duration-1000", "purpose": "IntersectionObserver-triggered entrance for every homepage section (Hero mount, About/Work/Experience/Contact on scroll into view)." },
+      { "name": "hover-color", "value": "transition-colors (default Tailwind duration/easing)", "purpose": "Default hover treatment on nearly all text links and nav items." },
+      { "name": "cta-invert", "value": "transition-all duration-300", "purpose": "Hero primary CTA border-to-fill inversion and the error-page retry button." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px (Tailwind default, unmodified)" },
+      { "name": "lg", "value": "1024px (Tailwind default, unmodified)" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button (Hero CTA)",
+      "kind": "button",
+      "refersTo": "button-outline-primary",
+      "description": "Outlined-to-filled CTA, the only filled-button interaction pattern in the build; most other CTAs are plain text links.",
+      "html": "<a href=\"#work\" class=\"ds-btn-primary\">Meine Projekte</a>",
+      "css": ".ds-btn-primary { display: inline-block; padding: 12px 24px; border: 2px solid #1a1a1a; color: #1a1a1a; background: transparent; font-size: 14px; font-weight: 500; transition: all 0.3s; } .ds-btn-primary:hover { background: #1a1a1a; color: #fafafa; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #2563eb; }"
+    },
+    {
+      "name": "Text Link (default CTA)",
+      "kind": "custom",
+      "refersTo": "nav-link-default",
+      "description": "The dominant interactive pattern site-wide: plain text with an accent-color hover, used for nav items, project 'Details ansehen' links, and contact rows. Most instances have no focus-visible ring.",
+      "html": "<a href=\"#\" class=\"ds-link\">Details ansehen &rarr;</a>",
+      "css": ".ds-link { color: #2563eb; font-size: 14px; transition: color 0.15s; text-decoration: none; } .ds-link:hover { text-decoration: underline; }"
+    },
+    {
+      "name": "Tech Chip",
+      "kind": "chip",
+      "description": "Bordered, unfilled tag used to list project tech stacks. No background fill, no rounded corners.",
+      "html": "<span class=\"ds-chip\">Go</span>",
+      "css": ".ds-chip { font-size: 12px; padding: 4px 8px; border: 1px solid #e5e7eb; color: #737373; }"
+    },
+    {
+      "name": "Project Row",
+      "kind": "card",
+      "description": "The closest thing to a 'card' in the build: no background fill or shadow, just a bottom hairline border separating stacked entries.",
+      "html": "<div class=\"ds-row\"><h4 class=\"ds-row-title\">structify</h4><p class=\"ds-row-desc\">Go-Structs zu PostgreSQL-Schemas konvertieren.</p></div>",
+      "css": ".ds-row { border-bottom: 1px solid #e5e7eb; padding-bottom: 32px; } .ds-row-title { font-size: 20px; font-weight: 700; } .ds-row-title:hover { color: #2563eb; } .ds-row-desc { color: #737373; line-height: 1.625; margin-top: 12px; }"
+    },
+    {
+      "name": "Modal Dialog",
+      "kind": "custom",
+      "description": "Square-cornered overlay panel used for the Impressum and Rechtliches legal disclosures; one of only two places shadow is used.",
+      "html": "<div class=\"ds-dialog-scrim\"><div class=\"ds-dialog\"><div class=\"ds-dialog-header\"><h2>Impressum</h2><button class=\"ds-dialog-close\">&times;</button></div><div class=\"ds-dialog-body\">Content</div></div></div>",
+      "css": ".ds-dialog-scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 16px; } .ds-dialog { background: #fafafa; max-width: 42rem; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid #e5e7eb; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); } .ds-dialog-header { position: sticky; top: 0; background: #fafafa; border-bottom: 1px solid #e5e7eb; padding: 24px; display: flex; justify-content: space-between; align-items: center; } .ds-dialog-close:focus-visible { outline: none; box-shadow: 0 0 0 2px #2563eb; }"
+    },
+    {
+      "name": "Top Navigation",
+      "kind": "nav",
+      "description": "Fixed, translucent, blurred bar with hairline bottom border; active link marked by a 1px underline bar, not a background pill.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-brand\" href=\"#home\">Portfolio</a><ul class=\"ds-nav-list\"><li><a class=\"ds-nav-link ds-nav-link-active\" href=\"#home\">Home</a></li><li><a class=\"ds-nav-link\" href=\"#about\">About</a></li></ul></nav>",
+      "css": ".ds-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: rgba(250,250,250,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid #e5e7eb; height: 64px; display: flex; align-items: center; } .ds-nav-brand { font-size: 18px; font-weight: 500; } .ds-nav-link { font-size: 14px; color: #737373; transition: color 0.15s; position: relative; } .ds-nav-link-active { color: #1a1a1a; font-weight: 500; } .ds-nav-link-active::after { content: ''; position: absolute; bottom: -21px; left: 0; width: 100%; height: 1px; background: #1a1a1a; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Unstyled-by-Intent Minimalism",
+    "overview": "This is a single-page, section-scrolling personal portfolio (Hero, About, Work, Experience, Contact) plus three GitHub-README-backed project detail pages. The visual system is unstyled-by-intent minimalism: a near-black-on-off-white palette, one blue accent used sparingly for links and hover states, no imagery beyond a single profile photo, no illustration, no gradients, and almost no shadows. The layout leans entirely on typographic scale, generous vertical whitespace, and thin hairline borders to create hierarchy - there is no card-with-shadow or colored-surface vocabulary anywhere in the build. Dark mode is a first-class, persisted feature (class-based dark: Tailwind variants, toggled via ThemeToggle.tsx and an inline pre-hydration script in layout.tsx). In dark mode the system does not reuse the light-mode custom tokens - it switches to raw Tailwind zinc-* scale values instead. This is a real, observed seam in the token system, not a stylistic choice. The font stack is system-ui with OS-native fallbacks - there is no webfont, no next/font, and no custom typeface anywhere in the build. This is the Tailwind/Next.js scaffold default left in place, not a chosen typographic identity.",
+    "keyCharacteristics": [
+      "Two-tone-plus-one-accent palette: near-black text, off-white background, single blue accent used only on links/hover/active states.",
+      "No card surfaces, no drop shadows on content (only shadow-lg on the two overlay/dialog surfaces).",
+      "Hairline borders (1px) are the primary structural device.",
+      "Large, generous section rhythm: ~128-160px of vertical padding per full-height section, with a max-w-3xl content column.",
+      "System font stack, no webfont - an inherited default, not a decision."
+    ],
+    "rules": [
+      { "name": "The One-Accent Rule", "body": "Blue (accent / accent-muted) appears only on interactive elements - links, hover states, active nav indicators, focus rings, code accents. It never appears as a background fill, a section header color, or a decorative element.", "section": "colors" },
+      { "name": "The Custom-Token-Light / Zinc-Scale-Dark Rule", "body": "Light mode consistently uses the seven custom hex tokens. Dark mode never reuses those tokens - every dark: variant reaches for the raw Tailwind zinc-* scale instead. This is a structural inconsistency in the current token system, recorded as a fact of the build, not endorsed as a pattern to extend.", "section": "colors" },
+      { "name": "The Uppercase-Eyebrow Rule", "body": "Every section is introduced by a text-sm uppercase tracking-wider label in the secondary/muted color before its bold headline.", "section": "typography" },
+      { "name": "The Max-Width-3XL Rule", "body": "All five homepage sections share one max-w-3xl reading column, centered with w-full. Only the project detail template widens to max-w-4xl.", "section": "layout" },
+      { "name": "The Border-Not-Shadow Rule", "body": "Depth and separation within the page flow is conveyed by a single hairline border, never a shadow or a tonal surface change. Shadows are reserved exclusively for the two modal/overlay surfaces.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the accent blue (#2563eb / #60a5fa) confined to interactive states (links, hover, focus, active nav indicator) - it does not appear as a fill or section color anywhere in the build.",
+      "Do use hairline 1px borders (border-border / dark:border-zinc-800) as the default separator between content blocks; reserve shadow-lg for true overlay surfaces (modal, mobile drawer) only.",
+      "Do keep homepage sections on the shared max-w-3xl column with py-32/lg:py-40 vertical rhythm and px-6/md:px-12 horizontal rhythm.",
+      "Do treat text-links as the default CTA pattern; the bordered outline-to-fill button exists as a single accent for the Hero's primary action, not a general button system."
+    ],
+    "donts": [
+      "Don't assume dark mode inherits the light-mode custom tokens (primary, background, surface, border) - as built, every dark: variant reaches for raw zinc-* values instead.",
+      "Don't read the system-ui font stack or the unmodified blue-600/blue-400 accent hexes as intentional brand choices - they are untouched framework defaults.",
+      "Don't add card-style shadows or background-tinted surfaces to inline content - the build's depth model is flat-plus-hairline-border everywhere except the two modal/overlay surfaces.",
+      "Don't treat focus-visible rings as a site-wide guarantee. They exist on ThemeToggle, the Dialog close button, and the error-page retry button, but are absent from the primary nav links, the Hero CTA, the 'Details ansehen' project links, and the Contact links/footer buttons - a real accessibility gap given PRODUCT.md's stated WCAG 2.1 bar."
+    ]
+  }
+}
