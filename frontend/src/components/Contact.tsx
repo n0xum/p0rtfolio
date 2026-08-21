@@ -33,7 +33,7 @@ export default function Contact() {
 
           <p className="text-lg text-secondary dark:text-zinc-400 mb-12 leading-relaxed">
             Ich freue mich über den Austausch zu Technologien, Open-Source-Projekten
-            oder gemeinsame Ideen – schreiben Sie mir gerne.
+            oder neuen Ideen – schreiben Sie mir gerne.
           </p>
 
           <div className="space-y-4">

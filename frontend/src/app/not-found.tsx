@@ -1,4 +1,9 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Seite nicht gefunden - Alexander Kruska',
+};
 
 export default function NotFound() {
   return (
@@ -27,7 +32,7 @@ export default function NotFound() {
               404 &ndash; Seite nicht gefunden
             </h1>
             <p className="text-lg text-secondary dark:text-zinc-400 max-w-md">
-              Die von dir gesuchte Seite existiert nicht oder wurde verschoben.
+              Die gesuchte Seite existiert nicht oder wurde verschoben.
             </p>
           </div>
 

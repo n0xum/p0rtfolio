@@ -4,39 +4,296 @@
   "title": "Design System: Alexander Kruska Portfolio",
   "extensions": {
     "colorMeta": {
-      "primary": { "role": "primary", "displayName": "Near-Black", "canonical": "#1a1a1a", "tonalRamp": ["#262626", "#434343", "#616161", "#7e7e7e", "#9b9b9b", "#b8b8b8", "#d5d5d5", "#f2f2f2"] },
-      "secondary": { "role": "secondary", "displayName": "Neutral Gray (retuned for AA)", "canonical": "#666666", "tonalRamp": ["#262626", "#434343", "#616161", "#7e7e7e", "#9b9b9b", "#b8b8b8", "#d5d5d5", "#f2f2f2"] },
-      "accent": { "role": "tertiary", "displayName": "Deep Teal", "canonical": "#0c6e66", "tonalRamp": ["#084540", "#0d7a71", "#13aea1", "#19e3d2", "#4aebde", "#7ff1e8", "#b3f7f1", "#e8fcfb"] },
-      "accent-muted": { "role": "tertiary", "displayName": "Muted Teal (dark-mode counterpart)", "canonical": "#59a69a", "tonalRamp": ["#1a332f", "#2e5952", "#418076", "#55a699", "#7abbb1", "#a1cfc8", "#c8e3de", "#eef6f5"] },
-      "background": { "role": "neutral", "displayName": "Off-White", "canonical": "#fafafa", "tonalRamp": ["#0a0a0a", "#262626", "#525252", "#a3a3a3", "#d4d4d4", "#e5e5e5", "#f5f5f5", "#fafafa"] },
-      "surface": { "role": "neutral", "displayName": "Light Surface", "canonical": "#f5f5f5", "tonalRamp": ["#0a0a0a", "#262626", "#525252", "#a3a3a3", "#d4d4d4", "#e5e5e5", "#f0f0f0", "#f5f5f5"] },
-      "border": { "role": "neutral", "displayName": "Border Gray (decorative, not AA-required)", "canonical": "#e5e7eb", "tonalRamp": ["#21252b", "#3b404c", "#545c6d", "#6d788e", "#8e96a8", "#afb5c1", "#d0d3db", "#f1f2f4"] },
-      "focus-ring": { "role": "tertiary", "displayName": "Focus Ring (aliases accent / accent-muted per theme)", "canonical": "#0c6e66", "tonalRamp": ["#084540", "#0d7a71", "#13aea1", "#19e3d2", "#4aebde", "#7ff1e8", "#b3f7f1", "#e8fcfb"] },
-      "dark-background": { "role": "neutral", "displayName": "Dark Background (zinc-950, now pinned explicitly and no longer drifting from the hardcoded body color)", "canonical": "#09090b", "tonalRamp": ["#09090b", "#18181b", "#27272a", "#3f3f46", "#52525b", "#71717a", "#a1a1aa", "#d4d4d8"] },
-      "dark-text-muted-alt": { "role": "secondary", "displayName": "zinc-500, retuned for AA", "canonical": "#8a8a8a", "tonalRamp": ["#404040", "#525252", "#666666", "#7a7a7a", "#8a8a8a", "#9e9e9e", "#b8b8b8", "#d4d4d4"] }
+      "primary": {
+        "role": "primary",
+        "displayName": "Near-Black",
+        "canonical": "#1a1a1a",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7e7e7e",
+          "#9b9b9b",
+          "#b8b8b8",
+          "#d5d5d5",
+          "#f2f2f2"
+        ]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Neutral Gray (retuned for AA)",
+        "canonical": "#666666",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7e7e7e",
+          "#9b9b9b",
+          "#b8b8b8",
+          "#d5d5d5",
+          "#f2f2f2"
+        ]
+      },
+      "accent": {
+        "role": "tertiary",
+        "displayName": "Deep Teal",
+        "canonical": "#0c6e66",
+        "tonalRamp": [
+          "#084540",
+          "#0d7a71",
+          "#13aea1",
+          "#19e3d2",
+          "#4aebde",
+          "#7ff1e8",
+          "#b3f7f1",
+          "#e8fcfb"
+        ]
+      },
+      "accent-muted": {
+        "role": "tertiary",
+        "displayName": "Muted Teal (dark-mode counterpart)",
+        "canonical": "#59a69a",
+        "tonalRamp": [
+          "#1a332f",
+          "#2e5952",
+          "#418076",
+          "#55a699",
+          "#7abbb1",
+          "#a1cfc8",
+          "#c8e3de",
+          "#eef6f5"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Off-White",
+        "canonical": "#fafafa",
+        "tonalRamp": [
+          "#0a0a0a",
+          "#262626",
+          "#525252",
+          "#a3a3a3",
+          "#d4d4d4",
+          "#e5e5e5",
+          "#f5f5f5",
+          "#fafafa"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Light Surface",
+        "canonical": "#f5f5f5",
+        "tonalRamp": [
+          "#0a0a0a",
+          "#262626",
+          "#525252",
+          "#a3a3a3",
+          "#d4d4d4",
+          "#e5e5e5",
+          "#f0f0f0",
+          "#f5f5f5"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border Gray (decorative, not AA-required)",
+        "canonical": "#e5e7eb",
+        "tonalRamp": [
+          "#21252b",
+          "#3b404c",
+          "#545c6d",
+          "#6d788e",
+          "#8e96a8",
+          "#afb5c1",
+          "#d0d3db",
+          "#f1f2f4"
+        ]
+      },
+      "focus-ring": {
+        "role": "tertiary",
+        "displayName": "Focus Ring (aliases accent / accent-muted per theme)",
+        "canonical": "#0c6e66",
+        "tonalRamp": [
+          "#084540",
+          "#0d7a71",
+          "#13aea1",
+          "#19e3d2",
+          "#4aebde",
+          "#7ff1e8",
+          "#b3f7f1",
+          "#e8fcfb"
+        ]
+      },
+      "dark-background": {
+        "role": "neutral",
+        "displayName": "Dark Background (zinc-950, now pinned explicitly and no longer drifting from the hardcoded body color)",
+        "canonical": "#09090b",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#52525b",
+          "#71717a",
+          "#a1a1aa",
+          "#d4d4d8"
+        ]
+      },
+      "dark-text-muted-alt": {
+        "role": "secondary",
+        "displayName": "zinc-500, retuned for AA",
+        "canonical": "#8a8a8a",
+        "tonalRamp": [
+          "#404040",
+          "#525252",
+          "#666666",
+          "#7a7a7a",
+          "#8a8a8a",
+          "#9e9e9e",
+          "#b8b8b8",
+          "#d4d4d4"
+        ]
+      },
+      "syntax-comment": {
+        "role": "syntax",
+        "displayName": "Syntax: comment / quote (dark, AA-corrected 5.04:1)",
+        "canonical": "#888891",
+        "tonalRamp": []
+      },
+      "syntax-keyword": {
+        "role": "syntax",
+        "displayName": "Syntax: keyword / selector-tag / addition (dark)",
+        "canonical": "#fb7185",
+        "tonalRamp": []
+      },
+      "syntax-literal": {
+        "role": "syntax",
+        "displayName": "Syntax: string / number / literal / regexp (dark)",
+        "canonical": "#86efac",
+        "tonalRamp": []
+      },
+      "syntax-identifier": {
+        "role": "syntax",
+        "displayName": "Syntax: title / name / selector-id (dark)",
+        "canonical": "#60a5fa",
+        "tonalRamp": []
+      },
+      "syntax-attribute": {
+        "role": "syntax",
+        "displayName": "Syntax: attribute / variable / type (dark)",
+        "canonical": "#fbbf24",
+        "tonalRamp": []
+      },
+      "syntax-symbol": {
+        "role": "syntax",
+        "displayName": "Syntax: symbol / meta / link (dark)",
+        "canonical": "#c084fc",
+        "tonalRamp": []
+      },
+      "syntax-builtin": {
+        "role": "syntax",
+        "displayName": "Syntax: built-in / deletion (dark)",
+        "canonical": "#f87171",
+        "tonalRamp": []
+      },
+      "syntax-code-bg": {
+        "role": "syntax",
+        "displayName": "Syntax: code block ground (dark)",
+        "canonical": "#18181b",
+        "tonalRamp": []
+      },
+      "syntax-code-fg": {
+        "role": "syntax",
+        "displayName": "Syntax: base code text (dark)",
+        "canonical": "#e4e4e7",
+        "tonalRamp": []
+      },
+      "syntax-comment-light": {
+        "role": "syntax",
+        "displayName": "Syntax: comment (light, stock github.css, 4.82:1)",
+        "canonical": "#6a737d",
+        "tonalRamp": []
+      },
+      "syntax-builtin-light": {
+        "role": "syntax",
+        "displayName": "Syntax: built-in / symbol (light, AA-corrected 4.95:1)",
+        "canonical": "#ba5007",
+        "tonalRamp": []
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero name/greeting only, the single largest text element on the site. IBM Plex Sans bold, 1.25-ratio modular scale." },
-      "headline": { "displayName": "Headline", "purpose": "Section titles: 'Meine Expertise', 'Ausgewählte Arbeiten', 'Lass uns zusammenarbeiten', About's lead statement." },
-      "title": { "displayName": "Title", "purpose": "Project card titles, dialog titles, code-snippet heading." },
-      "eyebrow-label": { "displayName": "Eyebrow Label", "purpose": "Uppercase tracked label preceding every section headline (Über mich, Kontakt, Technologien, Projekte)." },
-      "body": { "displayName": "Body", "purpose": "Paragraph copy in About, Contact intro, and rendered README markdown. Capped to a 70ch measure this wave." },
-      "label": { "displayName": "Label", "purpose": "Nav links, contact-link labels, tech-tag chips, timestamps." },
-      "code": { "displayName": "Code / Mono", "purpose": "Code snippet block and contact email/handle values (Monaco stack, unmodified). Werdegang date column carries explicit tabular-nums." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name/greeting only, the single largest text element on the site. IBM Plex Sans bold, 1.25-ratio modular scale."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles: 'Meine Expertise', 'Ausgew\u00e4hlte Arbeiten', 'Lass uns zusammenarbeiten', About's lead statement."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Project card titles, dialog titles, code-snippet heading."
+      },
+      "eyebrow-label": {
+        "displayName": "Eyebrow Label",
+        "purpose": "Uppercase tracked label preceding every section headline (\u00dcber mich, Kontakt, Technologien, Projekte)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Paragraph copy in About, Contact intro, and rendered README markdown. Capped to a 70ch measure this wave."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav links, contact-link labels, tech-tag chips, timestamps."
+      },
+      "code": {
+        "displayName": "Code / Mono",
+        "purpose": "Code snippet block and contact email/handle values (Monaco stack, unmodified). Werdegang date column carries explicit tabular-nums."
+      }
     },
     "shadows": [
-      { "name": "overlay-lg", "value": "shadow-lg (Tailwind default)", "purpose": "Lifts the mobile nav drawer and the Impressum/Rechtliches modal Dialog panel off the page. The only two places a shadow appears in the entire build. Unchanged this wave." }
+      {
+        "name": "overlay-lg",
+        "value": "shadow-lg (Tailwind default)",
+        "purpose": "Lifts the mobile nav drawer and the Impressum/Rechtliches modal Dialog panel off the page. The only two places a shadow appears in the entire build. Unchanged this wave."
+      }
     ],
     "motion": [
-      { "name": "reveal-on-scroll", "value": ".reveal-on-scroll utility: opacity:1 by default; @supports (animation-timeline: view()) + prefers-reduced-motion:no-preference layers in a scroll-driven opacity+translate keyframe animation", "purpose": "New this wave. CSS-only replacement for the five per-section IntersectionObserver hooks; not yet adopted by components (that's wave 3a's job)." },
-      { "name": "reveal-fade-slide (legacy, still live)", "value": "opacity-0 translate-y-4 -> opacity-100 translate-y-0, transition-all duration-1000", "purpose": "Still driven by IntersectionObserver + useState in Hero/About/Work/Experience/Contact as of this wave; to be deleted once .reveal-on-scroll is adopted." },
-      { "name": "hover-color", "value": "transition-colors (default Tailwind duration/easing)", "purpose": "Default hover treatment on nearly all text links and nav items. No longer force-collapsed under prefers-reduced-motion (see reduced-motion note)." },
-      { "name": "cta-invert", "value": "transition-all duration-300", "purpose": "Hero primary CTA border-to-fill inversion and the error-page retry button." },
-      { "name": "reduced-motion-reconciled", "value": "prefers-reduced-motion: reduce now clamps animation-duration/iteration-count only, not transition-duration", "purpose": "Fixed this wave: the previous blanket rule also killed hover and theme-toggle color transitions, which the audit rubric flagged as an anti-pattern." }
+      {
+        "name": "reveal-on-scroll",
+        "value": ".reveal-on-scroll utility: opacity:1 by default; @supports (animation-timeline: view()) + prefers-reduced-motion:no-preference layers in a scroll-driven opacity+translate keyframe animation",
+        "purpose": "New this wave. CSS-only replacement for the five per-section IntersectionObserver hooks; not yet adopted by components (that's wave 3a's job)."
+      },
+      {
+        "name": "reveal-fade-slide (legacy, still live)",
+        "value": "opacity-0 translate-y-4 -> opacity-100 translate-y-0, transition-all duration-1000",
+        "purpose": "Still driven by IntersectionObserver + useState in Hero/About/Work/Experience/Contact as of this wave; to be deleted once .reveal-on-scroll is adopted."
+      },
+      {
+        "name": "hover-color",
+        "value": "transition-colors (default Tailwind duration/easing)",
+        "purpose": "Default hover treatment on nearly all text links and nav items. No longer force-collapsed under prefers-reduced-motion (see reduced-motion note)."
+      },
+      {
+        "name": "cta-invert",
+        "value": "transition-all duration-300",
+        "purpose": "Hero primary CTA border-to-fill inversion and the error-page retry button."
+      },
+      {
+        "name": "reduced-motion-reconciled",
+        "value": "prefers-reduced-motion: reduce now clamps animation-duration/iteration-count only, not transition-duration",
+        "purpose": "Fixed this wave: the previous blanket rule also killed hover and theme-toggle color transitions, which the audit rubric flagged as an anti-pattern."
+      }
     ],
     "breakpoints": [
-      { "name": "md", "value": "768px (Tailwind default, unmodified)" },
-      { "name": "lg", "value": "1024px (Tailwind default, unmodified)" }
+      {
+        "name": "md",
+        "value": "768px (Tailwind default, unmodified)"
+      },
+      {
+        "name": "lg",
+        "value": "1024px (Tailwind default, unmodified)"
+      }
     ]
   },
   "components": [
@@ -59,7 +316,7 @@
     {
       "name": "Tech Chip",
       "kind": "chip",
-      "description": "Bordered, unfilled tag used to list project tech stacks. No background fill, no rounded corners. Its text color is the retuned `secondary` (#666666) — this is the specific element the accessibility audit flagged failing AA (4.3:1) before this wave.",
+      "description": "Bordered, unfilled tag used to list project tech stacks. No background fill, no rounded corners. Its text color is the retuned `secondary` (#666666) \u2014 this is the specific element the accessibility audit flagged failing AA (4.3:1) before this wave.",
       "html": "<span class=\"ds-chip\">Go</span>",
       "css": ".ds-chip { font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 12px; padding: 4px 8px; border: 1px solid #e5e7eb; color: #666666; }"
     },
@@ -97,14 +354,46 @@
       "A token-driven :focus-visible outline and a CSS-only scroll-reveal utility now exist for every future interactive element/section to use."
     ],
     "rules": [
-      { "name": "The One-Accent Rule", "body": "The accent (accent / accent-muted) appears only on interactive elements - links, hover states, active nav indicators, focus rings, code accents. It never appears as a background fill, a section header color, or a decorative element. Unchanged this wave; only the hue moved from blue to teal.", "section": "colors" },
-      { "name": "The Explicit Dark-Scale Rule", "body": "Dark mode still expresses itself through Tailwind's zinc-* utility classes at every component call site - that could not change without editing every component. What changed: every zinc stop the app depends on is now pinned explicitly inside the same @theme block as the light-mode tokens, and the one place light and dark values had actually drifted apart (a hardcoded dark body background) has been closed.", "section": "colors" },
-      { "name": "The Border-Contrast Caveat", "body": "border and the dark zinc-800/zinc-700 borders measure well under the 3:1 UI-component floor. Treated as decorative content separators (WCAG 1.4.11 exempts graphical objects not required to identify a component), consistent with the Border-Not-Shadow Rule - not fixed by darkening, which would be a visible redesign. One exception (the ReadmeDropdown disclosure toggle's boundary) is flagged, unresolved, for wave 3a.", "section": "colors" },
-      { "name": "The Uppercase-Eyebrow Rule", "body": "Every section is introduced by a text-sm uppercase tracking-wider label in the secondary/muted color before its bold headline. Unchanged.", "section": "typography" },
-      { "name": "The Modular-Scale Rule", "body": "Every text-lg through text-7xl step is 1rem x 1.25^n for a fixed integer n, declared once in @theme and inherited by every component using these existing utility names - replacing the arbitrary, undocumented jumps the previous DESIGN.md flagged.", "section": "typography" },
-      { "name": "The Max-Width-3XL Rule", "body": "All five homepage sections share one max-w-3xl reading column, centered with w-full. Only the project detail template widens to max-w-4xl. Unchanged.", "section": "layout" },
-      { "name": "The 70ch Measure Rule", "body": "Any paragraph-length text block using leading-relaxed and not already constrained by its own max-w-* utility is capped to 70ch - closing the 85-96 characters-per-line defect the audit measured, without touching any component's max-w-3xl/max-w-4xl section width.", "section": "layout" },
-      { "name": "The Border-Not-Shadow Rule", "body": "Depth and separation within the page flow is conveyed by a single hairline border, never a shadow or a tonal surface change. Shadows are reserved exclusively for the two modal/overlay surfaces. Unchanged.", "section": "elevation" }
+      {
+        "name": "The One-Accent Rule",
+        "body": "The accent (accent / accent-muted) appears only on interactive elements - links, hover states, active nav indicators, focus rings, code accents. It never appears as a background fill, a section header color, or a decorative element. Unchanged this wave; only the hue moved from blue to teal.",
+        "section": "colors"
+      },
+      {
+        "name": "The Explicit Dark-Scale Rule",
+        "body": "Dark mode still expresses itself through Tailwind's zinc-* utility classes at every component call site - that could not change without editing every component. What changed: every zinc stop the app depends on is now pinned explicitly inside the same @theme block as the light-mode tokens, and the one place light and dark values had actually drifted apart (a hardcoded dark body background) has been closed.",
+        "section": "colors"
+      },
+      {
+        "name": "The Border-Contrast Caveat",
+        "body": "border and the dark zinc-800/zinc-700 borders measure well under the 3:1 UI-component floor. Treated as decorative content separators (WCAG 1.4.11 exempts graphical objects not required to identify a component), consistent with the Border-Not-Shadow Rule - not fixed by darkening, which would be a visible redesign. One exception (the ReadmeDropdown disclosure toggle's boundary) is flagged, unresolved, for wave 3a.",
+        "section": "colors"
+      },
+      {
+        "name": "The Uppercase-Eyebrow Rule",
+        "body": "Every section is introduced by a text-sm uppercase tracking-wider label in the secondary/muted color before its bold headline. Unchanged.",
+        "section": "typography"
+      },
+      {
+        "name": "The Modular-Scale Rule",
+        "body": "Every text-lg through text-7xl step is 1rem x 1.25^n for a fixed integer n, declared once in @theme and inherited by every component using these existing utility names - replacing the arbitrary, undocumented jumps the previous DESIGN.md flagged.",
+        "section": "typography"
+      },
+      {
+        "name": "The Max-Width-3XL Rule",
+        "body": "All five homepage sections share one max-w-3xl reading column, centered with w-full. Only the project detail template widens to max-w-4xl. Unchanged.",
+        "section": "layout"
+      },
+      {
+        "name": "The 70ch Measure Rule",
+        "body": "Any paragraph-length text block using leading-relaxed and not already constrained by its own max-w-* utility is capped to 70ch - closing the 85-96 characters-per-line defect the audit measured, without touching any component's max-w-3xl/max-w-4xl section width.",
+        "section": "layout"
+      },
+      {
+        "name": "The Border-Not-Shadow Rule",
+        "body": "Depth and separation within the page flow is conveyed by a single hairline border, never a shadow or a tonal surface change. Shadows are reserved exclusively for the two modal/overlay surfaces. Unchanged.",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "Do keep the accent teal (#0c6e66 / #59a69a) confined to interactive states (links, hover, focus, active nav indicator) - it does not appear as a fill or section color anywhere in the build.",

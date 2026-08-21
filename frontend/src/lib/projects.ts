@@ -48,63 +48,52 @@ export const projects: Project[] = [
     }
   },
   {
-    slug: 'cli-tool',
-    title: 'CLI Tool',
-    description: 'Kommandozeilen-Tool in Go zur Automatisierung wiederkehrender Entwicklungs- und Deployment-Aufgaben.',
-    githubRepo: 'n0xum/cli-tool',
-    tech: ['Go', 'CLI', 'Linux'],
+    slug: 'zigbee-controller',
+    title: 'zigbee-controller',
+    description: 'Zigbee-Geräte über Zigbee2MQTT und MQTT mit Apple HomeKit verbinden – läuft vollständig im eigenen Netzwerk, ohne Cloud-Zugriff.',
+    githubRepo: 'n0xum/zigbee-controller',
+    tech: ['Go', 'MQTT', 'Zigbee2MQTT', 'HomeKit (HAP)', 'Docker'],
     type: 'Backend',
     features: [
-      'Automatisierung von Entwicklungsaufgaben',
-      'Effiziente Kommandozeilen-Interface',
-      'Cross-Platform Unterstützung',
-      'Erweiterbare Architektur'
-    ]
-  },
-  {
-    slug: 'portfolio-website',
-    title: 'Portfolio Website',
-    description: 'Persönliche Portfolio-Website mit minimalistischem Design, entwickelt mit Next.js und optimiert für Performance.',
-    githubRepo: 'n0xum/p0rtfolio',
-    tech: ['Next.js', 'Tailwind CSS', 'TypeScript'],
-    type: 'Frontend',
-    features: [
-      'Minimalistisches, responsives Design',
-      'Dark Mode Support',
-      'Performance-optimiert',
-      'SEO-freundlich',
-      'Accessibility (WCAG 2.1)',
-      'Smooth Scroll Animationen'
+      'HomeKit-Bridge über das HAP-Protokoll (brutella/hap): Lampen und Scrollrad erscheinen als native Apple-HomeKit-Accessories',
+      'MQTT-Anbindung an Zigbee2MQTT (Eclipse Paho) mit bidirektionaler Zustandssynchronisierung zwischen HomeKit und den Geräten',
+      'Physisches Dimmen per Scrollrad über zwei MQTT-Befehle pro Geste statt eines Broadcasts pro Zwischenschritt, inklusive automatischer Korrektur bei zu niedriger Helligkeit',
+      'YAML-Konfiguration (Viper) für MQTT-Broker, HomeKit-Parameter und Geräte, inklusive Schnittstellen-Filter für die mDNS-Ankündigung im Docker-Host-Netzwerk',
+      'Containerisiert mit einem mehrstufigen Dockerfile (Non-Root-User) sowie docker-compose für Mosquitto und Zigbee2MQTT, gesteuert über ein Makefile',
+      'CI-Pipeline (GitHub Actions) mit go vet und go test bei jedem Push sowie Image-Build und -Push nach ghcr.io beim Merge auf main'
     ],
     codeSnippet: {
-      language: 'typescript',
-      description: 'Theme-Provider mit localStorage-Persistenz und System-Preference-Detection',
-      code: `export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
+      language: 'go',
+      description: 'Scrollrad-Dimmer: zwei MQTT-Befehle pro Geste (Start/Stop) statt eines Broadcasts pro Zwischenschritt – die Lampe interpoliert die Helligkeit selbst',
+      code: `// Start beginnt das Dimmen in die angegebene Richtung.
+// Ein bereits laufender Vorgang wird zuvor beendet.
+func (d *Dimmer) Start(action zigbee.RemoteAction) {
+\tdir := 0
+\tswitch action {
+\tcase zigbee.ActionBrightnessMoveUp:
+\t\tdir = 1
+\tcase zigbee.ActionBrightnessMoveDown:
+\t\tdir = -1
+\tdefault:
+\t\treturn
+\t}
 
-  useEffect(() => {
-    setMounted(true);
-    // Sync with localStorage and system preference
-    const stored = localStorage.getItem('theme') as Theme;
-    const initial = stored ||
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    setTheme(initial);
-  }, []);
+\td.Stop()
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
+\td.mu.Lock()
+\td.aktiv = true
+\td.generation++
+\td.mu.Unlock()
 
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-  };
-
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+\tcmd := zigbee.BrightnessMoveCommand(d.rate * dir)
+\tfor _, b := range d.bulbs {
+\t\t// Ausgeschaltete Lampen bleiben aus -- "brightness_move" würde sie
+\t\t// ohnehin nicht wecken, aber so wird gar nicht erst gefunkt.
+\t\tif on, _, _ := b.GetState(); !on {
+\t\t\tcontinue
+\t\t}
+\t\td.publishTo(b, cmd)
+\t}
 }`
     }
   }

@@ -21,7 +21,7 @@ export default function About() {
               </p>
 
               <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
-                Dabei verbinde ich Backend-Entwicklung mit <span className="text-primary dark:text-zinc-50 font-medium">Go (Golang)</span>,
+                Dabei verbinde ich Backend-Entwicklung in <span className="text-primary dark:text-zinc-50 font-medium">Go (Golang)</span>,
                 C# und Java (Spring Boot) mit Frontend-Entwicklung in <span className="text-primary dark:text-zinc-50 font-medium">React</span> und Next.js.
                 Zu meinem Alltag gehören außerdem Datenbanken, Cloud-Infrastruktur, CI/CD und Observability.
               </p>
@@ -32,7 +32,7 @@ export default function About() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-border dark:border-zinc-800">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-border dark:border-zinc-800">
               <div>
                 <div className="text-3xl font-bold mb-1">seit 2023</div>
                 <div className="text-sm text-secondary dark:text-zinc-400">Praxis & Projekte</div>
@@ -44,10 +44,6 @@ export default function About() {
               <div>
                 <div className="text-3xl font-bold mb-1">C#</div>
                 <div className="text-sm text-secondary dark:text-zinc-400">gRPC & Protobuf</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold mb-1">∞</div>
-                <div className="text-sm text-secondary dark:text-zinc-400">Lernbereitschaft</div>
               </div>
             </div>
           </div>

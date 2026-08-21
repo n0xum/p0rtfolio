@@ -36,7 +36,6 @@ export default function ScrollTextCarousel() {
     'Golang',
     'CI/CD',
     'Clean Architecture',
-    'Enthusiastic',
     'Next.js',
     'Spring Boot',
     'Clean Code',

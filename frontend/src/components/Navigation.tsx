@@ -96,11 +96,11 @@ export default function Navigation() {
   };
 
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'work', label: 'Work' },
+    { id: 'home', label: 'Start' },
+    { id: 'about', label: 'Über mich' },
+    { id: 'work', label: 'Projekte' },
     { id: 'experience', label: 'Werdegang' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'contact', label: 'Kontakt' },
   ];
 
   const handleNavClick = () => {

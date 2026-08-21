@@ -26,7 +26,7 @@ export default function Hero() {
             {/* Text Content */}
             <div className="flex-1 text-center md:text-left">
               <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight">
-                Hallo, ich bin
+                Ich bin
                 <br />
                 <span className="text-secondary dark:text-zinc-400">Alexander</span>
               </h1>
@@ -34,9 +34,9 @@ export default function Hero() {
           </div>
 
           <p className="text-xl md:text-2xl text-secondary dark:text-zinc-400 max-w-2xl mb-8 leading-relaxed">
-            Backend Software Engineer bei{' '}
+            IT-Berater und Softwareentwickler bei{' '}
             <span className="text-primary dark:text-zinc-50 font-medium">Lufthansa Industry Solutions</span>.
-            Spezialisiert auf robuste Services mit Go, C# und Java.
+            Spezialisiert auf robuste Backend-Services mit Go, C# und Java.
           </p>
 
           <div className="flex gap-6 items-center flex-wrap">

@@ -25,18 +25,11 @@ export default function Work() {
       slug: 'structify'
     },
     {
-      title: 'CLI Tool',
-      description: 'Kommandozeilen-Tool in Go zur Automatisierung wiederkehrender Entwicklungs- und Deployment-Aufgaben.',
-      tech: ['Go', 'CLI', 'Linux'],
+      title: 'zigbee-controller',
+      description: 'Zigbee-Geräte über Zigbee2MQTT und MQTT mit Apple HomeKit verbinden – läuft vollständig im eigenen Netzwerk, ohne Cloud-Zugriff.',
+      tech: ['Go', 'MQTT', 'HomeKit (HAP)', 'Docker'],
       type: 'Backend',
-      slug: 'cli-tool'
-    },
-    {
-      title: 'Portfolio Website',
-      description: 'Persönliche Portfolio-Website mit minimalistischem Design, entwickelt mit Next.js und optimiert für Performance.',
-      tech: ['Next.js', 'Tailwind CSS', 'TypeScript'],
-      type: 'Frontend',
-      slug: 'portfolio-website'
+      slug: 'zigbee-controller'
     }
   ];
 
