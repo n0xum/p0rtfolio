@@ -219,6 +219,38 @@ The stock light theme had the identical class of defect on a different token: `.
 
 Note: `#60a5fa` (dark-mode identifiers) is coincidentally the old Tailwind `blue-400` that used to be the site accent. It survives only as a syntax-identifier colour and carries no brand meaning — do not treat its presence as the accent leaking back in.
 
+## Performance Ceiling (measured, not assumed)
+
+Lighthouse mobile performance is **83** on `/` and **84** on `/projects/structify/`.
+Accessibility, Best Practices and SEO are 100 on every route. The performance
+number is a known, quantified architectural floor, not an unfixed defect:
+
+| Build | Perf | LCP | JS shipped on `/` |
+|---|---|---|---|
+| As shipped | 83 | 4.7 s | 188,805 B gz |
+| Identical HTML + CSS, framework `<script>` tags stripped | **100** | **1.6 s** | 0 B |
+| Every `'use client'` component stubbed out | 84 | 4.6 s | 182,044 B gz |
+
+Two things follow, both measured twice:
+
+1. **It is not a delivery problem.** Every network request on `/` completes in
+   under 64 ms. The gap is simulated-CPU cost from hydration.
+2. **It is not attributable to the components.** Removing *every* client
+   component in the app saves 7.5 KB gz and moves Lighthouse by one point.
+   Next 16's App Router emits its `react-dom` / `hydrateRoot` bootstrap
+   (71,415 B gz, chunk `1p7zfs2votmpl.js`) unconditionally, even under
+   `output: 'export'` with zero client components in the reachable tree.
+
+So rewriting the interactive components as platform primitives (`<dialog>`,
+`<details>`, CSS scroll-timelines, a vanilla theme toggle) would not move this
+number. The only lever that reaches ~100 is not shipping Next's client
+bootstrap at all, which means not being a Next App Router app. That is a
+framework migration, not a refinement, and it was explicitly declined in
+favour of keeping the verified accessibility, security and SEO behaviour
+intact.
+
+If this number is ever challenged in review, the answer is the table above.
+
 ## Components
 
 ### Buttons
