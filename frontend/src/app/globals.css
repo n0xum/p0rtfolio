@@ -144,28 +144,44 @@
   --text-7xl: 4.768rem; /* base * 1.25^7 */
   --text-7xl--line-height: 1;
 
-  --animate-fade-in: fadeIn 0.6s ease-in-out;
-  --animate-slide-up: slideUp 0.6s ease-out;
+  /* -------------------------------------------------------------------
+     MOTION
+     Two easing curves and four durations, declared as first-class theme
+     tokens so every transition in the app resolves to the same physics
+     instead of Tailwind's stock `ease-out`/`duration-300` defaults. Under
+     Tailwind v4's `--ease-*` namespace these also emit real utilities
+     (`ease-out-expo`, `ease-out-quart`) usable from any component.
+
+     `out-expo` is the confident-arrival curve: nearly all the distance is
+     covered in the first third, so an entrance reads as "already settling"
+     rather than "still travelling". `out-quart` is its quieter sibling for
+     hover/state feedback, where an exponential curve overshoots the point.
+     Neither bounces: this build's visual language is flat and restrained
+     (DESIGN.md), and an elastic curve would be the loudest thing on the
+     page.
+
+     Durations follow distance and consequence, not taste: feedback must
+     beat the perception of latency (<=150ms), a state change gets 200ms,
+     an overlay 300ms, and only the single authored Hero entrance is
+     allowed to take 700ms.
+
+     `fadeIn`/`slideUp` used to live here as `--animate-*` tokens with
+     their own keyframes. Neither was referenced anywhere in src/ - they
+     were dead weight from before the CSS scroll-driven reveal existed,
+     and every entrance in the app is now either scroll-linked (below) or
+     the Hero's load sequence. Removed. `shimmer` is genuinely used (the
+     ReadmeDropdown loading affordance) and stays.
+     ------------------------------------------------------------------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --duration-feedback: 150ms;
+  --duration-state: 200ms;
+  --duration-overlay: 300ms;
+  --duration-entrance: 700ms;
+
   --animate-shimmer: shimmer 2.5s ease-in-out 0.5s;
 
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  @keyframes slideUp {
-    0% {
-      transform: translateY(20px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
   @keyframes shimmer {
     0% {
       background-position: -200% 0;
@@ -364,8 +380,15 @@
   }
 }
 
+/* `overflow-x: hidden` on <body> does not just clip - it makes the body a
+   scroll container, which propagates to the viewport and costs the browser
+   its cheapest scrolling path (and silently disables scroll anchoring).
+   `clip` clips without establishing a scroll container, which is exactly
+   what was wanted here. `hidden` is kept first as the fallback value for
+   any engine that does not know `clip`. */
 body {
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Selection */
@@ -460,14 +483,53 @@ html {
   font-variant-numeric: tabular-nums;
 }
 
+/* =====================================================================
+   MOTION SYSTEM
+   ---------------------------------------------------------------------
+   Everything below is scroll-linked or state-linked CSS. Nothing here
+   runs a script per frame, and nothing here reads layout during scroll -
+   which is the whole point. The page previously drove two effects from
+   the main thread while you scrolled (a React `setState` inside a
+   `requestAnimationFrame` loop re-rendering 39 marquee spans, and a nav
+   handler calling `getBoundingClientRect()` on five sections per frame).
+   On a 120Hz ProMotion trackpad that is a re-render and a forced layout
+   every ~8ms, which is exactly the "laggy scroll" that prompted this
+   pass. Both are now CSS scroll timelines, which the compositor runs off
+   the main thread.
+
+   Three rules hold across this whole block:
+
+   1. VISIBLE BY DEFAULT. Every animated element's base rule is its
+      finished state. The animation only ever exists inside
+      `@supports (animation-timeline: view())` AND
+      `@media (prefers-reduced-motion: no-preference)`. No support, no
+      JS, or reduced motion all resolve to plain, fully-visible content -
+      never a blank page waiting on an effect that will not arrive.
+      (Chrome/Edge 115+, Safari 26+, Firefox 145+ support these; older
+      engines get the static page, which is the correct fallback rather
+      than a downgrade worth polyfilling.)
+
+   2. COMPOSITOR PROPERTIES ONLY. `opacity`, `translate`, `scale`. No
+      width/height/top/left, nothing that forces layout mid-scroll.
+
+   3. RANGES, NOT DELAYS. Scroll-driven animations ignore
+      `animation-delay` - progress is a function of scroll position, not
+      time. Stagger is therefore expressed by offsetting each sibling's
+      `animation-range`, which has the useful property of being
+      *self-capping*: the offsets below top out after the fourth sibling
+      (`:nth-child(n + 5)`), so a long list never accumulates into a
+      visible wait.
+   ===================================================================== */
+
 /* ---------------------------------------------------------------------
-   CSS-ONLY SCROLL REVEAL (mandate 4)
-   See the handoff report for the full usage note for pf-a11y-harden.
-   Visible by default in every case: no-JS, no browser support for
-   scroll-driven animations, and prefers-reduced-motion all resolve to the
-   plain `opacity: 1` rule below. The animation only activates as a
-   progressive enhancement, gated by both an @supports feature check and a
-   prefers-reduced-motion check.
+   1. SCROLL REVEAL - section-level
+   The original site wrapped each whole section in one `.reveal-on-scroll`
+   div, so all five sections performed the identical fade-and-rise. That
+   is kept as the quiet baseline for section bodies, but the sections that
+   have real internal structure now stagger their children instead (see
+   `.reveal-stagger` below), and Hero opts out entirely: it is above the
+   fold at scroll 0, so a scroll-triggered entrance could never fire for
+   it - it has an authored load sequence instead.
    --------------------------------------------------------------------- */
 .reveal-on-scroll {
   opacity: 1;
@@ -476,14 +538,57 @@ html {
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .reveal-on-scroll {
-      animation: reveal-on-scroll-in linear both;
+      animation: reveal-rise linear both;
       animation-timeline: view();
       animation-range: entry 0% cover 35%;
     }
   }
 }
 
-@keyframes reveal-on-scroll-in {
+/* ---------------------------------------------------------------------
+   2. SCROLL REVEAL - staggered siblings
+   Each child gets its own view() timeline, so items that enter the
+   viewport at different moments already stagger for free. The
+   `animation-range` offsets below exist for the case that free stagger
+   does not cover: siblings laid out side by side (the three skill
+   columns, the stat row), which cross the viewport edge simultaneously.
+   Offsetting the range start walks them apart in scroll distance.
+
+   Deliberately capped at four steps. A row of ten would otherwise put the
+   last item half a viewport behind the first, which stops reading as
+   craft and starts reading as a page that will not finish loading.
+   --------------------------------------------------------------------- */
+.reveal-stagger > * {
+  opacity: 1;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-stagger > * {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 4% cover 30%;
+    }
+
+    .reveal-stagger > :nth-child(2) {
+      animation-range: entry 9% cover 35%;
+    }
+
+    .reveal-stagger > :nth-child(3) {
+      animation-range: entry 14% cover 40%;
+    }
+
+    .reveal-stagger > :nth-child(4) {
+      animation-range: entry 19% cover 45%;
+    }
+
+    .reveal-stagger > :nth-child(n + 5) {
+      animation-range: entry 24% cover 50%;
+    }
+  }
+}
+
+@keyframes reveal-rise {
   from {
     opacity: 0;
     translate: 0 1rem;
@@ -494,9 +599,345 @@ html {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal-on-scroll {
+/* ---------------------------------------------------------------------
+   3. THE FOCAL MOMENT - the Werdegang timeline draws itself
+   This is the one authored sequence on the page, and it is the section
+   that earns it: the Werdegang is the only inherently chronological part
+   of the site, and PRODUCT.md frames the whole thing as a professional
+   *record*. So the record writes itself as you read down it - the rail
+   fills from the top, and each entry's marker snaps in as it arrives.
+
+   `.timeline-rail` is the static hairline (the same `border` token the
+   entries used to carry individually as `border-l-2`). `.timeline-fill`
+   is an accent-coloured overlay on the same 2px column, scaled from the
+   top by scroll progress. Because the fill element spans the container's
+   full height, its own `view()` timeline is the container's - no
+   `view-timeline-name` plumbing needed.
+
+   The range is expressed in `cover`, not `entry`/`exit`, on purpose:
+   `cover` is the only range that stays monotonic and well-defined for an
+   element taller than the viewport (which this container is, at four
+   entries). `cover 15%` is roughly "the section is a sixth of the way
+   through its pass", `cover 72%` completes the fill while the section is
+   still comfortably on screen rather than at the instant it leaves.
+   --------------------------------------------------------------------- */
+.timeline-rail {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  background-color: var(--color-border);
+}
+
+.dark .timeline-rail {
+  background-color: var(--color-zinc-800);
+}
+
+.timeline-fill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  transform-origin: top;
+  background-color: var(--color-accent);
+  scale: 1 1;
+}
+
+.dark .timeline-fill {
+  background-color: var(--color-accent-muted);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .timeline-fill {
+      animation: timeline-draw linear both;
+      animation-timeline: view();
+      animation-range: cover 15% cover 72%;
+    }
+  }
+}
+
+@keyframes timeline-draw {
+  from {
+    scale: 1 0;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+/* Each entry's marker. A small element's own `entry` range is only as
+   long as the element is tall (16px), which would make this snap in over
+   16px of scroll - visually instant. `cover` on a 16px element instead
+   spans roughly a viewport height, so the slice below is ~18% of the
+   viewport: a real, readable arrival.
+
+   The range ends at `cover 38%`, i.e. with the marker about two thirds of
+   the way down the viewport. Ending later (the first attempt used
+   `cover 47%`) left entries fully legible next to a marker that had not
+   arrived yet, which reads as a missing bullet rather than a pending
+   one. */
+.timeline-marker {
+  opacity: 1;
+  scale: 1;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .timeline-marker {
+      animation: timeline-marker-in linear both;
+      animation-timeline: view();
+      animation-range: cover 20% cover 38%;
+    }
+  }
+}
+
+@keyframes timeline-marker-in {
+  from {
+    opacity: 0;
+    scale: 0.25;
+  }
+  to {
     opacity: 1;
+    scale: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   4. SCROLL PROGRESS - the nav hairline
+   A 1px accent rule along the bottom edge of the fixed nav, scaled by
+   document scroll progress via `scroll(root block)`. It reports position
+   in the record, which is the same job the active-section underline
+   does - so it is a state indicator, and stays inside DESIGN.md's
+   One-Accent Rule rather than being decoration in accent clothing.
+
+   It runs along the TOP edge of the bar, not the bottom: the bottom is
+   already occupied by the active-section underline (the nav links sit
+   centred in an `h-16` bar with their underline at `-bottom-[21px]`, which
+   lands on the same pixel row as the nav's own bottom border). Stacking
+   the two there made them read as one line that could not decide how wide
+   it was.
+
+   Not gated behind `prefers-reduced-motion`. It moves only, and exactly,
+   as far as the user scrolls - it is a readout of an input the user is
+   already making, in the same category as the scrollbar itself, and
+   nothing about it moves on its own. It is gated behind `@supports`, and
+   simply does not render where scroll timelines are unavailable, which
+   is acceptable for a positional hint.
+   --------------------------------------------------------------------- */
+.scroll-progress {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  transform-origin: left;
+  background-color: var(--color-accent);
+  scale: 0 1;
+}
+
+.dark .scroll-progress {
+  background-color: var(--color-accent-muted);
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress-grow linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes scroll-progress-grow {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   5. THE TECH MARQUEE
+   Was a client component running a lerp loop: a `setState` per animation
+   frame re-rendering 39 spans, plus an effect that tore down and rebuilt
+   the rAF loop on every scroll delta. It is now a plain server component
+   with no JS at all, and the strip's horizontal travel is a function of
+   the strip's own scroll position.
+
+   Travel is deliberately short (11% of a track that repeats its word set
+   three times, so roughly a third of one set). That keeps the apparent
+   speed close to the old handler's 0.35px-per-scrolled-px, and it means
+   the strip never translates far enough to expose its own end - no seam
+   to hide, no wrap to get wrong.
+   --------------------------------------------------------------------- */
+.marquee-track {
+  translate: 0;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .marquee-track {
+      animation: marquee-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@keyframes marquee-drift {
+  from {
+    translate: 0;
+  }
+  to {
+    translate: -11%;
+  }
+}
+
+/* The strip is a full-bleed band of small caps; without this its words
+   would terminate in a hard vertical cut at both viewport edges. The mask
+   fades the last 4rem to transparent so the row reads as continuing past
+   the frame rather than being clipped by it. */
+.marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 4rem,
+    #000 calc(100% - 4rem),
+    transparent 100%
+  );
+}
+
+/* ---------------------------------------------------------------------
+   6. NAV UNDERLINE
+   The active-section underline is rendered only for the active item, so
+   it used to appear instantly at its new position when the section
+   changed - a blink, not a transition. It now draws in from the left over
+   200ms. Time-based rather than scroll-based, because the thing being
+   acknowledged is a discrete state change, not scroll distance.
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .nav-underline {
+    animation: nav-underline-in var(--duration-state)
+      var(--ease-out-quart) both;
+  }
+}
+
+@keyframes nav-underline-in {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   7. HERO - the one load-time entrance
+   Hero is fully in view at scroll 0, so its `view()` range is already
+   past before the user can act: a scroll-triggered entrance is
+   structurally impossible here. It gets an authored load sequence
+   instead - the only place in the build allowed the full 700ms.
+
+   Four steps, 90ms apart, in reading order: portrait, name, lead
+   paragraph, actions. Total 970ms to the last element settling, which
+   `ease-out-expo` makes feel considerably shorter than it measures -
+   the curve puts each element within a few pixels of its resting place
+   inside the first 200ms.
+
+   Unlike everything above this is NOT gated on `@supports`, because
+   keyframes and `animation-delay` are universally supported. It IS gated
+   on reduced motion, where all four steps resolve to plain visible text.
+   --------------------------------------------------------------------- */
+/* Indexed classes rather than `> :nth-child(n)`, because the four steps do
+   not live at the same depth: the portrait and the name share a flex row
+   on desktop. A nesting-based selector would mean nesting two animated
+   containers, whose `translate` values would compound and send the name
+   travelling twice as far as everything else. Only leaf elements carry a
+   step, so nothing ever compounds. */
+.hero-step {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-step {
+    animation: hero-enter-in var(--duration-entrance) var(--ease-out-expo)
+      both;
+  }
+
+  .hero-step-2 {
+    animation-delay: 90ms;
+  }
+
+  .hero-step-3 {
+    animation-delay: 180ms;
+  }
+
+  .hero-step-4 {
+    animation-delay: 270ms;
+  }
+}
+
+@keyframes hero-enter-in {
+  from {
+    opacity: 0;
+    translate: 0 1.25rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   8. LINK ARROW
+   Several links end in a literal arrow ("Kontakt aufnehmen ->", "Details
+   ansehen", the contact rows). Nudging it on hover is the smallest change
+   that makes the affordance unmistakable, and it is the one motion in the
+   build that repeats across sections on purpose - it is grammar for
+   "this goes somewhere", not an effect.
+
+   Also fires on `:focus-visible`, so a keyboard user gets the same
+   acknowledgment a pointer user does.
+   --------------------------------------------------------------------- */
+.link-arrow {
+  display: inline-block;
+  transition: translate var(--duration-feedback) var(--ease-out-quart);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .group:hover .link-arrow,
+  .group:focus-visible .link-arrow,
+  a:hover > .link-arrow,
+  a:focus-visible > .link-arrow {
+    translate: 0.25rem 0;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   9. REDUCED-MOTION FLOOR
+   Belt and braces. Every rule above already sits inside a
+   `prefers-reduced-motion: no-preference` query, so none of them exist
+   here - but if a future edit forgets that wrapper, these reset the
+   animated elements to their finished state rather than leaving content
+   stuck at `opacity: 0`.
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll,
+  .reveal-stagger > *,
+  .hero-step,
+  .timeline-marker {
+    opacity: 1;
+    translate: none;
+    scale: 1;
+    animation: none;
+  }
+
+  .timeline-fill {
+    scale: 1 1;
+    animation: none;
+  }
+
+  .marquee-track {
+    translate: 0;
     animation: none;
   }
 }

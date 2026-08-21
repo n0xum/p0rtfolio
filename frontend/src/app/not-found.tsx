@@ -29,7 +29,7 @@ export default function NotFound() {
           {/* Message */}
           <div className="space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold">
-              404 &ndash; Seite nicht gefunden
+              404: Seite nicht gefunden
             </h1>
             <p className="text-lg text-secondary dark:text-zinc-400 max-w-md">
               Die gesuchte Seite existiert nicht oder wurde verschoben.
@@ -40,7 +40,7 @@ export default function NotFound() {
           <div className="pt-4">
             <Link
               href="/"
-              className="inline-flex px-6 py-3 border-2 border-primary dark:border-zinc-50 text-primary dark:text-zinc-50 hover:bg-primary dark:hover:bg-zinc-50 hover:text-background dark:hover:text-zinc-950 transition-all duration-300 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="inline-flex px-6 py-3 border-2 border-primary dark:border-zinc-50 text-primary dark:text-zinc-50 hover:bg-primary dark:hover:bg-zinc-50 hover:text-background dark:hover:text-zinc-950 transition-colors duration-150 ease-out-quart text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               Zurück zur Startseite
             </Link>

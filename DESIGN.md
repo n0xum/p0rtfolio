@@ -52,6 +52,13 @@ typography:
     fontFamily: "Monaco, Courier New, monospace"
     fontSize: "0.875rem (text-sm)"
     fontFeature: "tabular-nums on the Werdegang date column only"
+motion:
+  ease-out-expo: "cubic-bezier(0.16, 1, 0.3, 1) — arrivals: entrances, the drawer"
+  ease-out-quart: "cubic-bezier(0.25, 1, 0.5, 1) — feedback and state"
+  duration-feedback: "150ms (hover, focus, colour change)"
+  duration-state: "200ms (discrete state change, nav underline)"
+  duration-overlay: "300ms (mobile drawer)"
+  duration-entrance: "700ms (the Hero load sequence only)"
 rounded:
   none: "0px (default on section text and most links/buttons)"
   sm: "4px (rounded, used on the mobile menu close icon, code copy button)"
@@ -262,9 +269,10 @@ Unchanged this wave — outlined-to-filled primary CTA, text-link as the default
 - **Existing ad-hoc rings left alone:** `ThemeToggle`, the `Dialog` close button, and the error-page retry button already carry their own `focus-visible:ring-2 focus-visible:ring-accent`, which now automatically resolves to the new teal accent; the baseline rule explicitly excludes elements with that class so they don't double up.
 - **Verified:** ≥5.6:1 against every one of the four page backgrounds (background/surface light, zinc-950/zinc-900 dark) — far above the 3:1 non-text floor.
 
-### Reveal-on-Scroll Utility (adopted by all five homepage sections)
-- **Class:** `.reveal-on-scroll` in `globals.css`.
-- **Usage note:** Apply directly to the element each homepage section currently toggles between `opacity-0 translate-y-4` and `opacity-100 translate-y-0` via its own `IntersectionObserver` + `useState` (Hero, About, Work, Experience, Contact). Once applied, delete the observer, the `isVisible` state, and the conditional className — the utility owns the full lifecycle in CSS. It is visible (`opacity: 1`) by default in every case: no JS, no `animation-timeline: view()` browser support, and `prefers-reduced-motion: reduce` all resolve to that plain rule. Only when both the browser supports scroll-driven animations *and* the user has not requested reduced motion does it additionally animate in via `animation-timeline: view()` (opacity + a 1rem `translate`, gated behind `@supports` and `@media (prefers-reduced-motion: no-preference)`).
+### Reveal Utilities
+- **Classes:** `.reveal-on-scroll` (a block reveals as one plane) and `.reveal-stagger` (direct children walk in one at a time) in `globals.css`.
+- Both are visible (`opacity: 1`) by default in every case: no JS, no `animation-timeline: view()` support, and `prefers-reduced-motion: reduce` all resolve to that plain rule. The animation exists only inside `@supports (animation-timeline: view())` *and* `@media (prefers-reduced-motion: no-preference)`.
+- `.reveal-on-scroll` is no longer wrapped around whole sections — see Motion below for which sections use which.
 
 ### Chips (tech tags)
 Unchanged in style (`text-xs`, `px-2 py-1`, `border border-border`, no fill); the contrast defect they were carrying (`secondary` on `surface`/`background`) is fixed via the `secondary` token retune above, not a chip-specific change.
@@ -273,10 +281,55 @@ Unchanged in style (`text-xs`, `px-2 py-1`, `border border-border`, no fill); th
 Unchanged this wave.
 
 ### Navigation
-Unchanged this wave, now benefiting from the baseline focus ring on the nav links that previously had none.
+- Active-section tracking is an `IntersectionObserver` with `rootMargin: '-10% 0px -89% 0px'` (a probe band ~10% down the viewport), **not** a scroll listener. The previous implementation called `getBoundingClientRect()` on all five sections inside a `requestAnimationFrame` on every scrolled frame; do not reintroduce that shape.
+- The active-item underline carries `.nav-underline` + `origin-left` and draws in over 200ms rather than appearing at its new position.
+- The bar is `bg-background/90 dark:bg-zinc-950/90` + `backdrop-blur-sm` (8px). It was `/80` + `backdrop-blur-md` (12px) **plus a duplicate inline `backdropFilter: blur(12px)`**. A fixed bar's backdrop-filter is re-blurred every frame the content beneath it moves; the more opaque ground buys the same legibility for less per-frame work.
+- A 1px accent `.scroll-progress` rule runs along the **top** edge of the bar. Not the bottom — that pixel row is already the active-section underline's.
 
 ### Modal (Dialog)
 Unchanged this wave; its own focus-visible ring on the close button already used `accent`, which now resolves to the new teal.
+
+## Motion
+
+Motion in this build is **scroll-linked, not time-linked**, and it runs on
+CSS scroll timelines rather than JavaScript. That is a performance decision
+before it is an aesthetic one: the page previously drove two effects from
+the main thread during scroll — a `setState` inside a `requestAnimationFrame`
+loop re-rendering the 39 marquee spans (whose effect also tore itself down
+and re-subscribed on every scroll delta), and the nav's five
+`getBoundingClientRect()` calls per frame. Measured over the hero/marquee
+region, a three-second scroll drove **207 JavaScript DOM writes before and
+20 after** (0.81 → 0.08 per frame), and the 20 that remain are the nav's
+active-section changes, which now fire only on a boundary crossing. The
+forced layout from the `getBoundingClientRect()` calls is gone entirely and
+is not counted in those numbers.
+
+### The Focal Moment
+**The Werdegang timeline draws itself.** The Werdegang is the only
+inherently chronological section on the site, and PRODUCT.md frames the
+whole thing as a professional *record* — so the record writes itself as you
+read down it. One continuous rail (`.timeline-rail`) owned by the entry
+container, with an accent fill (`.timeline-fill`) scaled from the top by
+scroll progress (`view()`, `cover 15% → 72%`), and per-entry markers
+(`.timeline-marker`) that arrive as their entry becomes readable
+(`cover 20% → 38%`). Before this, each entry carried its own `border-l-2`,
+so the "timeline" was four disconnected segments with 48px gaps.
+
+This is the **one** authored sequence on the page. Everything else is quiet
+support.
+
+### Supporting motion
+- **Hero** (`.hero-step`, `.hero-step-2..4`): the single load-time entrance, four steps 90ms apart in reading order — portrait, name, lead, actions — at `--duration-entrance` on `--ease-out-expo`. Hero is fully in view at scroll 0, so a scroll-triggered reveal could never fire for it; it is the one place allowed 700ms. Steps are indexed classes, not `> :nth-child(n)`, because the four elements sit at different depths and nesting two animated containers would compound their `translate`.
+- **Section reveals:** `.reveal-on-scroll` for a block, `.reveal-stagger` for siblings. Sibling stagger is expressed as offset `animation-range` values (scroll-driven animations ignore `animation-delay`), **capped at four steps** so a long list never accumulates into a visible wait.
+- **Scroll progress** (`.scroll-progress`): a 1px accent rule on the nav's top edge, driven by `scroll(root block)`. Deliberately *not* gated on reduced motion — it moves only, and exactly, as far as the user scrolls, which is the same category as the scrollbar itself.
+- **Marquee** (`.marquee-track` + `.marquee-mask`): the tech strip drifts 11% of its (3×-repeated) track across its own `cover` range, so it never travels far enough to expose its own end. `ScrollTextCarousel` is now a **server component** — no `'use client'`, no state, no listener, no rAF loop.
+- **Link arrow** (`.link-arrow`): a 0.25rem nudge on hover *and* `:focus-visible`. The one motion that repeats across sections on purpose — it is grammar for "this goes somewhere".
+
+### Rules
+1. **Visible by default.** Every animated element's base rule is its finished state; the animation only ever exists inside `@supports` + `prefers-reduced-motion: no-preference`. Verified: cancelling every animation on the page leaves all 31 animated elements at `opacity: 1` with no offset.
+2. **Compositor properties only** — `opacity`, `translate`, `scale`. Never width/height/top/left.
+3. **Ranges, not delays**, for anything scroll-driven.
+4. **Exit faster than entrance**; no bounce or elastic curves — they would be the loudest thing on a page committed to flat restraint.
 
 ## Do's and Don'ts
 
@@ -284,7 +337,8 @@ Unchanged this wave; its own focus-visible ring on the close button already used
 - **Do** keep the accent teal (`#0c6e66` / `#59a69a`) confined to interactive states (links, hover, focus, active nav indicator) — it does not appear as a fill or section color anywhere in the build.
 - **Do** keep homepage sections on the shared `max-w-3xl` column with `py-32`/`lg:py-40` vertical rhythm and `px-6`/`md:px-12` horizontal rhythm — untouched and confirmed the strongest layout invariant in the build.
 - **Do** treat text-links as the default CTA pattern; the bordered outline-to-fill button exists as a single accent for the Hero's primary action, not a general button system.
-- **Do** use `.reveal-on-scroll` for any new scroll-triggered entrance instead of a fresh `IntersectionObserver` — it is CSS-only, visible-by-default, and already handles no-JS/no-support/reduced-motion.
+- **Do** use `.reveal-on-scroll` / `.reveal-stagger` for any new scroll-triggered entrance instead of a fresh `IntersectionObserver` — they are CSS-only, visible-by-default, and already handle no-JS/no-support/reduced-motion.
+- **Do** reach for `--ease-out-quart` + `--duration-feedback` for hover and focus, and `--ease-out-expo` for anything that arrives from elsewhere. Tailwind emits both as `ease-out-quart` / `ease-out-expo` utilities.
 - **Do** rely on `:focus-visible` for new interactive elements rather than adding another one-off `focus-visible:ring-*` — the baseline rule already covers anything that doesn't declare its own ring.
 
 ### Don't:
@@ -293,3 +347,5 @@ Unchanged this wave; its own focus-visible ring on the close button already used
 - **Don't** darken `border`/`zinc-800`/`zinc-700` to chase a 3:1 UI-component ratio without also deciding to redesign the whole hairline-divider visual language — treat the current values as a deliberate, documented trade-off, not an oversight, except for the flagged `ReadmeDropdown` toggle boundary.
 - **Don't** add a second self-hosted family. IBM Plex Sans at two weights covers every role (`font-medium`/`font-semibold` resolve via standard CSS weight-matching, not a third file) — introducing a display/editorial face would contradict PRODUCT.md's backend-engineer-not-design-agency positioning.
 - **Don't** add card-style shadows or background-tinted surfaces to inline content — the build's depth model is flat-plus-hairline-border everywhere except the two modal/overlay surfaces.
+- **Don't** drive scroll-linked motion from JavaScript. No scroll listener that writes to the DOM, no `requestAnimationFrame` lerp, no `getBoundingClientRect()` per frame, and no smooth-scroll library — macOS trackpads already carry momentum easing, and layering JS easing on top of it adds latency on exactly the hardware this site is most often read on. Use a CSS scroll timeline.
+- **Don't** give a second section an authored focal sequence. The Werdegang timeline is the one; adding a rival dilutes it into "every section animates", which is the pattern this pass removed.
