@@ -3,47 +3,55 @@ name: Alexander Kruska Portfolio
 description: Minimalist German-language professional portfolio for a backend-leaning software engineer.
 colors:
   primary: "#1a1a1a"
-  secondary: "#737373"
-  accent: "#2563eb"
-  accent-muted: "#60a5fa"
+  secondary: "#666666"
+  accent: "#0c6e66"
+  accent-muted: "#57a99c"
   background: "#fafafa"
   surface: "#f5f5f5"
   border: "#e5e7eb"
-  dark-background: "#0a0a0a"
+  focus-ring: "#0c6e66"
+  dark-background: "zinc-950 (#09090b)"
   dark-surface: "zinc-900 (#18181b)"
   dark-border: "zinc-800 (#27272a)"
   dark-text: "zinc-50 (#fafafa)"
   dark-text-muted: "zinc-400 (#a1a1aa)"
+  dark-text-muted-alt: "zinc-500 (#8a8a8a)"
+  dark-focus-ring: "#57a99c"
 typography:
   display:
-    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
-    fontSize: "3rem (text-5xl), 4.5rem at md (text-7xl)"
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    fontSize: "3.052rem (text-5xl), 4.768rem at md (text-7xl)"
     fontWeight: 700
-    lineHeight: "tight (leading-tight)"
+    lineHeight: 1
     letterSpacing: "tight (tracking-tight)"
   headline:
-    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.875rem (text-3xl), 2.25rem at md (text-4xl)"
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    fontSize: "1.953rem (text-3xl), 2.441rem at md (text-4xl)"
     fontWeight: 700
-    lineHeight: "tight/normal"
+    lineHeight: "2.35rem / 2.75rem"
+  title:
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    fontSize: "1.25rem (text-xl), 1.563rem (text-2xl)"
+    fontWeight: 700
   eyebrow-label:
-    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
     fontSize: "0.875rem (text-sm)"
     fontWeight: 400
     letterSpacing: "wide (tracking-wider)"
     fontFeature: "uppercase"
   body:
-    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
     fontSize: "1rem (text-base), 1.125rem (text-lg) for lead paragraphs"
     fontWeight: 400
-    lineHeight: "1.6 (body default) / relaxed (leading-relaxed) on prose paragraphs"
+    lineHeight: "1.6 (body default) / relaxed (leading-relaxed, 1.625) on prose paragraphs"
   label:
-    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
     fontSize: "0.75rem (text-xs) to 0.875rem (text-sm)"
     fontWeight: 500
   code:
     fontFamily: "Monaco, Courier New, monospace"
     fontSize: "0.875rem (text-sm)"
+    fontFeature: "tabular-nums on the Werdegang date column only"
 rounded:
   none: "0px (default on section text and most links/buttons)"
   sm: "4px (rounded, used on the mobile menu close icon, code copy button)"
@@ -56,6 +64,7 @@ spacing:
   stack-sm: "8px (space-y-2)"
   stack-md: "16px (space-y-4)"
   stack-lg: "32px (space-y-8)"
+  measure: "70ch cap on paragraph-length text blocks without their own max-w-* utility"
 components:
   button-outline-primary:
     backgroundColor: "transparent"
@@ -75,122 +84,134 @@ components:
 
 ## Overview
 
-This is a single-page, section-scrolling personal portfolio (Hero, About, Work, Experience, Contact) plus three GitHub-README-backed project detail pages. The visual system is **unstyled-by-intent minimalism**: a near-black-on-off-white palette, one blue accent used sparingly for links and hover states, no imagery beyond a single profile photo, no illustration, no gradients, and almost no shadows. The layout leans entirely on typographic scale, generous vertical whitespace, and thin hairline borders to create hierarchy — there is no card-with-shadow or colored-surface vocabulary anywhere in the build.
+This is a single-page, section-scrolling personal portfolio (Hero, About, Work, Experience, Contact) plus three GitHub-README-backed project detail pages. The visual system is **unstyled-by-intent minimalism**: a near-black-on-off-white palette, one deep-teal accent used sparingly for links and hover states, no imagery beyond a single profile photo, no illustration, no gradients, and almost no shadows. The layout leans entirely on typographic scale, generous vertical whitespace, and thin hairline borders to create hierarchy — there is no card-with-shadow or colored-surface vocabulary anywhere in the build. This wave closed the two gaps that made the site read as an untouched framework starter (an unstyled system font and Tailwind's default blue-600 accent) without touching the layout, spacing rhythm, or component behavior that were already working.
 
-Dark mode is a first-class, persisted feature (class-based `dark:` Tailwind variants, toggled via `ThemeToggle.tsx` and an inline pre-hydration `<script>` in `layout.tsx` that reads `localStorage` / `prefers-color-scheme` before paint to avoid a flash). In dark mode the system does not reuse the light-mode custom tokens (`primary`, `background`, `surface`, `border`) — it switches to raw Tailwind `zinc-*` scale values instead (`zinc-950`, `zinc-900`, `zinc-800`, `zinc-400`, `zinc-50`). This is a real, observed seam in the token system, not a stylistic choice: the project effectively runs two parallel palettes (custom hex tokens for light, Tailwind zinc scale for dark) rather than one token set with light/dark values.
+Dark mode is a first-class, persisted feature (class-based `dark:` Tailwind variants via `@custom-variant dark`, toggled via `ThemeToggle.tsx` and an inline pre-hydration `<script>` in `layout.tsx` that reads `localStorage` / `prefers-color-scheme` before paint to avoid a flash). Dark mode still expresses itself through the Tailwind `zinc-*` scale at every component call site rather than the light-mode custom token names — that didn't change this wave, because doing so would mean editing every component's `dark:` class list, which was out of scope. What changed is that the zinc-* scale itself is no longer an *implicit* inherited Tailwind default: every stop the app actually uses (50 through 950) is now pinned explicitly in `@theme`, in the same block as the light-mode tokens, as a single declared source of truth — and the one real drift bug (a hardcoded `.dark body { background-color: #0a0a0a }` that had quietly diverged from the `zinc-950` value, `#09090b`, every component actually renders via `dark:bg-zinc-950`) has been removed. `zinc-500` was also retuned (`#71717a` → `#8a8a8a`) because it was failing WCAG AA as real content (the Werdegang category label).
 
-The font stack is `system-ui` with OS-native fallbacks — there is no webfont, no `next/font`, and no custom typeface anywhere in the build. This is the Tailwind/Next.js scaffold default left in place, not a chosen typographic identity.
+The font stack is now **IBM Plex Sans**, self-hosted via `next/font/google` and loaded through a CSS variable next/font injects on `<html>` (`--font-ibm-plex-sans`), replacing the bare `system-ui` stack. It carries exactly two static weights (400, 700); Tailwind's `font-medium` (500) and `font-semibold` (600) utilities used throughout the app resolve to the nearest loaded weight via standard CSS font-weight matching (500→400, 600→700) rather than triggering a third file download. A real modular scale (1.25 ratio, "major third") now drives every `text-lg` through `text-7xl` utility via `@theme` overrides, replacing the arbitrary stock Tailwind steps the previous DESIGN.md documented as an unexamined default.
 
 **Key Characteristics:**
-- Two-tone-plus-one-accent palette: near-black text, off-white background, single blue accent used only on links/hover/active states.
+- Two-tone-plus-one-accent palette: near-black text, off-white background, single deep-teal accent used only on links/hover/active states and the focus ring.
+- One self-hosted typeface (IBM Plex Sans, two weights) carrying a deliberate 1.25-ratio modular scale, replacing the unstyled `system-ui` default.
 - No card surfaces, no drop shadows on content (only `shadow-lg` on the two overlay/dialog surfaces — mobile menu drawer and modal dialog).
-- Hairline borders (`1px`, `border-border` / `dark:border-zinc-800`) are the primary structural device — they divide skill categories, project entries, contact rows, and section footers.
-- Large, generous section rhythm: ~128–160px of vertical padding per full-height section, with a `max-w-3xl` (48rem) content column.
-- System font stack, no webfont — an inherited default, not a decision.
+- Hairline borders (`1px`, `border-border` / `dark:border-zinc-800`) remain the primary structural device — unchanged this wave; see Do's and Don'ts for the honest contrast caveat on this token.
+- Large, generous section rhythm: ~128–160px of vertical padding per full-height section, with a `max-w-3xl` (48rem) content column — untouched, confirmed still the strongest layout invariant in the build.
+- A token-driven `:focus-visible` outline now reaches every interactive element that previously had none, and a CSS-only `.reveal-on-scroll` utility exists for the next wave to adopt in place of the five per-section `IntersectionObserver` hooks.
 
 ## Colors
 
-The palette is a restrained two-tone system (near-black text / off-white surface) with a single blue accent, defined as flat hex custom properties in `tailwind.config.ts`.
+The palette is a restrained two-tone system (near-black text / off-white surface) with a single deep-teal accent, defined as CSS custom properties in a Tailwind v4 `@theme` block in `globals.css` (this wave migrated off `tailwind.config.ts`, which no longer exists).
 
 ### Primary
-- **Near-Black** (`#1a1a1a`, token `primary`): default body/heading text color in light mode; also the fill color of the outlined primary CTA on hover.
+- **Near-Black** (`#1a1a1a`, token `primary`): default body/heading text color in light mode; also the fill color of the outlined primary CTA on hover. Unchanged this wave (16.67:1 on background, 15.96:1 on surface — far above AA).
 
 ### Secondary
-- **Neutral Gray** (`#737373`, token `secondary`): all muted/supporting text — subtitles, descriptions, eyebrow labels, timestamps, nav links in their inactive state.
+- **Neutral Gray** (`#666666`, token `secondary`): all muted/supporting text — subtitles, descriptions, eyebrow labels, timestamps, nav links in their inactive state, and the tech-tag chips. **Retuned this wave** from `#737373` (Tailwind `neutral-500` verbatim), which measured 4.35:1 on `surface` and 4.54:1 on `background` — the tech-chip failure the accessibility audit flagged (axe reported it as a serious violation, 7 nodes on the home page, at 4.3:1). The new value clears both pairs with margin: 5.50:1 on background, 5.27:1 on surface.
 
 ### Tertiary
-- **Subtle Blue** (`#2563eb`, token `accent`) — this is Tailwind's stock `blue-600` value, unmodified. Used for hover states on nav links, the "Details ansehen" project links, the code-icon accent in `CodeSnippet`, focus rings, and text selection background.
-- **Muted Blue** (`#60a5fa`, token `accent-muted`) — Tailwind's stock `blue-400`, unmodified. Serves as the accent's dark-mode hover counterpart throughout (`dark:hover:text-accent-muted`).
+- **Deep Teal** (`#0c6e66`, token `accent`) — replaces Tailwind's stock `blue-600` (`#2563eb`), which the previous DESIGN.md correctly identified as unmodified. Used for hover states on nav links, the "Details ansehen" project links, the code-icon accent in `CodeSnippet`, the focus-ring token, and text selection background. Chosen deliberately away from the generic blue-link convention while staying calm and legible rather than decorative — a fit for the backend-engineer-at-an-enterprise-IT-consultancy positioning in PRODUCT.md rather than a marketing accent. 5.85:1 on background, 5.60:1 on surface.
+- **Muted Teal** (`#57a99c`, token `accent-muted`) — dark-mode counterpart, replacing stock `blue-400`. Same hue family as `accent`, lightened for dark surfaces. 7.16:1 on zinc-950, 6.38:1 on zinc-900.
 
 ### Neutral
-- **Off-White** (`#fafafa`, token `background`): page background in light mode; also `body`'s literal background-color in `globals.css` (duplicated as both a Tailwind token and a hardcoded value).
-- **Light Surface** (`#f5f5f5`, token `surface`): reserved for card/dropdown surfaces — used narrowly (e.g. `ThemeToggle` hover background, active mobile nav item background).
-- **Border Gray** (`#e5e7eb`, token `border`): all hairline dividers and outline strokes in light mode.
-- **Dark Background** (`#0a0a0a`, `zinc-950`): page background in dark mode. Not a custom token — the build applies raw `dark:bg-zinc-950` rather than a `dark-background` entry in `tailwind.config.ts`.
-- **Dark Text** (`zinc-50` / `zinc-400`): dark-mode primary/secondary text, again via raw Tailwind zinc scale rather than dedicated dark tokens.
+- **Off-White** (`#fafafa`, token `background`): page background in light mode. Unchanged.
+- **Light Surface** (`#f5f5f5`, token `surface`): reserved for card/dropdown surfaces. Unchanged.
+- **Border Gray** (`#e5e7eb`, token `border`): all hairline dividers and outline strokes in light mode. Unchanged; see the Named Rule below for its honest contrast status.
+- **Dark Background** (`zinc-950`, `#09090b`): page background in dark mode, applied via `dark:bg-zinc-950` directly on `<body>` in `layout.tsx`. This wave removed a hardcoded `.dark body { background-color: #0a0a0a }` in `globals.css` that had drifted from this exact value — one token, one place, now.
+- **Dark Text** (`zinc-50` `#fafafa` / `zinc-400` `#a1a1aa`): dark-mode primary/secondary text. Unchanged and already passing AA (19.06:1 / 7.76:1 against zinc-950).
+- **Dark Text, Retuned** (`zinc-500`, `#8a8a8a`): the Werdegang category eyebrow's dark-mode color. **Retuned this wave** from stock `zinc-500` (`#71717a`), which measured 4.12:1 on zinc-950 and 3.67:1 on zinc-900 — a real AA failure as body-size text. New value: 5.7:1 / 5.1:1.
+- **Focus Ring** (`#0c6e66` light / `#57a99c` dark, token `focus-ring`): see Components → Focus Ring below.
 
 ### Named Rules
-**The One-Accent Rule.** Blue (`accent` / `accent-muted`) appears only on interactive elements — links, hover states, active nav indicators, focus rings, code accents. It never appears as a background fill, a section header color, or a decorative element.
+**The One-Accent Rule.** The accent (`accent` / `accent-muted`) appears only on interactive elements — links, hover states, active nav indicators, focus rings, code accents. It never appears as a background fill, a section header color, or a decorative element. Unchanged this wave; only the hue moved.
 
-**The Custom-Token-Light / Zinc-Scale-Dark Rule (observed, not prescriptive).** Light mode consistently uses the seven custom hex tokens (`primary`, `secondary`, `accent`, `accent-muted`, `background`, `surface`, `border`). Dark mode never reuses those tokens — every `dark:` variant reaches for the raw Tailwind `zinc-*` scale instead. This is a structural inconsistency in the current token system, recorded here as a fact of the build, not endorsed as a pattern to extend.
+**The Explicit Dark-Scale Rule (reconciled this wave).** Dark mode still expresses itself through Tailwind's `zinc-*` utility classes at every component call site — that could not change without editing every component. What changed: every zinc stop the app depends on (`50` through `950`) is now pinned explicitly inside the same `@theme` block as the light-mode tokens, rather than being an implicit inherited default, and the one place light and dark values had actually drifted apart (the hardcoded dark body background) has been closed. Two vocabularies (custom hex tokens vs. `zinc-*` utility names) still exist in component markup; one declared, contrast-verified value set now backs both.
+
+**The Border-Contrast Caveat (documented, not fixed).** `border` (`#e5e7eb`) measures 1.19:1 against `background`, and `zinc-800`/`zinc-700` measure 1.34:1/1.91:1 against the dark backgrounds — all well under the 3:1 UI-component floor. These are treated as decorative content separators (WCAG 1.4.11 exempts graphical objects not required to identify a component or understand content), consistent with this build's established "Border-Not-Shadow Rule" below, and darkening them to 3:1 would be a visible redesign of the entire hairline-divider language, not a contrast fix — out of scope for a wave told to preserve layout. One real exception was identified and is **not yet resolved**: the `ReadmeDropdown` disclosure toggle's outer border plausibly is an interactive-component boundary and should be strengthened; flagged for `pf-a11y-harden` in wave 3a, since closing it well requires a component edit.
 
 ## Typography
 
-**Body Font:** system-ui (with `-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif`) — **this is an inherited Tailwind/Next.js default with no webfont loaded**, not a typographic decision. No `next/font` usage exists anywhere in the codebase.
-**Label/Mono Font:** Monaco (with `Courier New, monospace`) — used for the code snippet block and contact email/handle values; also an unmodified stock fallback stack.
+**Display/Body Font:** IBM Plex Sans (with `system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif` as fallback) — self-hosted via `next/font/google`, two static weights (400, 700). **This is a deliberate typographic decision, not an inherited default.**
+**Label/Mono Font:** Monaco (with `Courier New, monospace`) — unchanged; the code snippet block and contact email/handle values.
 
-**Character:** A single system sans stack carries every text role; hierarchy comes entirely from size, weight, and letter-spacing (uppercase tracked labels vs. large bold headlines), not from font pairing.
+**Character:** A single, purpose-built engineering/enterprise sans (IBM's own corporate typeface family) carries every text role. It was chosen specifically *against* an editorial or agency-style display face: PRODUCT.md positions this site as a backend-leaning engineer's professional record for German/DACH peers at an enterprise IT consultancy (Lufthansa Industry Solutions), not a design studio's showcase — IBM Plex Sans reads as calm, technical, and legible rather than expressive, needs only two weights to cover every role the components already use, is self-hostable under `output: 'export'` (verified: font files land in `out/_next/static/media/`, referenced via relative-path `@font-face` rules in the built CSS, no runtime request to Google), and its digits are tabular by construction (every glyph 0–9 measured at an identical 600-unit advance width via `fontTools` — there's no separate proportional/tabular toggle to get wrong).
 
 ### Hierarchy
-- **Display** (bold/700, `text-5xl` → `md:text-7xl`, `leading-tight`): Hero name/greeting only — the single largest text on the site.
-- **Headline** (bold/700, `text-3xl` → `md:text-4xl`): Section titles ("Meine Expertise", "Ausgewählte Arbeiten", "Lass uns zusammenarbeiten", About's lead line).
-- **Title** (bold/700, `text-xl` / `text-2xl`): Project card titles, dialog titles, code-snippet heading.
-- **Body** (regular/400, `text-base`–`text-lg`, `leading-relaxed`): Paragraph copy in About, Contact intro, markdown-rendered README body text. `text-lg` used specifically for lead paragraphs.
-- **Label** (`text-sm`, `tracking-wider`, uppercase): Section eyebrows ("Über mich", "Kontakt", "Technologien"), nav links, contact-link labels, tech-tag chips (`text-xs` variant for the smallest tags).
+- **Display** (bold/700, `text-5xl` 3.052rem → `md:text-7xl` 4.768rem, `leading-tight`, tight line-height 1): Hero name/greeting only — the single largest text on the site.
+- **Headline** (bold/700, `text-3xl` 1.953rem → `md:text-4xl` 2.441rem, line-height 2.35rem/2.75rem): Section titles ("Meine Expertise", "Ausgewählte Arbeiten", "Lass uns zusammenarbeiten", About's lead line).
+- **Title** (bold/700, `text-xl` 1.25rem / `text-2xl` 1.563rem): Project card titles, dialog titles, code-snippet heading.
+- **Body** (regular/400, `text-base` 1rem–`text-lg` 1.125rem, `leading-relaxed` 1.625): Paragraph copy in About, Contact intro, markdown-rendered README body text. Capped to a **70ch measure** this wave (see Layout) — the audit's detector had measured 85–96 characters per line.
+- **Label** (`text-xs` 0.75rem–`text-sm` 0.875rem, `tracking-wider`, uppercase): Section eyebrows ("Über mich", "Kontakt", "Technologien"), nav links, contact-link labels, tech-tag chips. Kept at their existing sizes — a ratio scale has diminishing value below body size, and these were never the ad-hoc part of the ladder.
 
 ### Named Rules
-**The Uppercase-Eyebrow Rule.** Every section is introduced by a `text-sm uppercase tracking-wider` label in the secondary/muted color before its bold headline — this pairing (`text-sm uppercase tracking-wider` → `text-3xl md:text-4xl font-bold`) repeats identically across About, Work, and Contact.
+**The Uppercase-Eyebrow Rule.** Every section is introduced by a `text-sm uppercase tracking-wider` label in the secondary/muted color before its bold headline — this pairing repeats identically across About, Work, and Contact. Unchanged.
+
+**The Modular-Scale Rule (new this wave).** Every `text-lg` through `text-7xl` step is `1rem × 1.25^n` for a fixed integer `n` (`lg`≈`n=0.5`, `xl`=`n=1`, …, `7xl`=`n=7`), declared once in `@theme` and inherited by every component that already used these utility names — replacing the arbitrary, undocumented jumps the previous DESIGN.md flagged (`text-5xl`→`text-7xl`, `text-3xl`→`text-4xl` with no stated ratio). `xs`/`sm` (label-role sizes) are deliberately left at their original values.
+
+**The Tabular Werdegang Rule.** `#experience .font-mono` (the Werdegang period column, e.g. "seit 06.2026", "08.2023 – 06.2026") carries `font-variant-numeric: tabular-nums` explicitly, scoped to that column only — defensive, since IBM Plex Sans's digits are already uniform-width by construction, but it keeps the guarantee explicit rather than incidental if the font ever changes.
 
 ## Layout
 
-Single-column, section-scrolling layout. Each major section (`Hero`, `About`, `Work`, `Experience`, `Contact`) is `min-h-screen` with a centered `max-w-3xl` (48rem) content column — this is the dominant content-width discipline across the whole site. The project detail route (`/projects/[slug]`) instead uses `max-w-4xl`, a wider column suited to rendered README/markdown content.
+Single-column, section-scrolling layout. Each major section (`Hero`, `About`, `Work`, `Experience`, `Contact`) is `min-h-screen` with a centered `max-w-3xl` (48rem) content column — this remains the dominant content-width discipline across the whole site, untouched this wave. The project detail route (`/projects/[slug]`) instead uses `max-w-4xl`.
 
-Section vertical padding follows a two-step rhythm: `py-32` (128px) as the base, stepping up to `lg:py-40` (160px) at large breakpoints — applied identically on About, Work, Experience, and Contact. Horizontal padding is `px-6` (24px) at mobile, `md:px-12` (48px) from the `md` breakpoint up, also applied identically across sections. The fixed top navigation is a `max-w-6xl`, `h-16` (64px) bar with `backdrop-blur-md` / `bg-background/80` translucency over content scrolling beneath it.
+Section vertical padding follows the same two-step rhythm as before: `py-32` (128px) base, `lg:py-40` (160px) at large breakpoints, `px-6`/`md:px-12` horizontal. Internal spacing (`space-y-2/4/8`) is unchanged. **Confirmed, not redesigned** — this wave's brief was explicit that the rhythm is fine.
 
-Internal spacing follows Tailwind's default scale used consistently but without a documented custom step system: `space-y-2` (8px) for tight lists, `space-y-4` (16px) for stacked items, `space-y-8` (32px) between project entries. No custom `spacing` scale is defined in `tailwind.config.ts` — every value observed is a stock Tailwind spacing step used by convention, not a project-defined token.
+**New this wave — measure.** Any `<p>` or `<li>` carrying Tailwind's `leading-relaxed` utility and *not already* constrained by its own `max-w-*` class is capped to `max-width: 70ch` (About's and the project detail page's lead paragraphs, every Markdown-rendered README paragraph). Hero's intro paragraph already carries an explicit `max-w-2xl` narrower than 70ch at its larger type size and was left alone.
 
-Responsive breakpoints are Tailwind defaults (`md:`, `lg:`) with no custom breakpoint configuration.
-
-### Named Rules
-**The Max-Width-3XL Rule.** All five homepage sections share one `max-w-3xl` reading column, centered with `w-full`. Only the project detail template widens to `max-w-4xl` to accommodate longer-form markdown.
+**New this wave — anchor scroll offset.** `html { scroll-padding-top: 5rem; }` — the fixed nav is `h-16` (64px); in-page anchors (`#about`, `#work`, …) previously landed their target heading underneath it.
 
 ## Elevation & Depth
 
-The system is flat by default. There is no shadow vocabulary for content — sections, cards, project rows, and skill lists all sit at the same visual plane, separated only by hairline borders (`border-border` / `dark:border-zinc-800`) or whitespace, never by shadow or background-color layering. `shadow-lg` appears in exactly two places: the mobile navigation drawer and the modal `Dialog` panel — both are overlay surfaces that need to visually detach from the page, which is the only context shadows are used in.
+Unchanged this wave. The system is flat by default; `shadow-lg` appears only on the mobile navigation drawer and the modal `Dialog` panel.
 
 ### Shadow Vocabulary
-- **Overlay shadow** (`box-shadow` via Tailwind `shadow-lg`): used only on the mobile nav drawer and the Impressum/Rechtliches `Dialog` panel, to lift a surface that sits above a scrim.
+- **Overlay shadow** (`box-shadow` via Tailwind `shadow-lg`): used only on the mobile nav drawer and the Impressum/Rechtliches `Dialog` panel.
 
 ### Named Rules
-**The Border-Not-Shadow Rule.** Depth and separation within the page flow (between skill categories, between project entries, between the contact list and the footer) is conveyed by a single hairline border, never a shadow or a tonal surface change. Shadows are reserved exclusively for the two modal/overlay surfaces.
+**The Border-Not-Shadow Rule.** Depth and separation within the page flow is conveyed by a single hairline border, never a shadow or a tonal surface change. Unchanged.
 
 ## Shapes
 
-The form language is almost entirely square. `borderRadius` is not customized in `tailwind.config.ts` — every rounded corner observed is a stock Tailwind step (`rounded` = 4px, `rounded-lg` = 8px), and most interactive elements (the primary CTA button, nav links, project rows, dialog panel) are unrounded rectangles or plain text with no radius at all. The two rounded exceptions are: `rounded-full` on the circular profile photo and the mobile hamburger bars, and `rounded`/`rounded-lg` on small isolated UI chrome — the code block container, the copy button, and the theme-toggle hit area. Borders are consistently `1px` hairlines in the neutral border color, with one `2px` exception on the primary Hero CTA (`border-2`) and the profile photo ring (`border-2`).
+Unchanged this wave. Square by default; `rounded-full` on the profile photo and mobile hamburger bars; `rounded`/`rounded-lg` on small isolated UI chrome.
 
 ## Components
 
 ### Buttons
-- **Shape:** square corners (no radius) on the sole primary CTA; the error-page retry button repeats the same treatment.
-- **Primary:** outlined, not filled — `border-2 border-primary`, transparent background, `px-6 py-3`, `text-sm font-medium`. On hover it inverts to a filled block (`hover:bg-primary hover:text-background`), transitioning over `duration-300`.
-- **Ghost/link-style:** most calls to action on the site (Contact links, "Details ansehen", nav links) are plain text with `transition-colors` and an accent-color or underline hover — there is no secondary filled-button variant anywhere in the build; text-link is the default interactive pattern.
+Unchanged this wave — outlined-to-filled primary CTA, text-link as the default interactive pattern everywhere else.
+
+### Focus Ring (new this wave)
+- **Token:** `--color-focus-ring` (`#0c6e66` light / `#57a99c` dark, swapped via a `.dark` override), declared in `@theme` so it also emits ordinary Tailwind utilities (`outline-focus-ring`, `ring-focus-ring`, `border-focus-ring`, …).
+- **Baseline rule:** `:focus-visible:not([class*='focus-visible:ring']) { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; border-radius: 2px; }` in `globals.css`, applying to every focusable element that previously had no focus style (nav links, the Hero CTA, "Details ansehen" links, Contact links/footer, mobile menu — roughly fifteen elements).
+- **Existing ad-hoc rings left alone:** `ThemeToggle`, the `Dialog` close button, and the error-page retry button already carry their own `focus-visible:ring-2 focus-visible:ring-accent`, which now automatically resolves to the new teal accent; the baseline rule explicitly excludes elements with that class so they don't double up.
+- **Verified:** ≥5.6:1 against every one of the four page backgrounds (background/surface light, zinc-950/zinc-900 dark) — far above the 3:1 non-text floor.
+
+### Reveal-on-Scroll Utility (new this wave, not yet adopted by components)
+- **Class:** `.reveal-on-scroll` in `globals.css`.
+- **Usage note:** Apply directly to the element each homepage section currently toggles between `opacity-0 translate-y-4` and `opacity-100 translate-y-0` via its own `IntersectionObserver` + `useState` (Hero, About, Work, Experience, Contact). Once applied, delete the observer, the `isVisible` state, and the conditional className — the utility owns the full lifecycle in CSS. It is visible (`opacity: 1`) by default in every case: no JS, no `animation-timeline: view()` browser support, and `prefers-reduced-motion: reduce` all resolve to that plain rule. Only when both the browser supports scroll-driven animations *and* the user has not requested reduced motion does it additionally animate in via `animation-timeline: view()` (opacity + a 1rem `translate`, gated behind `@supports` and `@media (prefers-reduced-motion: no-preference)`).
 
 ### Chips (tech tags)
-- **Style:** `text-xs`, `px-2 py-1`, `border border-border` (hairline, no fill), muted secondary text color. No background fill, no rounded corners — a bordered label, not a pill.
+Unchanged in style (`text-xs`, `px-2 py-1`, `border border-border`, no fill); the contrast defect they were carrying (`secondary` on `surface`/`background`) is fixed via the `secondary` token retune above, not a chip-specific change.
 
 ### Cards / Containers
-- **Corner Style:** square (no radius) except the modal dialog and code block, which use no radius and `rounded-lg` respectively — inconsistent, not a deliberate card system.
-- **Background:** project rows and skill groups have no background fill; they sit directly on the page background and are separated by a bottom hairline border (`border-b border-border`, `pb-8`, `last:border-b-0`).
-- **Shadow Strategy:** none on inline content cards (see Elevation & Depth); shadow only applies to the true overlay containers (Dialog, mobile drawer).
-- **Border:** `1px border-border` / `dark:border-zinc-800` bottom border only (not full perimeter) on project rows and skill category headers.
-- **Internal Padding:** project rows use `pb-8`; the Dialog content area uses `p-6`.
+Unchanged this wave.
 
 ### Navigation
-- Fixed top bar, `h-16`, translucent `bg-background/80` with `backdrop-blur-md`, bottom hairline border. Desktop links are `text-sm`, with the active section marked by primary-color text plus a `1px` underline bar positioned via absolute offset (not a background pill). Inactive links are secondary-color with a color transition on hover. Mobile collapses to a hamburger icon (three `w-6 h-0.5` bars that rotate into an X) opening a right-side `w-64` drawer with `shadow-lg` and a left `border-l-2` active-state indicator.
+Unchanged this wave, now benefiting from the baseline focus ring on the nav links that previously had none.
 
 ### Modal (Dialog)
-- Square-cornered panel (`max-w-2xl`, `border border-border`, `shadow-lg`) over a `bg-black/50` scrim with `backdrop-filter: blur(4px)`. Focus is trapped and moved to the first focusable element on open; Escape closes it. Used for the two German legal-disclosure surfaces (Impressum, Rechtliches) reached from the Contact footer — required content, not optional chrome.
+Unchanged this wave; its own focus-visible ring on the close button already used `accent`, which now resolves to the new teal.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep the accent blue (`#2563eb` / `#60a5fa`) confined to interactive states (links, hover, focus, active nav indicator) — it does not appear as a fill or section color anywhere in the build.
-- **Do** use hairline `1px` borders (`border-border` / `dark:border-zinc-800`) as the default separator between content blocks; reserve `shadow-lg` for true overlay surfaces (modal, mobile drawer) only.
-- **Do** keep homepage sections on the shared `max-w-3xl` column with `py-32`/`lg:py-40` vertical rhythm and `px-6`/`md:px-12` horizontal rhythm — this pairing repeats identically across About, Work, Experience, and Contact and is the strongest layout invariant in the build.
+- **Do** keep the accent teal (`#0c6e66` / `#57a99c`) confined to interactive states (links, hover, focus, active nav indicator) — it does not appear as a fill or section color anywhere in the build.
+- **Do** keep homepage sections on the shared `max-w-3xl` column with `py-32`/`lg:py-40` vertical rhythm and `px-6`/`md:px-12` horizontal rhythm — untouched and confirmed the strongest layout invariant in the build.
 - **Do** treat text-links as the default CTA pattern; the bordered outline-to-fill button exists as a single accent for the Hero's primary action, not a general button system.
+- **Do** use `.reveal-on-scroll` for any new scroll-triggered entrance instead of a fresh `IntersectionObserver` — it is CSS-only, visible-by-default, and already handles no-JS/no-support/reduced-motion.
+- **Do** rely on `:focus-visible` for new interactive elements rather than adding another one-off `focus-visible:ring-*` — the baseline rule already covers anything that doesn't declare its own ring.
 
 ### Don't:
-- **Don't** assume dark mode inherits the light-mode custom tokens (`primary`, `background`, `surface`, `border`) — as built, every `dark:` variant reaches for raw `zinc-*` values instead. Treat this split as a recorded fact to reconcile deliberately, not a pattern to keep extending.
-- **Don't** read the system-ui font stack or the unmodified `blue-600`/`blue-400` accent hexes as intentional brand choices — they are untouched framework defaults with no webfont, no custom typeface, and no accent-hue exploration behind them.
-- **Don't** add card-style shadows or background-tinted surfaces to inline content (project rows, skill groups, contact rows) — the build's depth model is flat-plus-hairline-border everywhere except the two modal/overlay surfaces.
-- **Don't** treat `focus-visible` rings as a site-wide guarantee. They exist on `ThemeToggle`, the `Dialog` close button, and the error-page retry button, but are absent from the primary nav links, the Hero CTA, the "Details ansehen" project links, and the Contact links/footer buttons — a real accessibility gap given PRODUCT.md's stated WCAG 2.1 bar, not a pattern to replicate elsewhere.
+- **Don't** read `secondary`/`zinc-500` as still being Tailwind's stock `neutral-500`/`zinc-500` — both were deliberately retuned this wave to clear WCAG AA as real content; treat the new hexes in the frontmatter as canonical.
+- **Don't** assume dark mode's `zinc-*` utility usage will be replaced by the light-mode custom token names without a dedicated component-editing pass — that seam is documented and contrast-verified, not eliminated, this wave.
+- **Don't** darken `border`/`zinc-800`/`zinc-700` to chase a 3:1 UI-component ratio without also deciding to redesign the whole hairline-divider visual language — treat the current values as a deliberate, documented trade-off, not an oversight, except for the flagged `ReadmeDropdown` toggle boundary.
+- **Don't** add a second self-hosted family. IBM Plex Sans at two weights covers every role (`font-medium`/`font-semibold` resolve via standard CSS weight-matching, not a third file) — introducing a display/editorial face would contradict PRODUCT.md's backend-engineer-not-design-agency positioning.
+- **Don't** add card-style shadows or background-tinted surfaces to inline content — the build's depth model is flat-plus-hairline-border everywhere except the two modal/overlay surfaces.

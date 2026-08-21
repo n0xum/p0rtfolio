@@ -1,127 +1,341 @@
-/* Syntax Highlighting for Code Blocks - MUST be first */
-@import 'highlight.js/styles/github.css';
+/* Syntax Highlighting for Code Blocks - MUST be first.
+   Only project detail pages render Markdown/code, but this is a single
+   global stylesheet and every component in this app is a Client Component
+   (see DESIGN.md), so there is no per-route CSS entry point a component
+   could import a scoped stylesheet from without editing that component.
+   Scoping this import would require either (a) a component-level CSS
+   module import (out of scope: this agent does not edit src/components or
+   src/app files other than this stylesheet), or (b) duplicating the ~28KB
+   ruleset behind a runtime condition, which is strictly worse. Left global
+   and unscoped; the cost (~28KB of highlight.js CSS shipped on every page)
+   is judged smaller than the complexity/permission cost of scoping it. */
+@import 'highlight.js/styles/github.css' layer(base);
 
-/* Override with dark theme when dark mode is active */
-.dark .hljs {
-  background: #18181b !important;
-  color: #e4e4e7 !important;
+@import 'tailwindcss';
+
+/* Tailwind v4 dropped darkMode: 'class' from tailwind.config.ts as a JS
+   config key; this is its CSS-first equivalent. `.dark` is toggled on
+   <html> by the pre-hydration script in layout.tsx (untouched by this
+   file) before first paint, so every existing `dark:` utility across the
+   208 call sites in src/components and src/app keeps resolving exactly as
+   it did under Tailwind v3 - verified by building and diffing the
+   generated CSS for `dark:text-zinc-400`, `dark:bg-zinc-950`, etc. against
+   the pre-migration output. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* ---------------------------------------------------------------------
+     COLOR TOKENS
+     Light-mode custom tokens + the dark-mode zinc-* scale the codebase
+     already depends on, declared together in one place. Components can't
+     be edited this wave, so `dark:bg-zinc-950` etc. must keep resolving
+     unchanged - the fix for the "two parallel palettes" seam DESIGN.md
+     documented is to stop treating the zinc-* stops as an *implicit*
+     inherited default and pin them here, explicitly, as first-class
+     project tokens living in the same block as the light tokens. Most
+     values are kept at Tailwind's stock zinc hex (no reason to change a
+     value that already passes contrast and that changing would be a
+     cosmetic-only redesign); `zinc-500` is deliberately retuned below
+     because it was failing AA as real content (see report/DESIGN.md).
+     --------------------------------------------------------------------- */
+  --color-primary: #1a1a1a;
+  --color-secondary: #666666; /* was #737373 (Tailwind neutral-500 verbatim); on
+                                  --color-surface it measured 4.35:1, below the
+                                  4.5:1 AA floor for body text - this is the
+                                  tech-tag-chip defect the audit measured at
+                                  4.3:1. New value clears both background
+                                  pairs with margin (see report). */
+  --color-accent: #0c6e66; /* deliberately not Tailwind blue-600 (#2563eb). A
+                               deep, desaturated teal: distinct from the
+                               generic SaaS/agency blue-link convention, still
+                               reads as calm and professional rather than
+                               decorative, and clears 4.5:1 against both
+                               light backgrounds (see report). */
+  --color-accent-muted: #59a69a; /* dark-mode counterpart of --color-accent
+                                     (was blue-400 #60a5fa verbatim); same hue
+                                     family, lightened for dark surfaces, and
+                                     desaturated just enough to stay clear of
+                                     the neon-cyan-on-dark "AI slop" palette
+                                     tell (RGB chroma 77, under the 80
+                                     threshold) while still clearing 6:1+
+                                     contrast against both dark backgrounds. */
+  --color-background: #fafafa;
+  --color-surface: #f5f5f5;
+  --color-border: #e5e7eb;
+
+  /* Focus-ring token (mandate 3). Declared as a --color-* token so it also
+     ships as ordinary Tailwind utilities (`outline-focus-ring`,
+     `ring-focus-ring`, `border-focus-ring`, ...) for pf-a11y-harden to
+     reference explicitly in wave 3a instead of inventing its own color.
+     The actual light/dark *value* swap happens below via a plain
+     `.dark { }` override (see far below), since this custom property is
+     just a normal CSS variable underneath `@theme`. */
+  --color-focus-ring: #0c6e66;
+
+  /* Explicit zinc scale actually referenced by dark: utilities in the
+     codebase (verified via `grep -rohE "zinc-[0-9]+" src`). All Tailwind
+     stock values except zinc-500, which is retuned for contrast. */
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #8a8a8a; /* was #71717a (stock zinc-500): only 4.12:1 on
+                                 zinc-950 / 3.67:1 on zinc-900 as the
+                                 Werdegang category eyebrow's dark-mode
+                                 color - failed AA. New value clears 4.5:1
+                                 against both (see report). */
+  --color-zinc-600: #52525b;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b; /* single source of truth for the dark-mode page
+                                 background. The old hardcoded `.dark body
+                                 { background-color: #0a0a0a }` below this
+                                 block (now removed) had drifted from this
+                                 exact value - components already apply
+                                 `dark:bg-zinc-950` directly via
+                                 layout.tsx's <body> className, so that
+                                 hardcoded duplicate was dead weight and a
+                                 second, slightly-wrong source of truth. */
+
+  /* -------------------------------------------------------------------
+     TYPOGRAPHY
+     One self-hosted typeface (IBM Plex Sans, loaded via next/font/google
+     in layout.tsx - see LAYOUT PATCH in the handoff report) replaces the
+     unstyled system-ui stack. `--font-sans` resolves the CSS variable
+     next/font injects on <html>, with the previous system stack kept as
+     the fallback chain for the (rare, static-export) case that variable
+     isn't present. Mono stays the existing system stack: this project
+     gets exactly one self-hosted family, not two.
+     ------------------------------------------------------------------- */
+  --font-sans:
+    var(--font-ibm-plex-sans), system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
+  --font-mono: Monaco, 'Courier New', monospace;
+
+  /* Real modular scale (ratio 1.25, "major third") replacing the ad-hoc
+     text-* ladder DESIGN.md documented. xs/sm (label-role sizes) are kept
+     at their existing values - they're already sensibly sized for
+     14px-and-under UI labels and a scale ratio has diminishing value at
+     that end. From `lg` up, every step is base(1rem) * 1.25^n, so the
+     Title -> Headline -> Display hierarchy is one deliberate geometric
+     progression instead of Tailwind's stock arbitrary jumps. */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.6;
+  --text-lg: 1.125rem; /* ~= base * 1.25^0.5, geometric half-step to xl */
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem; /* base * 1.25^1 */
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.563rem; /* base * 1.25^2 */
+  --text-2xl--line-height: 2.05rem;
+  --text-3xl: 1.953rem; /* base * 1.25^3 */
+  --text-3xl--line-height: 2.35rem;
+  --text-4xl: 2.441rem; /* base * 1.25^4 */
+  --text-4xl--line-height: 2.75rem;
+  --text-5xl: 3.052rem; /* base * 1.25^5 */
+  --text-5xl--line-height: 1;
+  --text-6xl: 3.815rem; /* base * 1.25^6 */
+  --text-6xl--line-height: 1;
+  --text-7xl: 4.768rem; /* base * 1.25^7 */
+  --text-7xl--line-height: 1;
+
+  --animate-fade-in: fadeIn 0.6s ease-in-out;
+  --animate-slide-up: slideUp 0.6s ease-out;
+  --animate-shimmer: shimmer 2.5s ease-in-out 0.5s;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes slideUp {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
 }
 
-.dark .hljs-comment,
-.dark .hljs-quote {
-  color: #71717a !important;
+/* Dark-mode value for the focus-ring token (see --color-focus-ring above).
+   A plain CSS custom property, so a later `.dark` rule can swap its
+   runtime value without touching the @theme block or any component. */
+.dark {
+  --color-focus-ring: #59a69a;
 }
 
-.dark .hljs-keyword,
-.dark .hljs-selector-tag,
-.dark .hljs-addition {
-  color: #fb7185 !important;
-}
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
 
-.dark .hljs-number,
-.dark .hljs-string,
-.dark .hljs-meta .hljs-string,
-.dark .hljs-literal,
-.dark .hljs-doctag,
-.dark .hljs-regexp {
-  color: #86efac !important;
-}
-
-.dark .hljs-title,
-.dark .hljs-section,
-.dark .hljs-name,
-.dark .hljs-selector-id,
-.dark .hljs-selector-class {
-  color: #60a5fa !important;
-}
-
-.dark .hljs-attribute,
-.dark .hljs-attr,
-.dark .hljs-variable,
-.dark .hljs-template-variable,
-.dark .hljs-class .hljs-title,
-.dark .hljs-type {
-  color: #fbbf24 !important;
-}
-
-.dark .hljs-symbol,
-.dark .hljs-bullet,
-.dark .hljs-subst,
-.dark .hljs-meta,
-.dark .hljs-meta .hljs-keyword,
-.dark .hljs-selector-attr,
-.dark .hljs-selector-pseudo,
-.dark .hljs-link {
-  color: #c084fc !important;
-}
-
-.dark .hljs-built_in,
-.dark .hljs-deletion {
-  color: #f87171 !important;
-}
-
-.dark .hljs-formula {
-  background: #27272a !important;
-}
-
-.dark .hljs-emphasis {
-  font-style: italic;
-}
-
-.dark .hljs-strong {
-  font-weight: bold;
-}
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Respect prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
   *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@layer base {
+  .dark .hljs {
+    background: #18181b !important;
+    color: #e4e4e7 !important;
+  }
+
+  .dark .hljs-comment,
+  .dark .hljs-quote {
+    color: #71717a !important;
+  }
+
+  .dark .hljs-keyword,
+  .dark .hljs-selector-tag,
+  .dark .hljs-addition {
+    color: #fb7185 !important;
+  }
+
+  .dark .hljs-number,
+  .dark .hljs-string,
+  .dark .hljs-meta .hljs-string,
+  .dark .hljs-literal,
+  .dark .hljs-doctag,
+  .dark .hljs-regexp {
+    color: #86efac !important;
+  }
+
+  .dark .hljs-title,
+  .dark .hljs-section,
+  .dark .hljs-name,
+  .dark .hljs-selector-id,
+  .dark .hljs-selector-class {
+    color: #60a5fa !important;
+  }
+
+  .dark .hljs-attribute,
+  .dark .hljs-attr,
+  .dark .hljs-variable,
+  .dark .hljs-template-variable,
+  .dark .hljs-class .hljs-title,
+  .dark .hljs-type {
+    color: #fbbf24 !important;
+  }
+
+  .dark .hljs-symbol,
+  .dark .hljs-bullet,
+  .dark .hljs-subst,
+  .dark .hljs-meta,
+  .dark .hljs-meta .hljs-keyword,
+  .dark .hljs-selector-attr,
+  .dark .hljs-selector-pseudo,
+  .dark .hljs-link {
+    color: #c084fc !important;
+  }
+
+  .dark .hljs-built_in,
+  .dark .hljs-deletion {
+    color: #f87171 !important;
+  }
+
+  .dark .hljs-formula {
+    background: #27272a !important;
+  }
+
+  .dark .hljs-emphasis {
+    font-style: italic;
+  }
+
+  .dark .hljs-strong {
+    font-weight: bold;
+  }
+}
+
+/* Gate-review fix: this used to also carry a custom
+   `* { margin: 0; padding: 0; box-sizing: border-box; }` reset inside
+   `@layer utilities`. Tailwind v4's own Preflight already sets exactly
+   that (`*,:after,:before,::backdrop{box-sizing:border-box;border:0
+   solid;margin:0;padding:0}`) inside `@layer base`, where the fixed
+   layer order (base < utilities, always, regardless of source position)
+   correctly lets every `space-*`/`p-*`/`m-*` utility outrank it. Ours was
+   a duplicate of that same reset, but placed in `@layer utilities`
+   instead - so it competed at the *same* priority as Tailwind's own
+   utilities instead of losing to them, and won by coming later in that
+   layer's source order (both `*` and v4's `:where(...)`-wrapped utility
+   selectors are specificity 0, so source order decided it). That silently
+   zeroed out every `space-x-*`/`space-y-*` container's margins (26 call
+   sites: the nav, the Werdegang timeline, About, Contact, project
+   headers, the mobile menu). Removed - Preflight already does this job,
+   correctly ordered. The remaining rules below are genuine additions (not
+   Preflight duplicates), moved into `@layer base` so they stay correctly
+   ordered under utilities too, on principle, even though none of them
+   were observed to conflict. */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Respect prefers-reduced-motion.
+     This used to also force `transition-duration: 0.01ms !important` on
+     every element, which - being unqualified - also killed ordinary
+     color/background hover feedback and the theme toggle's transition,
+     not just motion. Keyframe animations (the shimmer sweep, this file's
+     scroll-reveal utility below) are still collapsed to effectively zero,
+     but plain transitions (hover states, focus, the light/dark toggle) are
+     left alone: they're brief, non-spatial color changes, not the kind of
+     motion prefers-reduced-motion exists to suppress. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
 body {
-  background-color: #fafafa;
-  color: #1a1a1a;
   overflow-x: hidden;
-  line-height: 1.6;
-}
-
-/* Dark mode body */
-.dark body {
-  background-color: #0a0a0a;
-  color: #fafafa;
 }
 
 /* Selection */
 ::selection {
-  background-color: #2563eb;
+  background-color: var(--color-accent);
   color: #ffffff;
 }
 
 .dark ::selection {
-  background-color: #60a5fa;
-  color: #0a0a0a;
+  background-color: var(--color-accent-muted);
+  color: var(--color-zinc-950);
 }
 
 /* Custom scrollbar - minimal */
@@ -134,7 +348,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e5e7eb;
+  background: var(--color-border);
   border-radius: 4px;
 }
 
@@ -143,16 +357,105 @@ body {
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: var(--color-zinc-800);
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: var(--color-zinc-700);
 }
 
-/* Utility classes */
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* ---------------------------------------------------------------------
+   Anchor targets land under the fixed nav (h-16 / 4rem) without this.
+   No scroll-margin-top/scroll-padding-top existed anywhere before.
+   --------------------------------------------------------------------- */
+html {
+  scroll-padding-top: 5rem;
+}
+
+/* ---------------------------------------------------------------------
+   FOCUS RING (mandate 3)
+   Token-driven via --color-focus-ring (declared in @theme above, swapped
+   per-theme by the `.dark` rule above that). Applies to every focusable
+   element EXCEPT the three that already carry their own
+   `focus-visible:ring-*` utility (ThemeToggle, Dialog's close button,
+   error.tsx's retry button) - those already render a visible,
+   accent-colored ring; this rule intentionally doesn't double up on top
+   of them. Every other focusable element (nav links, the Hero CTA,
+   "Details ansehen" links, Contact links/footer, mobile menu, etc. -
+   roughly fifteen elements with no focus style at all before this) gets
+   this outline. Written unlayered (outside any @layer) so it always wins
+   the cascade over Tailwind's layered `focus:outline-none` utilities
+   without a specificity fight.
+   --------------------------------------------------------------------- */
+:focus-visible:not([class*='focus-visible:ring']) {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   MEASURE
+   The detector found body paragraphs running 85-96 characters per line -
+   `leading-relaxed` (Tailwind's relaxed line-height, used on every
+   paragraph-length block in the app) stretching to its container's full
+   max-w-3xl/max-w-4xl width with no measure cap of its own. Capped to
+   ~70ch, but only on elements that don't already carry their own
+   max-w-* utility (Hero's intro paragraph already sets max-w-2xl
+   deliberately narrower than 70ch would be at its larger text size, and
+   is left alone). Unlayered for the same cascade-priority reason as the
+   focus ring above.
+   --------------------------------------------------------------------- */
+:is(p, li).leading-relaxed:not([class*='max-w-']) {
+  max-width: 70ch;
+}
+
+/* ---------------------------------------------------------------------
+   TABULAR NUMBERS
+   Scoped to the Werdegang ("Erfahrung" / #experience) date column so its
+   period strings (e.g. "seit 06.2026", "08.2023 - 06.2026") stop
+   jittering against each other as they wrap/reflow.
+   --------------------------------------------------------------------- */
+#experience .font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------
+   CSS-ONLY SCROLL REVEAL (mandate 4)
+   See the handoff report for the full usage note for pf-a11y-harden.
+   Visible by default in every case: no-JS, no browser support for
+   scroll-driven animations, and prefers-reduced-motion all resolve to the
+   plain `opacity: 1` rule below. The animation only activates as a
+   progressive enhancement, gated by both an @supports feature check and a
+   prefers-reduced-motion check.
+   --------------------------------------------------------------------- */
+.reveal-on-scroll {
+  opacity: 1;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-on-scroll {
+      animation: reveal-on-scroll-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+  }
+}
+
+@keyframes reveal-on-scroll-in {
+  from {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    animation: none;
   }
 }
