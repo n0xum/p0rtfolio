@@ -7,10 +7,10 @@ export default function Experience() {
       category: 'Berufserfahrung',
       description: 'Backend-Entwicklung in Projekten der Lufthansa Group mit Fokus auf robuste Services, klare Architektur und moderne Schnittstellen.',
       highlights: [
-        'Mitarbeit in einem Aviation-Großprojekt auf einem bestehenden Backend-Stack aus C#, gRPC und Protocol Buffers – laufende Einarbeitung in Sprache und Stack',
-        'REST-API in Go mit sqlc und PostgreSQL für einen datenschutzkritischen Abgleich personenbezogener Daten – DSGVO-Anforderungen an Datensparsamkeit von der Datenmodellierung an berücksichtigt',
+        'Mitarbeit in einem Aviation-Großprojekt mit einem bestehenden Backend-Stack aus C#, gRPC und Protocol Buffers. Die Einarbeitung in Sprache und Technologien läuft.',
+        'REST-API in Go mit sqlc und PostgreSQL für einen datenschutzkritischen Abgleich personenbezogener Daten. DSGVO-Anforderungen an Datensparsamkeit wurden von der Datenmodellierung an berücksichtigt.',
         'Migrations-CLI in Go ab dem Projekt-Kickoff: liest CSV-Exporte von einem SFTP-Server ein, transformiert sie und überträgt sie kommandozeilengesteuert als JSON in ein neues zentrales Zielsystem',
-        'CO2-Bilanz-Dashboard, das Mitarbeitenden den eigenen Fußabdruck aus Pendelverkehr, Dienstreisen und IT-Emissionen (z. B. Cloud-Nutzung) sichtbar macht – REST-Backend mit Java und Spring Boot, Frontend mit React'
+        'CO2-Bilanz-Dashboard, das Mitarbeitenden den eigenen Fußabdruck aus Pendelverkehr, Dienstreisen und IT-Emissionen (z. B. Cloud-Nutzung) sichtbar macht. Das REST-Backend entstand mit Java und Spring Boot, das Frontend mit React.'
       ]
     },
     {
@@ -58,11 +58,32 @@ export default function Experience() {
           <h3 className="text-3xl md:text-4xl font-bold mb-12">
             Werdegang
           </h3>
+        </div>
+
+        {/* The focal moment.
+            Each entry used to carry its own `border-l-2`, so the timeline
+            was not actually a line - it was four disconnected segments with
+            48px gaps between them wherever `space-y-12` fell. It is now one
+            continuous rail owned by this container, with an accent-coloured
+            fill scaled from the top by scroll progress, so the record
+            writes itself as you read down it. Each marker snaps in as it
+            arrives. Both are CSS scroll timelines - see `.timeline-rail`,
+            `.timeline-fill` and `.timeline-marker` in globals.css. */}
+        <div className="relative">
+          <span className="timeline-rail" aria-hidden="true" />
+          <span className="timeline-fill" aria-hidden="true" />
 
           <div className="space-y-12">
             {experiences.map((exp, index) => (
-              <div key={index} className="relative pl-8 border-l-2 border-border dark:border-zinc-800">
-                <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-primary dark:bg-zinc-50 border-4 border-white dark:border-zinc-950" />
+              <div key={index} className="reveal-on-scroll relative pl-8">
+                {/* -7px centres a 16px marker on the 2px rail at x=0. The
+                    ring was `border-white`, which is not a token this build
+                    declares and sat 1.5% off the actual `#fafafa` page
+                    ground it was meant to punch through. */}
+                <span
+                  className="timeline-marker absolute -left-[7px] top-1.5 w-4 h-4 rounded-full bg-primary dark:bg-zinc-50 border-4 border-background dark:border-zinc-950"
+                  aria-hidden="true"
+                />
 
                 <div className="space-y-4">
                   <div>
@@ -99,10 +120,11 @@ export default function Experience() {
               </div>
             ))}
           </div>
+        </div>
 
-          <div className="mt-16 p-8 border border-border dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900/20">
-            <h4 className="font-bold mb-6">Technologien & Methoden</h4>
-            <div className="grid md:grid-cols-2 gap-x-8 gap-y-6">
+        <div className="reveal-on-scroll mt-16 p-8 border border-border dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900/20">
+          <h4 className="font-bold mb-6">Technologien & Methoden</h4>
+          <div className="grid md:grid-cols-2 gap-x-8 gap-y-6">
               <div>
                 <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
                   Sprachen
@@ -151,7 +173,6 @@ export default function Experience() {
                   Scrum, Jira, Confluence, ADRs
                 </p>
               </div>
-            </div>
           </div>
         </div>
       </div>

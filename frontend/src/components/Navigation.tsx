@@ -13,31 +13,41 @@ export default function Navigation() {
   const menuRef = useRef<HTMLDivElement>(null);
   const previousOverflowRef = useRef('');
 
-  // Throttled scroll handler for better performance
+  // Active-section tracking.
+  //
+  // This was a scroll listener that, inside a rAF, called
+  // `getBoundingClientRect()` on all five sections - five forced layout
+  // flushes on the main thread for every scrolled frame, whether or not
+  // the active section had actually changed. That is one of the two
+  // measured causes of the trackpad-scroll jank this pass fixes.
+  //
+  // IntersectionObserver computes the same answer in the browser's own
+  // intersection pass and only calls back when a boundary is actually
+  // crossed - so scrolling *within* a section costs nothing at all.
+  //
+  // The rootMargin collapses the viewport to a thin band ~10% down from
+  // the top, which is the observer equivalent of the old
+  // `rect.top <= 100 && rect.bottom >= 100` probe line. The five sections
+  // are contiguous and each is at least `min-h-screen`, so exactly one of
+  // them occupies that band at any scroll position.
   useEffect(() => {
-    let ticking = false;
+    const sections = ['home', 'about', 'work', 'experience', 'contact']
+      .map(id => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const sections = ['home', 'about', 'work', 'experience', 'contact'];
-          const current = sections.find(section => {
-            const element = document.getElementById(section);
-            if (element) {
-              const rect = element.getBoundingClientRect();
-              return rect.top <= 100 && rect.bottom >= 100;
-            }
-            return false;
-          });
-          if (current) setActiveSection(current);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
+    if (sections.length === 0) return;
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const observer = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        }
+      },
+      { rootMargin: '-10% 0px -89% 0px', threshold: 0 }
+    );
+
+    sections.forEach(section => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   // Body scroll lock (save/restore instead of clobbering with 'unset'),
@@ -108,21 +118,30 @@ export default function Navigation() {
   };
 
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50 bg-background/80 dark:bg-zinc-950/90 backdrop-blur-md border-b border-border dark:border-zinc-800"
-      style={{
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)', // iOS Safari support
-      }}
-    >
+    // The inline `backdropFilter: blur(12px)` that used to sit here was an
+    // exact duplicate of the `backdrop-blur-md` class beside it (Tailwind
+    // emits the -webkit- prefix itself), so it bought nothing and forced a
+    // style attribute onto a fixed element.
+    //
+    // The radius is also down from 12px to 8px, with the ground raised
+    // from /80 to /90. A backdrop-filter on a fixed bar has to re-blur its
+    // region on every frame the content beneath it moves - i.e. the entire
+    // time you are scrolling - and that cost scales with the radius. A
+    // more opaque ground carries the same legibility for less work, and
+    // reads flatter, which is the language DESIGN.md commits to anyway.
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-border dark:border-zinc-800">
+      {/* Reading progress through the page. Pure CSS: a scaleX driven by a
+          `scroll(root block)` timeline, so it costs the main thread
+          nothing. See `.scroll-progress` in globals.css. */}
+      <div className="scroll-progress" aria-hidden="true" />
 
       <div className="max-w-6xl mx-auto px-6 md:px-12">
         <div className="flex justify-between items-center h-16">
           <a
             href="#home"
-            className="text-lg font-medium tracking-tight hover:text-accent dark:hover:text-accent-muted transition-colors"
+            className="text-lg font-medium tracking-tight hover:text-accent dark:hover:text-accent-muted transition-colors duration-150 ease-out-quart"
             onClick={handleNavClick}
-            aria-label="Portfolio – zurück zur Startseite"
+            aria-label="Portfolio, zurück zur Startseite"
           >
             Portfolio
           </a>
@@ -135,7 +154,7 @@ export default function Navigation() {
                   <a
                     href={`#${item.id}`}
                     aria-current={activeSection === item.id ? 'page' : undefined}
-                    className={`text-sm transition-colors relative ${
+                    className={`text-sm transition-colors duration-150 ease-out-quart relative ${
                       activeSection === item.id
                         ? 'text-primary dark:text-zinc-50 font-medium'
                         : 'text-secondary dark:text-zinc-400 hover:text-primary dark:hover:text-zinc-50'
@@ -143,7 +162,7 @@ export default function Navigation() {
                   >
                     {item.label}
                     {activeSection === item.id && (
-                      <span className="absolute -bottom-[21px] left-0 w-full h-[1px] bg-primary dark:bg-zinc-50" />
+                      <span className="nav-underline absolute -bottom-[21px] left-0 w-full h-[1px] origin-left bg-primary dark:bg-zinc-50" />
                     )}
                   </a>
                 </li>
@@ -164,17 +183,17 @@ export default function Navigation() {
               aria-controls="mobile-menu"
             >
               <span
-                className={`w-6 h-0.5 bg-primary dark:bg-zinc-50 transition-all duration-300 ${
+                className={`w-6 h-0.5 bg-primary dark:bg-zinc-50 transition-[transform,opacity] duration-200 ease-out-quart ${
                   isMenuOpen ? 'rotate-45 translate-y-2' : ''
                 }`}
               />
               <span
-                className={`w-6 h-0.5 bg-primary dark:bg-zinc-50 transition-all duration-300 ${
+                className={`w-6 h-0.5 bg-primary dark:bg-zinc-50 transition-[transform,opacity] duration-200 ease-out-quart ${
                   isMenuOpen ? 'opacity-0' : ''
                 }`}
               />
               <span
-                className={`w-6 h-0.5 bg-primary dark:bg-zinc-50 transition-all duration-300 ${
+                className={`w-6 h-0.5 bg-primary dark:bg-zinc-50 transition-[transform,opacity] duration-200 ease-out-quart ${
                   isMenuOpen ? '-rotate-45 -translate-y-2' : ''
                 }`}
               />
@@ -203,7 +222,7 @@ export default function Navigation() {
       <div
         id="mobile-menu"
         ref={menuRef}
-        className={`md:hidden fixed top-16 right-0 h-[calc(100vh-64px)] w-64 bg-background dark:bg-zinc-950 border-l border-border dark:border-zinc-800 shadow-lg transition-transform duration-300 ease-in-out ${
+        className={`md:hidden fixed top-16 right-0 h-[calc(100vh-64px)] w-64 bg-background dark:bg-zinc-950 border-l border-border dark:border-zinc-800 shadow-lg transition-transform duration-300 ease-out-expo ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         role="navigation"

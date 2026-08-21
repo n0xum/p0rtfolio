@@ -9,27 +9,77 @@ export default function About() {
           <h2 className="text-sm uppercase tracking-wider text-secondary dark:text-zinc-400 mb-4">
             Über mich
           </h2>
-          <div className="space-y-6">
+        </div>
+        {/* The section body walks in a block at a time instead of the whole
+            section fading as one plane: headline, then the argument, then
+            the evidence row. Deliberately NOT nested inside another reveal
+            container - two stacked reveals would compound their translate
+            and double the travel. */}
+        <div className="reveal-stagger space-y-6">
             <h3 className="text-3xl md:text-4xl font-bold leading-tight">
               IT-Berater mit Schwerpunkt Softwareentwicklung
             </h3>
 
-            <div className="prose prose-lg max-w-none">
-              <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
-                Ich arbeite als IT-Berater und Softwareentwickler bei <span className="text-primary dark:text-zinc-50 font-medium">Lufthansa Industry Solutions</span>.
-                Mein Schwerpunkt liegt auf der Entwicklung robuster Backend-Systeme mit Go, C#, Java und modernen Schnittstellen.
-              </p>
+            {/* Recruiter-scannable, not essayistic. The technology *list*
+                already exists twice on this page (Hero lead, "Meine
+                Expertise" grid), so this section carries what neither of
+                those does: what the skills are actually applied to, and how
+                the work is done. Bullet vocabulary and the labelled-column
+                pattern are reused verbatim from Werdegang and Work rather
+                than invented here. */}
+            <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
+              Ich entwickle und entwerfe robuste Backend-Systeme bei der <span className="text-primary dark:text-zinc-50 font-medium">Lufthansa Industry Solutions</span>,
+              überwiegend mit <span className="text-primary dark:text-zinc-50 font-medium">Go</span>, aber auch C# und Java.
+              Mein Fokus liegt auf Schnittstellen, wartbaren Architekturen und Software, die auch im
+              produktiven Betrieb zuverlässig funktioniert.
+            </p>
 
-              <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
-                Dabei verbinde ich Backend-Entwicklung in <span className="text-primary dark:text-zinc-50 font-medium">Go (Golang)</span>,
-                C# und Java (Spring Boot) mit Frontend-Entwicklung in <span className="text-primary dark:text-zinc-50 font-medium">React</span> und Next.js.
-                Zu meinem Alltag gehören außerdem Datenbanken, Cloud-Infrastruktur, CI/CD und Observability.
-              </p>
+            <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
+              Neben meiner Arbeit im Unternehmensumfeld entwickle ich eigene Projekte, betreibe eigene
+              Infrastruktur und beschäftige mich mit modernen Ansätzen rund um Softwareentwicklung und KI.
+              Wenn es ein Projekt erfordert, bekommt die API auch das passende Frontend.
+            </p>
 
-              <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
-                Ich arbeite in agilen Teams an produktionsrelevanten Projekten und unterstütze die Entwicklung
-                und Umsetzung wartbarer Softwarelösungen.
-              </p>
+            <div className="grid md:grid-cols-2 gap-8 pt-2">
+              <div className="space-y-4">
+                <h4 className="font-medium text-lg border-b border-border dark:border-zinc-800 pb-2">
+                  Schwerpunkte
+                </h4>
+                <ul className="space-y-2">
+                  {[
+                    'Backend-Services und REST-APIs in Go, C# und Java (Spring Boot)',
+                    'Datenmodellierung mit PostgreSQL, inklusive DSGVO-Anforderungen von der Modellierung an',
+                    'Betrieb mit Docker, CI/CD und Linux auf eigenen Servern bei Hetzner und im Homelab',
+                    'Monitoring und Observability produktiver Services',
+                    'Frontend bei Bedarf mit React, Next.js und TypeScript',
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <span className="text-primary dark:text-zinc-50 mt-1" aria-hidden="true">→</span>
+                      <span className="text-secondary dark:text-zinc-400">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="font-medium text-lg border-b border-border dark:border-zinc-800 pb-2">
+                  Arbeitsweise
+                </h4>
+                <ul className="space-y-2">
+                  {[
+                    'Agile Teams (Scrum), Abstimmung mit Fachbereich und Betrieb',
+                    'Einarbeitung in gewachsene Stacks, aktuell C# mit gRPC und Protocol Buffers',
+                    'Architekturentscheidungen als ADR dokumentiert, nicht vorausgesetzt',
+                    'Verantwortung ab Projekt-Kickoff, nicht erst ab dem Ticket',
+                    'KI-gestützte Multi-Agenten-Workflows mit klarer Rollen- und Review-Trennung',
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <span className="text-primary dark:text-zinc-50 mt-1" aria-hidden="true">→</span>
+                      <span className="text-secondary dark:text-zinc-400">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-border dark:border-zinc-800">
@@ -46,7 +96,6 @@ export default function About() {
                 <div className="text-sm text-secondary dark:text-zinc-400">gRPC & Protobuf</div>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </section>

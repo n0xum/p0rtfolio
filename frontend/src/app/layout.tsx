@@ -15,7 +15,7 @@ const ibmPlexSans = IBM_Plex_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://alexander-kruska.dev"),
   title: "Portfolio - Alexander Kruska",
-  description: "IT-Berater und Softwareentwickler bei Lufthansa Industry Solutions. Spezialisiert auf robuste Backend-Services mit Go, C# und Java.",
+  description: "IT-Berater und Softwareentwickler bei der Lufthansa Industry Solutions. Spezialisiert auf robuste Backend-Services mit Go, C# und Java.",
   authors: [{ name: "Alexander Kruska" }],
   openGraph: {
     type: "website",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     url: "https://alexander-kruska.dev",
     siteName: "Portfolio - Alexander Kruska",
     title: "Portfolio - Alexander Kruska",
-    description: "IT-Berater und Softwareentwickler bei Lufthansa Industry Solutions. Spezialisiert auf robuste Backend-Services mit Go, C# und Java.",
+    description: "IT-Berater und Softwareentwickler bei der Lufthansa Industry Solutions. Spezialisiert auf robuste Backend-Services mit Go, C# und Java.",
     images: [
       {
         url: "/images/portfolio.png",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Portfolio - Alexander Kruska",
-    description: "IT-Berater und Softwareentwickler bei Lufthansa Industry Solutions",
+    description: "IT-Berater und Softwareentwickler bei der Lufthansa Industry Solutions",
     images: ["/images/portfolio.png"],
   },
 };

@@ -50,7 +50,7 @@ export default function Error({
           <div className="flex gap-4 pt-4">
             <button
               onClick={reset}
-              className="px-6 py-3 border-2 border-primary dark:border-zinc-50 text-primary dark:text-zinc-50 hover:bg-primary dark:hover:bg-zinc-50 hover:text-background dark:hover:text-zinc-950 transition-all duration-300 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="px-6 py-3 border-2 border-primary dark:border-zinc-50 text-primary dark:text-zinc-50 hover:bg-primary dark:hover:bg-zinc-50 hover:text-background dark:hover:text-zinc-950 transition-colors duration-150 ease-out-quart text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               Erneut versuchen
             </button>
