@@ -1,143 +1,58 @@
-'use client';
+/**
+ * A full-bleed band of technology keywords that drifts horizontally as the
+ * page scrolls past it.
+ *
+ * This used to be a Client Component driving that drift from JavaScript: a
+ * scroll listener accumulated a target offset, a `requestAnimationFrame`
+ * loop lerped toward it, and each frame called `setState` - re-rendering
+ * all 39 spans through React. Worse, the rAF effect listed `targetOffset`
+ * in its dependency array, so every scroll delta also tore down and
+ * rebuilt the loop. On a 120Hz trackpad that is a full React render and an
+ * effect teardown roughly every 8ms, for the entire time this strip is on
+ * screen - the single largest contributor to the scroll jank this pass was
+ * asked to fix.
+ *
+ * The drift is now a CSS scroll-driven animation (`.marquee-track`, see
+ * globals.css), which the compositor runs off the main thread. That
+ * removes the `'use client'` directive along with the state, the observer,
+ * the listener and the loop: this file now ships zero bytes of JavaScript
+ * and renders entirely on the server.
+ *
+ * `prefers-reduced-motion` and browsers without scroll-timeline support
+ * are handled in the stylesheet - both resolve to a static, unmoving strip
+ * showing the first words, which is a legitimate resting state rather than
+ * a broken one.
+ */
 
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-
-function subscribeReducedMotion(callback: () => void) {
-  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  mediaQuery.addEventListener('change', callback);
-  return () => mediaQuery.removeEventListener('change', callback);
-}
-
-function getReducedMotionSnapshot() {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-
-function getReducedMotionServerSnapshot() {
-  return false;
-}
+const words = [
+  'TypeScript',
+  'Golang',
+  'CI/CD',
+  'Clean Architecture',
+  'Next.js',
+  'Spring Boot',
+  'Clean Code',
+  'Flutter',
+  'REST APIs',
+  'Docker',
+  'PostgreSQL',
+  'Agile',
+  'DDD',
+];
 
 export default function ScrollTextCarousel() {
-  const [scrollOffset, setScrollOffset] = useState(0);
-  const [targetOffset, setTargetOffset] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  // Read the media query directly instead of re-deriving it into state
-  // inside an effect (react-hooks/set-state-in-effect) - matchMedia is an
-  // external store, which is exactly what useSyncExternalStore is for.
-  const prefersReducedMotion = useSyncExternalStore(
-    subscribeReducedMotion,
-    getReducedMotionSnapshot,
-    getReducedMotionServerSnapshot
-  );
-  const containerRef = useRef<HTMLDivElement>(null);
-  const animationFrameRef = useRef<number | undefined>(undefined);
-
-  const words = [
-    'TypeScript',
-    'Golang',
-    'CI/CD',
-    'Clean Architecture',
-    'Next.js',
-    'Spring Boot',
-    'Clean Code',
-    'Flutter',
-    'REST APIs',
-    'Docker',
-    'PostgreSQL',
-    'Agile',
-    'DDD'
-  ];
-
-  // Intersection Observer - nur animieren wenn sichtbar
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Scroll Handler mit Throttling
-  useEffect(() => {
-    if (!isVisible || prefersReducedMotion) return;
-
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          const scrollDelta = currentScrollY - lastScrollY;
-
-          setTargetOffset(prev => prev + scrollDelta * 0.35);
-          lastScrollY = currentScrollY;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isVisible, prefersReducedMotion]);
-
-  // Smooth animation with lerp - nur wenn sichtbar, und nur so lange wie
-  // die Differenz tatsächlich noch sichtbar ist. Sobald der Wert
-  // eingerastet ist, wird kein weiterer Frame mehr angefordert - der
-  // Effekt läuft erst wieder los, sobald sich `targetOffset` ändert
-  // (neues Scroll-Delta).
-  useEffect(() => {
-    if (!isVisible || prefersReducedMotion) return;
-
-    let frameId: number;
-
-    const animate = () => {
-      setScrollOffset(prev => {
-        const diff = targetOffset - prev;
-        const smoothFactor = 0.1;
-
-        if (Math.abs(diff) < 0.01) {
-          return targetOffset;
-        }
-
-        frameId = requestAnimationFrame(animate);
-        animationFrameRef.current = frameId;
-        return prev + diff * smoothFactor;
-      });
-    };
-
-    frameId = requestAnimationFrame(animate);
-    animationFrameRef.current = frameId;
-
-    return () => {
-      cancelAnimationFrame(frameId);
-    };
-  }, [targetOffset, isVisible, prefersReducedMotion]);
-
   return (
     <div
-      ref={containerRef}
-      className="w-full overflow-hidden border-y border-border dark:border-zinc-800 bg-gray-50/30 dark:bg-zinc-900/20 py-4"
+      // `bg-gray-50/30` here was a leftover Tailwind default: `gray-50` is
+      // not one of the stops DESIGN.md pins in @theme, and it sat next to a
+      // dark-mode value that *is* pinned. Swapped to the declared `surface`
+      // token, which is the light-mode value it was approximating anyway.
+      className="marquee-mask w-full overflow-hidden border-y border-border dark:border-zinc-800 bg-surface/40 dark:bg-zinc-900/20 py-4"
       aria-hidden="true"
     >
-      <div
-        className="flex gap-8 whitespace-nowrap"
-        style={{
-          transform: prefersReducedMotion
-            ? 'translateX(0)'
-            : `translateX(-${scrollOffset % (words.length * 150)}px)`,
-          willChange: isVisible && !prefersReducedMotion ? 'transform' : 'auto',
-          transition: prefersReducedMotion ? 'none' : undefined,
-        }}
-      >
-        {/* Render words three times for seamless loop */}
+      <div className="marquee-track flex gap-8 whitespace-nowrap">
+        {/* The set is repeated three times so the strip stays covered edge
+            to edge at every offset the drift can reach. */}
         {[...words, ...words, ...words].map((word, index) => (
           <span
             key={index}

@@ -20,7 +20,7 @@ export const projects: Project[] = [
   {
     slug: 'structify',
     title: 'structify',
-    description: 'Go-Structs zu PostgreSQL-Schemas konvertieren – mit Web-Editor, Inline-Tags für Constraints, Indexes und Foreign Keys.',
+    description: 'Go-Structs zu PostgreSQL-Schemas konvertieren, mit Web-Editor und Inline-Tags für Constraints, Indexes und Foreign Keys.',
     githubRepo: 'n0xum/structify',
     tech: ['Go', 'PostgreSQL', 'Next.js', 'TypeScript', 'Docker'],
     type: 'Full-Stack',
@@ -50,7 +50,7 @@ export const projects: Project[] = [
   {
     slug: 'zigbee-controller',
     title: 'zigbee-controller',
-    description: 'Zigbee-Geräte über Zigbee2MQTT und MQTT mit Apple HomeKit verbinden – läuft vollständig im eigenen Netzwerk, ohne Cloud-Zugriff.',
+    description: 'Zigbee-Geräte über Zigbee2MQTT und MQTT mit Apple HomeKit verbinden. Läuft vollständig im eigenen Netzwerk, ohne Cloud-Zugriff.',
     githubRepo: 'n0xum/zigbee-controller',
     tech: ['Go', 'MQTT', 'Zigbee2MQTT', 'HomeKit (HAP)', 'Docker'],
     type: 'Backend',
@@ -64,7 +64,7 @@ export const projects: Project[] = [
     ],
     codeSnippet: {
       language: 'go',
-      description: 'Scrollrad-Dimmer: zwei MQTT-Befehle pro Geste (Start/Stop) statt eines Broadcasts pro Zwischenschritt – die Lampe interpoliert die Helligkeit selbst',
+      description: 'Scrollrad-Dimmer: zwei MQTT-Befehle pro Geste (Start/Stop) statt eines Broadcasts pro Zwischenschritt. Die Lampe interpoliert die Helligkeit selbst',
       code: `// Start beginnt das Dimmen in die angegebene Richtung.
 // Ein bereits laufender Vorgang wird zuvor beendet.
 func (d *Dimmer) Start(action zigbee.RemoteAction) {

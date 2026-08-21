@@ -9,7 +9,7 @@ export default function RechtlichesContent() {
           <p className="text-sm text-secondary dark:text-zinc-400 mt-2">
             Diese Website ist eine rein statische Portfolio-Seite. Es gibt keine Cookies, kein
             Tracking und keine Analyse-Tools. Beim Hosting fallen lediglich technische
-            Zugriffsdaten an – Näheres dazu in Abschnitt 2.
+            Zugriffsdaten an. Näheres dazu steht in Abschnitt 2.
           </p>
         </div>
 
