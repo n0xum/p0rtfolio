@@ -769,6 +769,13 @@ html {
    the strip never translates far enough to expose its own end - no seam
    to hide, no wrap to get wrong.
    --------------------------------------------------------------------- */
+/* The 11% is of the *track*, which is `w-max` (as wide as its 3x-repeated
+   content) - so the strip travels about a third of one repetition and never
+   reaches its own end. This only holds while the track sizes to its content:
+   on a viewport-width container the same 11% would be 11vw of an unrelated
+   box. Its ancestor must also use `overflow: clip`, not `overflow: hidden` -
+   `hidden` makes that ancestor a scroll container, and `view()` resolves
+   against the nearest one, which would freeze this animation at 0. */
 .marquee-track {
   translate: 0;
 }
