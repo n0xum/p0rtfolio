@@ -43,14 +43,26 @@ const words = [
 export default function ScrollTextCarousel() {
   return (
     <div
+      // `overflow-clip`, NOT `overflow-hidden`. `hidden` makes this element a
+      // scroll container, and a `view()` timeline resolves against its
+      // nearest ancestor scroll container - so the track's timeline attached
+      // to *this* box, which never scrolls, and the drift sat frozen at 0.
+      // `clip` clips identically without establishing a scroll container, so
+      // the timeline resolves against the viewport, which is the intent.
+      //
       // `bg-gray-50/30` here was a leftover Tailwind default: `gray-50` is
       // not one of the stops DESIGN.md pins in @theme, and it sat next to a
       // dark-mode value that *is* pinned. Swapped to the declared `surface`
       // token, which is the light-mode value it was approximating anyway.
-      className="marquee-mask w-full overflow-hidden border-y border-border dark:border-zinc-800 bg-surface/40 dark:bg-zinc-900/20 py-4"
+      className="marquee-mask w-full overflow-clip border-y border-border dark:border-zinc-800 bg-surface/40 dark:bg-zinc-900/20 py-4"
       aria-hidden="true"
     >
-      <div className="marquee-track flex gap-8 whitespace-nowrap">
+      {/* `w-max` sizes the flex container to its content. Without it the
+          container is only as wide as the viewport (the children merely
+          overflow it), and `.marquee-track`'s `translate: -11%` - which
+          resolves against the element's own border box - would mean 11% of
+          the viewport rather than 11% of the track. */}
+      <div className="marquee-track flex w-max gap-8 whitespace-nowrap">
         {/* The set is repeated three times so the strip stays covered edge
             to edge at every offset the drift can reach. */}
         {[...words, ...words, ...words].map((word, index) => (
