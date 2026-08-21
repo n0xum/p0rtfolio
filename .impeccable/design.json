@@ -7,7 +7,7 @@
       "primary": { "role": "primary", "displayName": "Near-Black", "canonical": "#1a1a1a", "tonalRamp": ["#262626", "#434343", "#616161", "#7e7e7e", "#9b9b9b", "#b8b8b8", "#d5d5d5", "#f2f2f2"] },
       "secondary": { "role": "secondary", "displayName": "Neutral Gray (retuned for AA)", "canonical": "#666666", "tonalRamp": ["#262626", "#434343", "#616161", "#7e7e7e", "#9b9b9b", "#b8b8b8", "#d5d5d5", "#f2f2f2"] },
       "accent": { "role": "tertiary", "displayName": "Deep Teal", "canonical": "#0c6e66", "tonalRamp": ["#084540", "#0d7a71", "#13aea1", "#19e3d2", "#4aebde", "#7ff1e8", "#b3f7f1", "#e8fcfb"] },
-      "accent-muted": { "role": "tertiary", "displayName": "Muted Teal (dark-mode counterpart)", "canonical": "#57a99c", "tonalRamp": ["#1a332f", "#2e5952", "#418076", "#55a699", "#7abbb1", "#a1cfc8", "#c8e3de", "#eef6f5"] },
+      "accent-muted": { "role": "tertiary", "displayName": "Muted Teal (dark-mode counterpart)", "canonical": "#59a69a", "tonalRamp": ["#1a332f", "#2e5952", "#418076", "#55a699", "#7abbb1", "#a1cfc8", "#c8e3de", "#eef6f5"] },
       "background": { "role": "neutral", "displayName": "Off-White", "canonical": "#fafafa", "tonalRamp": ["#0a0a0a", "#262626", "#525252", "#a3a3a3", "#d4d4d4", "#e5e5e5", "#f5f5f5", "#fafafa"] },
       "surface": { "role": "neutral", "displayName": "Light Surface", "canonical": "#f5f5f5", "tonalRamp": ["#0a0a0a", "#262626", "#525252", "#a3a3a3", "#d4d4d4", "#e5e5e5", "#f0f0f0", "#f5f5f5"] },
       "border": { "role": "neutral", "displayName": "Border Gray (decorative, not AA-required)", "canonical": "#e5e7eb", "tonalRamp": ["#21252b", "#3b404c", "#545c6d", "#6d788e", "#8e96a8", "#afb5c1", "#d0d3db", "#f1f2f4"] },
@@ -107,7 +107,7 @@
       { "name": "The Border-Not-Shadow Rule", "body": "Depth and separation within the page flow is conveyed by a single hairline border, never a shadow or a tonal surface change. Shadows are reserved exclusively for the two modal/overlay surfaces. Unchanged.", "section": "elevation" }
     ],
     "dos": [
-      "Do keep the accent teal (#0c6e66 / #57a99c) confined to interactive states (links, hover, focus, active nav indicator) - it does not appear as a fill or section color anywhere in the build.",
+      "Do keep the accent teal (#0c6e66 / #59a69a) confined to interactive states (links, hover, focus, active nav indicator) - it does not appear as a fill or section color anywhere in the build.",
       "Do use hairline 1px borders (border-border / dark:border-zinc-800) as the default separator between content blocks; reserve shadow-lg for true overlay surfaces (modal, mobile drawer) only.",
       "Do keep homepage sections on the shared max-w-3xl column with py-32/lg:py-40 vertical rhythm and px-6/md:px-12 horizontal rhythm.",
       "Do treat text-links as the default CTA pattern; the bordered outline-to-fill button exists as a single accent for the Hero's primary action, not a general button system.",

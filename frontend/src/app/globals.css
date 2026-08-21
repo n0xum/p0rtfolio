@@ -205,7 +205,48 @@
   text-wrap: balance;
 }
 
+/*
+  Syntax-highlighting contrast audit (axe `color-contrast`, serious):
+  `.dark .hljs-comment`/`.hljs-quote` measured #71717a on the `.dark .hljs`
+  background #18181b = 3.67:1, under the 4.5:1 AA floor for body text - code
+  comments are prose meant to be read. Full table below, computed against
+  the same #18181b background, all colors as shipped after this fix:
+
+    role (selector group)                                   value      ratio
+    base .hljs text                                         #e4e4e7   13.96:1
+    comment / quote            (fixed this pass)             #888891    5.04:1
+    keyword / selector-tag / addition                        #fb7185    6.58:1
+    literal (number/string/doctag/regexp)                    #86efac   12.62:1
+    identifier (title/section/name/selector-id/-class)       #60a5fa    6.97:1
+    attribute (attr/variable/template-variable/class-title)  #fbbf24   10.61:1
+    symbol (bullet/subst/meta/selector-attr/-pseudo/link)     #c084fc    6.70:1
+    built-in / deletion                                      #f87171    6.40:1
+
+  Only comment/quote failed; every other token already cleared 4.5:1 with
+  margin. #888891 keeps the same hue/saturation as the old #71717a (just
+  lightened) so it stays the most desaturated, quietest color in the block
+  - still clearly the lowest-contrast token (5.04:1, versus the next-lowest
+  real token at 6.40:1) while comfortably clearing the AA floor rather than
+  landing exactly on it.
+
+  The stock light theme (`highlight.js/styles/github.css`, imported above,
+  otherwise unmodified) was audited the same way against its own #ffffff
+  background: comment/code/formula (#6a737d) passes at 4.82:1, but
+  `.hljs-built_in`/`.hljs-symbol` (#e36209) measured 3.49:1 - the same class
+  of defect, just a different token, and one nobody had reported either way
+  before now. Overridden below to #ba5007 (4.95:1), same hue family,
+  darkened. Every other light-theme token was checked and already clears
+  4.5:1: base text #24292e 14.67:1, comment #6a737d 4.82:1, keyword #d73a49
+  4.57:1, entity #6f42c1 6.51:1, constant #005cc5 6.29:1, string #032f62
+  13.23:1, entity-tag/addition #22863a 4.63:1, bullet #735c0f 6.43:1,
+  deletion #b31d28 6.72:1.
+*/
 @layer base {
+  .hljs-built_in,
+  .hljs-symbol {
+    color: #ba5007 !important;
+  }
+
   .dark .hljs {
     background: #18181b !important;
     color: #e4e4e7 !important;
@@ -213,7 +254,7 @@
 
   .dark .hljs-comment,
   .dark .hljs-quote {
-    color: #71717a !important;
+    color: #888891 !important;
   }
 
   .dark .hljs-keyword,

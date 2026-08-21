@@ -14,18 +14,19 @@ interface MarkdownRendererProps {
 // resulting tree before it reaches the DOM, extending GitHub's default
 // schema (which already covers plain markdown/HTML READMEs) for two cases
 // real-world READMEs rely on:
-// - shields.io / build-status badges, usually an `<img>` (sometimes wrapped
-//   in `<a>`/`<picture>`, sometimes `align`-ed) — `img`/`a` are already
-//   covered by the default schema, `align` is added for centered badge rows.
-// - fenced code blocks, which get a `language-xxx` class from remark/mdast
+// - shields.io / build-status badges, usually an img element (sometimes
+//   wrapped in an a or picture element, sometimes align-ed) - the img and a
+//   tag names are already covered by the default schema, align is added for
+//   centered badge rows.
+// - fenced code blocks, which get a language-xxx class from remark/mdast
 //   before this plugin ever runs (already allowed by the default schema),
 //   and are later re-highlighted by rehype-highlight *after* this sanitize
-//   pass, adding `hljs`/`hljs-*` classes to `code`/`span`. Since sanitize
+//   pass, adding hljs/hljs-* classes to the code/span tags. Since sanitize
 //   runs before highlighting, those generated classes never need
-//   whitelisting for the normal pipeline — but the classes are allowed here
-//   too in case a README author writes pre-highlighted `<code class="hljs
-//   language-x">`/`<span class="hljs-*">` HTML directly, so that content
-//   isn't silently stripped either.
+//   whitelisting for the normal pipeline - but the classes are allowed here
+//   too in case a README author writes pre-highlighted HTML for a code tag
+//   (class="hljs language-x") or span tag (class="hljs-*") directly, so
+//   that content isn't silently stripped either.
 const readmeSanitizeSchema: SanitizeSchema = {
   ...defaultSchema,
   attributes: {
@@ -102,6 +103,9 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
         pre: ({ node, ...props }) => (
           <div className="relative group my-6">
             <pre
+              tabIndex={0}
+              role="region"
+              aria-label="Codeblock"
               className="overflow-x-auto p-4 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm font-mono text-zinc-900 dark:text-zinc-100"
               {...props}
             />
@@ -128,7 +132,13 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
           const isFenced = /language-(\w+)/.test(className || '');
 
           return isFenced ? (
-            <code className={className} {...props}>
+            // highlight.js's github.css theme matches `pre code.hljs` and sets
+            // its own `overflow-x: auto`, independently of the `overflow-x-auto`
+            // already on the surrounding <pre> above. Left alone, that's a
+            // second, nested scrollable region with no accessible name of its
+            // own (axe: scrollable-region-focusable) - `!overflow-x-visible`
+            // cancels it so the <pre> stays the single scroll container.
+            <code className={`${className ?? ''} !overflow-x-visible`} {...props}>
               {children}
             </code>
           ) : (
@@ -177,8 +187,9 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
         ),
 
         // Images
-        img: ({ node, ...props }) => (
+        img: ({ node, alt, ...props }) => (
           <img
+            alt={alt ?? ''}
             className="rounded-lg my-6 border border-border dark:border-zinc-800 max-w-full h-auto"
             {...props}
           />

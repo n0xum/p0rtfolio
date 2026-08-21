@@ -36,9 +36,20 @@ export default function CodeSnippet({ language, code, description }: CodeSnippet
       </div>
       <p className="text-secondary dark:text-zinc-400">{description}</p>
       <div className="relative group">
-        <pre className="overflow-x-auto p-6 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm font-mono">
+        <pre
+          tabIndex={0}
+          role="region"
+          aria-label={`Code-Beispiel: ${description}`}
+          className="overflow-x-auto p-6 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm font-mono"
+        >
           <code
-            className={`hljs language-${highlightedLanguage}`}
+            // highlight.js's github.css theme matches `pre code.hljs` and sets
+            // its own `overflow-x: auto`, independently of the `overflow-x-auto`
+            // already on the surrounding <pre>. Left alone, that creates a
+            // second, nested scrollable region with no accessible name of its
+            // own (axe: scrollable-region-focusable) - `!overflow-x-visible`
+            // cancels it so the <pre> above stays the single scroll container.
+            className={`hljs language-${highlightedLanguage} !overflow-x-visible`}
             dangerouslySetInnerHTML={{ __html: html }}
           />
         </pre>

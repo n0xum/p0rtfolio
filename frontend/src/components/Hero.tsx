@@ -1,26 +1,13 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 export default function Hero() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <section
       id="home"
       className="min-h-screen flex items-center justify-center px-6 md:px-12 py-20"
     >
       <div className="max-w-3xl w-full">
-        <div
-          className={`transition-all duration-1000 ${
-            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
+        <div className="reveal-on-scroll">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8">
             {/* Profile Image */}
             <div className="flex-shrink-0">

@@ -5,7 +5,7 @@ colors:
   primary: "#1a1a1a"
   secondary: "#666666"
   accent: "#0c6e66"
-  accent-muted: "#57a99c"
+  accent-muted: "#59a69a"
   background: "#fafafa"
   surface: "#f5f5f5"
   border: "#e5e7eb"
@@ -16,7 +16,7 @@ colors:
   dark-text: "zinc-50 (#fafafa)"
   dark-text-muted: "zinc-400 (#a1a1aa)"
   dark-text-muted-alt: "zinc-500 (#8a8a8a)"
-  dark-focus-ring: "#57a99c"
+  dark-focus-ring: "#59a69a"
 typography:
   display:
     fontFamily: "IBM Plex Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
@@ -110,7 +110,7 @@ The palette is a restrained two-tone system (near-black text / off-white surface
 
 ### Tertiary
 - **Deep Teal** (`#0c6e66`, token `accent`) — replaces Tailwind's stock `blue-600` (`#2563eb`), which the previous DESIGN.md correctly identified as unmodified. Used for hover states on nav links, the "Details ansehen" project links, the code-icon accent in `CodeSnippet`, the focus-ring token, and text selection background. Chosen deliberately away from the generic blue-link convention while staying calm and legible rather than decorative — a fit for the backend-engineer-at-an-enterprise-IT-consultancy positioning in PRODUCT.md rather than a marketing accent. 5.85:1 on background, 5.60:1 on surface.
-- **Muted Teal** (`#57a99c`, token `accent-muted`) — dark-mode counterpart, replacing stock `blue-400`. Same hue family as `accent`, lightened for dark surfaces. 7.16:1 on zinc-950, 6.38:1 on zinc-900.
+- **Muted Teal** (`#59a69a`, token `accent-muted`) — dark-mode counterpart, replacing stock `blue-400`. Same hue family as `accent`, lightened for dark surfaces. 6.96:1 on zinc-950, 6.20:1 on zinc-900.
 
 ### Neutral
 - **Off-White** (`#fafafa`, token `background`): page background in light mode. Unchanged.
@@ -119,7 +119,7 @@ The palette is a restrained two-tone system (near-black text / off-white surface
 - **Dark Background** (`zinc-950`, `#09090b`): page background in dark mode, applied via `dark:bg-zinc-950` directly on `<body>` in `layout.tsx`. This wave removed a hardcoded `.dark body { background-color: #0a0a0a }` in `globals.css` that had drifted from this exact value — one token, one place, now.
 - **Dark Text** (`zinc-50` `#fafafa` / `zinc-400` `#a1a1aa`): dark-mode primary/secondary text. Unchanged and already passing AA (19.06:1 / 7.76:1 against zinc-950).
 - **Dark Text, Retuned** (`zinc-500`, `#8a8a8a`): the Werdegang category eyebrow's dark-mode color. **Retuned this wave** from stock `zinc-500` (`#71717a`), which measured 4.12:1 on zinc-950 and 3.67:1 on zinc-900 — a real AA failure as body-size text. New value: 5.7:1 / 5.1:1.
-- **Focus Ring** (`#0c6e66` light / `#57a99c` dark, token `focus-ring`): see Components → Focus Ring below.
+- **Focus Ring** (`#0c6e66` light / `#59a69a` dark, token `focus-ring`): see Components → Focus Ring below.
 
 ### Named Rules
 **The One-Accent Rule.** The accent (`accent` / `accent-muted`) appears only on interactive elements — links, hover states, active nav indicators, focus rings, code accents. It never appears as a background fill, a section header color, or a decorative element. Unchanged this wave; only the hue moved.
@@ -173,13 +173,59 @@ Unchanged this wave. The system is flat by default; `shadow-lg` appears only on 
 
 Unchanged this wave. Square by default; `rounded-full` on the profile photo and mobile hamburger bars; `rounded`/`rounded-lg` on small isolated UI chrome.
 
+### Syntax Highlighting (documented sub-system, not palette drift)
+
+Code blocks are rendered by highlight.js. Its token colours are a deliberate,
+self-contained sub-palette that intentionally sits OUTSIDE the site's
+two-tone-plus-teal system: syntax highlighting is only legible when each
+token class carries a distinguishable hue, so constraining these to the
+brand palette would defeat their purpose. Two tokens (dark-mode
+comment/quote, light-mode built-in/symbol) were retuned this pass after an
+axe `color-contrast` finding; every other value below is inherited unchanged
+from the original build and recorded here so the set reads as a decision,
+not drift.
+
+**Dark mode** (`.dark .hljs-*` overrides in `globals.css`), all ratios computed against the `.dark .hljs` background `#18181b`:
+
+| Token class | Value | Role | Contrast on `#18181b` |
+|---|---|---|---|
+| `.hljs` surface / text | `#18181b` / `#e4e4e7` | code block ground | 13.96:1 |
+| `.hljs-comment`, `-quote` | `#888891` (was `#71717a`) | de-emphasised | 5.04:1 (was 3.67:1 — **failed AA, fixed**) |
+| `.hljs-keyword`, `-selector-tag`, `-addition` | `#fb7185` | keywords | 6.58:1 |
+| `.hljs-string`, `-number`, `-literal`, `-regexp`, `-doctag` | `#86efac` | literals | 12.62:1 |
+| `.hljs-title`, `-section`, `-name`, `-selector-id`, `-selector-class` | `#60a5fa` | identifiers | 6.97:1 |
+| `.hljs-attribute`, `-attr`, `-variable`, `-type` | `#fbbf24` | attributes / types | 10.61:1 |
+| `.hljs-symbol`, `-bullet`, `-meta`, `-link` | `#c084fc` | symbols / meta | 6.70:1 |
+| `.hljs-built_in`, `-deletion` | `#f87171` | built-ins | 6.40:1 |
+
+Only comment/quote failed AA (3.67:1, the axe finding — code comments are prose meant to be read, so the 4.5:1 body-text floor applies). `#888891` keeps the same hue and saturation as the old `#71717a`, just lightened, so it stays the most desaturated, quietest colour in the block — clearly still the lowest-contrast token (5.04:1, versus the next-lowest real token at 6.40:1) rather than reading as "fixed by washing it out toward white."
+
+**Light mode** uses highlight.js's stock `github.css` theme, audited against its own `#ffffff` background and now overridden in one place:
+
+| Token class | Value | Role | Contrast on `#ffffff` |
+|---|---|---|---|
+| `.hljs` surface / text | `#ffffff` / `#24292e` | code block ground | 14.67:1 |
+| `.hljs-comment`, `-code`, `-formula` | `#6a737d` | de-emphasised | 4.82:1 |
+| `.hljs-keyword`, `-meta .hljs-keyword`, `-template-tag`, `-template-variable`, `-type`, `-variable.language_` | `#d73a49` | keywords | 4.57:1 |
+| `.hljs-title`, `-title.class_`, `-title.function_` | `#6f42c1` | entities | 6.51:1 |
+| `.hljs-attr`, `-attribute`, `-literal`, `-meta`, `-number`, `-operator`, `-variable`, `-selector-attr`, `-selector-class`, `-selector-id` | `#005cc5` | constants | 6.29:1 |
+| `.hljs-regexp`, `-string`, `-meta .hljs-string` | `#032f62` | strings | 13.23:1 |
+| `.hljs-built_in`, `-symbol` | `#ba5007` (was `#e36209`) | built-ins | 4.95:1 (was 3.49:1 — **failed AA, fixed**) |
+| `.hljs-name`, `-quote`, `-selector-tag`, `-selector-pseudo`, `-addition` | `#22863a` | entity tags | 4.63:1 |
+| `.hljs-bullet` | `#735c0f` | lists | 6.43:1 |
+| `.hljs-deletion` | `#b31d28` | deletions | 6.72:1 |
+
+The stock light theme had the identical class of defect on a different token: `.hljs-built_in`/`.hljs-symbol` (`#e36209`, GitHub's own value) measured 3.49:1, well under AA, and had never been checked before this pass since the light theme ships unmodified from the package. Overridden to `#ba5007` (4.95:1) — same hue family, darkened, the same "keep the ratio comfortably clear of the floor, don't wash it out" treatment as the dark-mode fix. Every other light-theme token was checked and already clears 4.5:1 (lowest margin: keyword at 4.57:1, entity-tag/addition at 4.63:1).
+
+Note: `#60a5fa` (dark-mode identifiers) is coincidentally the old Tailwind `blue-400` that used to be the site accent. It survives only as a syntax-identifier colour and carries no brand meaning — do not treat its presence as the accent leaking back in.
+
 ## Components
 
 ### Buttons
 Unchanged this wave — outlined-to-filled primary CTA, text-link as the default interactive pattern everywhere else.
 
 ### Focus Ring (new this wave)
-- **Token:** `--color-focus-ring` (`#0c6e66` light / `#57a99c` dark, swapped via a `.dark` override), declared in `@theme` so it also emits ordinary Tailwind utilities (`outline-focus-ring`, `ring-focus-ring`, `border-focus-ring`, …).
+- **Token:** `--color-focus-ring` (`#0c6e66` light / `#59a69a` dark, swapped via a `.dark` override), declared in `@theme` so it also emits ordinary Tailwind utilities (`outline-focus-ring`, `ring-focus-ring`, `border-focus-ring`, …).
 - **Baseline rule:** `:focus-visible:not([class*='focus-visible:ring']) { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; border-radius: 2px; }` in `globals.css`, applying to every focusable element that previously had no focus style (nav links, the Hero CTA, "Details ansehen" links, Contact links/footer, mobile menu — roughly fifteen elements).
 - **Existing ad-hoc rings left alone:** `ThemeToggle`, the `Dialog` close button, and the error-page retry button already carry their own `focus-visible:ring-2 focus-visible:ring-accent`, which now automatically resolves to the new teal accent; the baseline rule explicitly excludes elements with that class so they don't double up.
 - **Verified:** ≥5.6:1 against every one of the four page backgrounds (background/surface light, zinc-950/zinc-900 dark) — far above the 3:1 non-text floor.
@@ -203,7 +249,7 @@ Unchanged this wave; its own focus-visible ring on the close button already used
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep the accent teal (`#0c6e66` / `#57a99c`) confined to interactive states (links, hover, focus, active nav indicator) — it does not appear as a fill or section color anywhere in the build.
+- **Do** keep the accent teal (`#0c6e66` / `#59a69a`) confined to interactive states (links, hover, focus, active nav indicator) — it does not appear as a fill or section color anywhere in the build.
 - **Do** keep homepage sections on the shared `max-w-3xl` column with `py-32`/`lg:py-40` vertical rhythm and `px-6`/`md:px-12` horizontal rhythm — untouched and confirmed the strongest layout invariant in the build.
 - **Do** treat text-links as the default CTA pattern; the bordered outline-to-fill button exists as a single accent for the Hero's primary action, not a general button system.
 - **Do** use `.reveal-on-scroll` for any new scroll-triggered entrance instead of a fresh `IntersectionObserver` — it is CSS-only, visible-by-default, and already handles no-JS/no-support/reduced-motion.

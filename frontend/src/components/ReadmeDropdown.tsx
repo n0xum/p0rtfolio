@@ -22,10 +22,11 @@ export default function ReadmeDropdown({ content }: ReadmeDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border border-border dark:border-zinc-800 rounded-lg overflow-hidden">
+    <div className="border border-secondary dark:border-zinc-500 rounded-lg overflow-hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-full flex items-center justify-between px-6 py-4 bg-surface dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors overflow-hidden before:absolute before:inset-0 before:animate-shimmer before:bg-[length:200%_100%] before:bg-[linear-gradient(90deg,transparent_0%,rgba(37,99,235,0.08)_50%,transparent_100%)] dark:before:bg-[linear-gradient(90deg,transparent_0%,rgba(96,165,250,0.1)_50%,transparent_100%)]"
+        aria-expanded={isOpen}
+        className="relative w-full flex items-center justify-between px-6 py-4 min-h-11 bg-surface dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors overflow-hidden before:absolute before:inset-0 before:animate-shimmer before:bg-[length:200%_100%] before:bg-[linear-gradient(90deg,transparent_0%,color-mix(in_srgb,var(--color-accent)_8%,transparent)_50%,transparent_100%)] dark:before:bg-[linear-gradient(90deg,transparent_0%,color-mix(in_srgb,var(--color-accent-muted)_10%,transparent)_50%,transparent_100%)]"
       >
         <span className="font-mono text-sm font-medium">README.md</span>
         <svg
@@ -33,12 +34,13 @@ export default function ReadmeDropdown({ content }: ReadmeDropdownProps) {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
       {isOpen && (
-        <div className="px-6 py-6 border-t border-border dark:border-zinc-800">
+        <div className="px-6 py-6 border-t border-secondary dark:border-zinc-500">
           <div className="prose-wrapper">
             <MarkdownRenderer content={content} />
           </div>

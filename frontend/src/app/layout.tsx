@@ -3,6 +3,7 @@ import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/theme";
 import JsonLd from "@/components/JsonLd";
+import Footer from "@/components/Footer";
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -66,7 +67,18 @@ export default function RootLayout({
         <JsonLd />
       </head>
       <body className="font-sans antialiased bg-background dark:bg-zinc-950 text-primary dark:text-zinc-50 transition-colors">
-        <ThemeProvider>{children}</ThemeProvider>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-background dark:focus:bg-zinc-950 focus:text-primary dark:focus:text-zinc-50 focus:border focus:border-border dark:focus:border-zinc-800 focus:rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+        >
+          Zum Inhalt springen
+        </a>
+        <ThemeProvider>
+          <div id="main-content" tabIndex={-1}>
+            {children}
+          </div>
+        </ThemeProvider>
+        <Footer />
       </body>
     </html>
   );
