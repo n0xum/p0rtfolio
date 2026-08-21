@@ -1,26 +1,13 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 export default function Hero() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <section
       id="home"
       className="min-h-screen flex items-center justify-center px-6 md:px-12 py-20"
     >
       <div className="max-w-3xl w-full">
-        <div
-          className={`transition-all duration-1000 ${
-            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
+        <div className="reveal-on-scroll">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8">
             {/* Profile Image */}
             <div className="flex-shrink-0">
@@ -39,7 +26,7 @@ export default function Hero() {
             {/* Text Content */}
             <div className="flex-1 text-center md:text-left">
               <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight">
-                Hallo, ich bin
+                Ich bin
                 <br />
                 <span className="text-secondary dark:text-zinc-400">Alexander</span>
               </h1>
@@ -47,9 +34,9 @@ export default function Hero() {
           </div>
 
           <p className="text-xl md:text-2xl text-secondary dark:text-zinc-400 max-w-2xl mb-8 leading-relaxed">
-            Backend Software Engineer bei{' '}
+            IT-Berater und Softwareentwickler bei{' '}
             <span className="text-primary dark:text-zinc-50 font-medium">Lufthansa Industry Solutions</span>.
-            Spezialisiert auf robuste Services mit Go, C# und Java.
+            Spezialisiert auf robuste Backend-Services mit Go, C# und Java.
           </p>
 
           <div className="flex gap-6 items-center flex-wrap">

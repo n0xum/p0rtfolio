@@ -1,28 +1,4 @@
-'use client';
-
-import { useEffect, useRef, useState } from 'react';
-
 export default function Experience() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   const experiences = [
     {
       period: 'seit 06.2026',
@@ -31,9 +7,10 @@ export default function Experience() {
       category: 'Berufserfahrung',
       description: 'Backend-Entwicklung in Projekten der Lufthansa Group mit Fokus auf robuste Services, klare Architektur und moderne Schnittstellen.',
       highlights: [
-        'Backend-Services in C# mit gRPC und Protocol Buffers in einem Aviation-Großprojekt',
-        'Mitarbeit an zwei Go-Projekten mit Fokus auf technische Umsetzung, ADRs und Compliance, eines davon ab dem Kickoff',
-        'REST-Backend mit Java und Spring Boot sowie Frontend mit React in einem Sustainability-Projekt'
+        'Mitarbeit in einem Aviation-Großprojekt auf einem bestehenden Backend-Stack aus C#, gRPC und Protocol Buffers – laufende Einarbeitung in Sprache und Stack',
+        'REST-API in Go mit sqlc und PostgreSQL für einen datenschutzkritischen Abgleich personenbezogener Daten – DSGVO-Anforderungen an Datensparsamkeit von der Datenmodellierung an berücksichtigt',
+        'Migrations-CLI in Go ab dem Projekt-Kickoff: liest CSV-Exporte von einem SFTP-Server ein, transformiert sie und überträgt sie kommandozeilengesteuert als JSON in ein neues zentrales Zielsystem',
+        'CO2-Bilanz-Dashboard, das Mitarbeitenden den eigenen Fußabdruck aus Pendelverkehr, Dienstreisen und IT-Emissionen (z. B. Cloud-Nutzung) sichtbar macht – REST-Backend mit Java und Spring Boot, Frontend mit React'
       ]
     },
     {
@@ -71,15 +48,10 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      ref={sectionRef}
       className="min-h-screen flex items-center justify-center px-6 md:px-12 py-32 lg:py-40"
     >
       <div className="max-w-3xl w-full">
-        <div
-          className={`transition-all duration-1000 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
+        <div className="reveal-on-scroll">
           <h2 className="text-sm uppercase tracking-wider text-secondary dark:text-zinc-400 mb-4">
             Erfahrung
           </h2>

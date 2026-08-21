@@ -1,40 +1,11 @@
-'use client';
-
-import { useEffect, useRef, useState } from 'react';
-
 export default function About() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section
       id="about"
-      ref={sectionRef}
       className="min-h-screen flex items-center justify-center px-6 md:px-12 py-32 lg:py-40"
     >
       <div className="max-w-3xl w-full">
-        <div
-          className={`transition-all duration-1000 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
+        <div className="reveal-on-scroll">
           <h2 className="text-sm uppercase tracking-wider text-secondary dark:text-zinc-400 mb-4">
             Über mich
           </h2>
@@ -50,7 +21,7 @@ export default function About() {
               </p>
 
               <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
-                Dabei verbinde ich Backend-Entwicklung mit <span className="text-primary dark:text-zinc-50 font-medium">Go (Golang)</span>,
+                Dabei verbinde ich Backend-Entwicklung in <span className="text-primary dark:text-zinc-50 font-medium">Go (Golang)</span>,
                 C# und Java (Spring Boot) mit Frontend-Entwicklung in <span className="text-primary dark:text-zinc-50 font-medium">React</span> und Next.js.
                 Zu meinem Alltag gehören außerdem Datenbanken, Cloud-Infrastruktur, CI/CD und Observability.
               </p>
@@ -61,7 +32,7 @@ export default function About() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-border dark:border-zinc-800">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-border dark:border-zinc-800">
               <div>
                 <div className="text-3xl font-bold mb-1">seit 2023</div>
                 <div className="text-sm text-secondary dark:text-zinc-400">Praxis & Projekte</div>
@@ -73,10 +44,6 @@ export default function About() {
               <div>
                 <div className="text-3xl font-bold mb-1">C#</div>
                 <div className="text-sm text-secondary dark:text-zinc-400">gRPC & Protobuf</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold mb-1">∞</div>
-                <div className="text-sm text-secondary dark:text-zinc-400">Lernbereitschaft</div>
               </div>
             </div>
           </div>

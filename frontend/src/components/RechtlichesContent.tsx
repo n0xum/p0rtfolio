@@ -7,25 +7,26 @@ export default function RechtlichesContent() {
         <div>
           <p className="font-medium">1. Datenschutz auf einen Blick</p>
           <p className="text-sm text-secondary dark:text-zinc-400 mt-2">
-            Diese Website ist eine rein statische Portfolio-Seite. Es werden keine personenbezogenen
-            Daten erhoben, gespeichert oder verarbeitet. Es gibt keine Cookies, kein Tracking und
-            keine Analyse-Tools.
+            Diese Website ist eine rein statische Portfolio-Seite. Es gibt keine Cookies, kein
+            Tracking und keine Analyse-Tools. Beim Hosting fallen lediglich technische
+            Zugriffsdaten an – Näheres dazu in Abschnitt 2.
           </p>
         </div>
 
         <div>
           <p className="font-medium">2. Hosting</p>
           <p className="text-sm text-secondary dark:text-zinc-400 mt-2">
-            Diese Website wird auf GitHub Pages gehostet. Beim Aufruf der Website können technische
-            Informationen (IP-Adresse, Browser-Typ, Datum und Uhrzeit) von GitHub in Serverprotokollen
-            gespeichert werden. Weitere Informationen finden Sie in der{' '}
+            Diese Website wird bei der Hetzner Online GmbH gehostet. Beim Aufruf der Website können
+            technische Informationen (z. B. IP-Adresse, Browser-Typ, Datum und Uhrzeit des Zugriffs)
+            durch den Hosting-Provider in Serverprotokollen verarbeitet werden. Weitere Informationen
+            finden Sie in der{' '}
             <a
-              href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement"
+              href="https://www.hetzner.com/legal/privacy-policy/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary dark:text-zinc-50 hover:underline"
             >
-              GitHub Privacy Policy
+              Datenschutzerklärung von Hetzner
             </a>
             .
           </p>

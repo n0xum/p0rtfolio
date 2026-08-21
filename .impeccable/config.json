@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "frontend/src/components/MarkdownRenderer.tsx"
+        ],
+        "createdAt": "2026-08-21T13:02:01.993Z",
+        "reason": "User confirmed: standard markdown blockquote left-border convention, not a decorative AI side-tab. Verified by three independent reviewers in wave 0."
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/components/MarkdownRenderer.tsx"
+        ],
+        "createdAt": "2026-08-21T13:04:49.031Z",
+        "reason": "User confirmed: standard markdown blockquote left-border, not a decorative AI side-tab"
+      }
+    ]
+  }
+}

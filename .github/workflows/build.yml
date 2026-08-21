@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  pull_request:
   workflow_dispatch:
 
 env:
@@ -14,8 +15,60 @@ env:
   SSH_OPTS: -o ServerAliveInterval=20 -o ServerAliveCountMax=15 -o TCPKeepAlive=yes
 
 jobs:
+  quality:
+    name: Lint, Typecheck & Build
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          # This repo has no root package.json - the app lives in frontend/.
+          # The action reads `packageManager` from this file, so the pnpm
+          # version stays declared in exactly one place. `working-directory`
+          # does not apply to an action's inputs, only to `run` steps.
+          package_json_file: frontend/package.json
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        working-directory: ./frontend
+        run: pnpm lint
+
+      - name: Typecheck
+        working-directory: ./frontend
+        run: pnpm exec tsc --noEmit
+
+      - name: Build
+        working-directory: ./frontend
+        # `next build` statically generates /projects/[slug], which calls the
+        # GitHub API at build time (src/lib/github.ts). Runner IPs are heavily
+        # rate-limited unauthenticated, and the fetch deliberately fails loud
+        # on 403 rather than shipping a half-rendered page - so without a
+        # token this step fails intermittently by design.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm build
+
   build-and-push:
     name: Build and Push Docker Image
+    needs: quality
+    if: github.event_name == 'push'
     runs-on: ubuntu-24.04-arm
 
     permissions:
@@ -24,26 +77,31 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
           platforms: linux/arm64
           provenance: false
+          # GITHUB_TOKEN is passed as a BuildKit secret, not a build ARG, so it
+          # is available to `pnpm build` (see src/lib/github.ts) without ever
+          # being persisted in an image layer or build history.
+          secrets: |
+            github_token=${{ secrets.GITHUB_TOKEN }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}

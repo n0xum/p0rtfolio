@@ -1,0 +1,414 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-21T07:24:42Z",
+  "title": "Design System: Alexander Kruska Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Near-Black",
+        "canonical": "#1a1a1a",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7e7e7e",
+          "#9b9b9b",
+          "#b8b8b8",
+          "#d5d5d5",
+          "#f2f2f2"
+        ]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Neutral Gray (retuned for AA)",
+        "canonical": "#666666",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7e7e7e",
+          "#9b9b9b",
+          "#b8b8b8",
+          "#d5d5d5",
+          "#f2f2f2"
+        ]
+      },
+      "accent": {
+        "role": "tertiary",
+        "displayName": "Deep Teal",
+        "canonical": "#0c6e66",
+        "tonalRamp": [
+          "#084540",
+          "#0d7a71",
+          "#13aea1",
+          "#19e3d2",
+          "#4aebde",
+          "#7ff1e8",
+          "#b3f7f1",
+          "#e8fcfb"
+        ]
+      },
+      "accent-muted": {
+        "role": "tertiary",
+        "displayName": "Muted Teal (dark-mode counterpart)",
+        "canonical": "#59a69a",
+        "tonalRamp": [
+          "#1a332f",
+          "#2e5952",
+          "#418076",
+          "#55a699",
+          "#7abbb1",
+          "#a1cfc8",
+          "#c8e3de",
+          "#eef6f5"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Off-White",
+        "canonical": "#fafafa",
+        "tonalRamp": [
+          "#0a0a0a",
+          "#262626",
+          "#525252",
+          "#a3a3a3",
+          "#d4d4d4",
+          "#e5e5e5",
+          "#f5f5f5",
+          "#fafafa"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Light Surface",
+        "canonical": "#f5f5f5",
+        "tonalRamp": [
+          "#0a0a0a",
+          "#262626",
+          "#525252",
+          "#a3a3a3",
+          "#d4d4d4",
+          "#e5e5e5",
+          "#f0f0f0",
+          "#f5f5f5"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border Gray (decorative, not AA-required)",
+        "canonical": "#e5e7eb",
+        "tonalRamp": [
+          "#21252b",
+          "#3b404c",
+          "#545c6d",
+          "#6d788e",
+          "#8e96a8",
+          "#afb5c1",
+          "#d0d3db",
+          "#f1f2f4"
+        ]
+      },
+      "focus-ring": {
+        "role": "tertiary",
+        "displayName": "Focus Ring (aliases accent / accent-muted per theme)",
+        "canonical": "#0c6e66",
+        "tonalRamp": [
+          "#084540",
+          "#0d7a71",
+          "#13aea1",
+          "#19e3d2",
+          "#4aebde",
+          "#7ff1e8",
+          "#b3f7f1",
+          "#e8fcfb"
+        ]
+      },
+      "dark-background": {
+        "role": "neutral",
+        "displayName": "Dark Background (zinc-950, now pinned explicitly and no longer drifting from the hardcoded body color)",
+        "canonical": "#09090b",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#52525b",
+          "#71717a",
+          "#a1a1aa",
+          "#d4d4d8"
+        ]
+      },
+      "dark-text-muted-alt": {
+        "role": "secondary",
+        "displayName": "zinc-500, retuned for AA",
+        "canonical": "#8a8a8a",
+        "tonalRamp": [
+          "#404040",
+          "#525252",
+          "#666666",
+          "#7a7a7a",
+          "#8a8a8a",
+          "#9e9e9e",
+          "#b8b8b8",
+          "#d4d4d4"
+        ]
+      },
+      "syntax-comment": {
+        "role": "syntax",
+        "displayName": "Syntax: comment / quote (dark, AA-corrected 5.04:1)",
+        "canonical": "#888891",
+        "tonalRamp": []
+      },
+      "syntax-keyword": {
+        "role": "syntax",
+        "displayName": "Syntax: keyword / selector-tag / addition (dark)",
+        "canonical": "#fb7185",
+        "tonalRamp": []
+      },
+      "syntax-literal": {
+        "role": "syntax",
+        "displayName": "Syntax: string / number / literal / regexp (dark)",
+        "canonical": "#86efac",
+        "tonalRamp": []
+      },
+      "syntax-identifier": {
+        "role": "syntax",
+        "displayName": "Syntax: title / name / selector-id (dark)",
+        "canonical": "#60a5fa",
+        "tonalRamp": []
+      },
+      "syntax-attribute": {
+        "role": "syntax",
+        "displayName": "Syntax: attribute / variable / type (dark)",
+        "canonical": "#fbbf24",
+        "tonalRamp": []
+      },
+      "syntax-symbol": {
+        "role": "syntax",
+        "displayName": "Syntax: symbol / meta / link (dark)",
+        "canonical": "#c084fc",
+        "tonalRamp": []
+      },
+      "syntax-builtin": {
+        "role": "syntax",
+        "displayName": "Syntax: built-in / deletion (dark)",
+        "canonical": "#f87171",
+        "tonalRamp": []
+      },
+      "syntax-code-bg": {
+        "role": "syntax",
+        "displayName": "Syntax: code block ground (dark)",
+        "canonical": "#18181b",
+        "tonalRamp": []
+      },
+      "syntax-code-fg": {
+        "role": "syntax",
+        "displayName": "Syntax: base code text (dark)",
+        "canonical": "#e4e4e7",
+        "tonalRamp": []
+      },
+      "syntax-comment-light": {
+        "role": "syntax",
+        "displayName": "Syntax: comment (light, stock github.css, 4.82:1)",
+        "canonical": "#6a737d",
+        "tonalRamp": []
+      },
+      "syntax-builtin-light": {
+        "role": "syntax",
+        "displayName": "Syntax: built-in / symbol (light, AA-corrected 4.95:1)",
+        "canonical": "#ba5007",
+        "tonalRamp": []
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name/greeting only, the single largest text element on the site. IBM Plex Sans bold, 1.25-ratio modular scale."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles: 'Meine Expertise', 'Ausgew\u00e4hlte Arbeiten', 'Lass uns zusammenarbeiten', About's lead statement."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Project card titles, dialog titles, code-snippet heading."
+      },
+      "eyebrow-label": {
+        "displayName": "Eyebrow Label",
+        "purpose": "Uppercase tracked label preceding every section headline (\u00dcber mich, Kontakt, Technologien, Projekte)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Paragraph copy in About, Contact intro, and rendered README markdown. Capped to a 70ch measure this wave."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav links, contact-link labels, tech-tag chips, timestamps."
+      },
+      "code": {
+        "displayName": "Code / Mono",
+        "purpose": "Code snippet block and contact email/handle values (Monaco stack, unmodified). Werdegang date column carries explicit tabular-nums."
+      }
+    },
+    "shadows": [
+      {
+        "name": "overlay-lg",
+        "value": "shadow-lg (Tailwind default)",
+        "purpose": "Lifts the mobile nav drawer and the Impressum/Rechtliches modal Dialog panel off the page. The only two places a shadow appears in the entire build. Unchanged this wave."
+      }
+    ],
+    "motion": [
+      {
+        "name": "reveal-on-scroll",
+        "value": ".reveal-on-scroll utility: opacity:1 by default; @supports (animation-timeline: view()) + prefers-reduced-motion:no-preference layers in a scroll-driven opacity+translate keyframe animation",
+        "purpose": "New this wave. CSS-only replacement for the five per-section IntersectionObserver hooks; not yet adopted by components (that's wave 3a's job)."
+      },
+      {
+        "name": "reveal-fade-slide (legacy, still live)",
+        "value": "opacity-0 translate-y-4 -> opacity-100 translate-y-0, transition-all duration-1000",
+        "purpose": "Still driven by IntersectionObserver + useState in Hero/About/Work/Experience/Contact as of this wave; to be deleted once .reveal-on-scroll is adopted."
+      },
+      {
+        "name": "hover-color",
+        "value": "transition-colors (default Tailwind duration/easing)",
+        "purpose": "Default hover treatment on nearly all text links and nav items. No longer force-collapsed under prefers-reduced-motion (see reduced-motion note)."
+      },
+      {
+        "name": "cta-invert",
+        "value": "transition-all duration-300",
+        "purpose": "Hero primary CTA border-to-fill inversion and the error-page retry button."
+      },
+      {
+        "name": "reduced-motion-reconciled",
+        "value": "prefers-reduced-motion: reduce now clamps animation-duration/iteration-count only, not transition-duration",
+        "purpose": "Fixed this wave: the previous blanket rule also killed hover and theme-toggle color transitions, which the audit rubric flagged as an anti-pattern."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "md",
+        "value": "768px (Tailwind default, unmodified)"
+      },
+      {
+        "name": "lg",
+        "value": "1024px (Tailwind default, unmodified)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button (Hero CTA)",
+      "kind": "button",
+      "refersTo": "button-outline-primary",
+      "description": "Outlined-to-filled CTA, the only filled-button interaction pattern in the build; most other CTAs are plain text links. Unchanged this wave except its focus ring now resolves through the shared token.",
+      "html": "<a href=\"#work\" class=\"ds-btn-primary\">Meine Projekte</a>",
+      "css": ".ds-btn-primary { display: inline-block; padding: 12px 24px; border: 2px solid #1a1a1a; color: #1a1a1a; background: transparent; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 14px; font-weight: 500; transition: all 0.3s; } .ds-btn-primary:hover { background: #1a1a1a; color: #fafafa; } .ds-btn-primary:focus-visible { outline: 2px solid #0c6e66; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Link (default CTA)",
+      "kind": "custom",
+      "refersTo": "nav-link-default",
+      "description": "The dominant interactive pattern site-wide: plain text with an accent-color hover, used for nav items, project 'Details ansehen' links, and contact rows. Now gets a visible focus-visible outline by default (previously absent on nearly all of these).",
+      "html": "<a href=\"#\" class=\"ds-link\">Details ansehen &rarr;</a>",
+      "css": ".ds-link { color: #0c6e66; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 14px; transition: color 0.15s; text-decoration: none; } .ds-link:hover { text-decoration: underline; } .ds-link:focus-visible { outline: 2px solid #0c6e66; outline-offset: 2px; border-radius: 2px; }"
+    },
+    {
+      "name": "Tech Chip",
+      "kind": "chip",
+      "description": "Bordered, unfilled tag used to list project tech stacks. No background fill, no rounded corners. Its text color is the retuned `secondary` (#666666) \u2014 this is the specific element the accessibility audit flagged failing AA (4.3:1) before this wave.",
+      "html": "<span class=\"ds-chip\">Go</span>",
+      "css": ".ds-chip { font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 12px; padding: 4px 8px; border: 1px solid #e5e7eb; color: #666666; }"
+    },
+    {
+      "name": "Project Row",
+      "kind": "card",
+      "description": "The closest thing to a 'card' in the build: no background fill or shadow, just a bottom hairline border separating stacked entries. Unchanged this wave; paragraph text now capped to 70ch measure.",
+      "html": "<div class=\"ds-row\"><h4 class=\"ds-row-title\">structify</h4><p class=\"ds-row-desc\">Go-Structs zu PostgreSQL-Schemas konvertieren.</p></div>",
+      "css": ".ds-row { border-bottom: 1px solid #e5e7eb; padding-bottom: 32px; } .ds-row-title { font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 20px; font-weight: 700; } .ds-row-title:hover { color: #0c6e66; } .ds-row-desc { font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #666666; line-height: 1.625; margin-top: 12px; max-width: 70ch; }"
+    },
+    {
+      "name": "Modal Dialog",
+      "kind": "custom",
+      "description": "Square-cornered overlay panel used for the Impressum and Rechtliches legal disclosures; one of only two places shadow is used. Its close-button focus ring now resolves through the shared teal accent, not blue.",
+      "html": "<div class=\"ds-dialog-scrim\"><div class=\"ds-dialog\"><div class=\"ds-dialog-header\"><h2>Impressum</h2><button class=\"ds-dialog-close\">&times;</button></div><div class=\"ds-dialog-body\">Content</div></div></div>",
+      "css": ".ds-dialog-scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 16px; } .ds-dialog { background: #fafafa; max-width: 42rem; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid #e5e7eb; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); } .ds-dialog-header { position: sticky; top: 0; background: #fafafa; border-bottom: 1px solid #e5e7eb; padding: 24px; display: flex; justify-content: space-between; align-items: center; } .ds-dialog-close:focus-visible { outline: 2px solid #0c6e66; outline-offset: 2px; }"
+    },
+    {
+      "name": "Top Navigation",
+      "kind": "nav",
+      "description": "Fixed, translucent, blurred bar with hairline bottom border; active link marked by a 1px underline bar, not a background pill. Anchors it targets now clear the bar via scroll-padding-top; inactive links now get the baseline focus ring.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-brand\" href=\"#home\">Portfolio</a><ul class=\"ds-nav-list\"><li><a class=\"ds-nav-link ds-nav-link-active\" href=\"#home\">Home</a></li><li><a class=\"ds-nav-link\" href=\"#about\">About</a></li></ul></nav>",
+      "css": ".ds-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: rgba(250,250,250,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid #e5e7eb; height: 64px; display: flex; align-items: center; font-family: 'IBM Plex Sans', system-ui, sans-serif; } .ds-nav-brand { font-size: 18px; font-weight: 500; } .ds-nav-link { font-size: 14px; color: #666666; transition: color 0.15s; position: relative; } .ds-nav-link:focus-visible { outline: 2px solid #0c6e66; outline-offset: 2px; } .ds-nav-link-active { color: #1a1a1a; font-weight: 500; } .ds-nav-link-active::after { content: ''; position: absolute; bottom: -21px; left: 0; width: 100%; height: 1px; background: #1a1a1a; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Unstyled-by-Intent Minimalism, Now Actually Typeset",
+    "overview": "This is a single-page, section-scrolling personal portfolio (Hero, About, Work, Experience, Contact) plus three GitHub-README-backed project detail pages. The visual system is unstyled-by-intent minimalism: a near-black-on-off-white palette, one deep-teal accent used sparingly for links and hover states, no imagery beyond a single profile photo, no illustration, no gradients, and almost no shadows. This wave closed the two gaps that made the site read as an untouched framework starter: the font stack is now IBM Plex Sans (self-hosted, two weights, a real 1.25-ratio modular scale) instead of bare system-ui, and the accent is a deliberately chosen deep teal instead of Tailwind's unmodified blue-600. Dark mode still expresses itself through the Tailwind zinc-* scale at every component call site (that would require a component-editing pass to change), but every zinc stop the app depends on is now pinned explicitly in the same @theme block as the light-mode tokens rather than left as an implicit default, and the one real drift bug (a hardcoded dark-mode body background diverging from the zinc-950 value components actually use) has been closed. A token-driven focus-visible ring now reaches every interactive element, and a CSS-only .reveal-on-scroll utility is ready for the next wave to adopt in place of five duplicated IntersectionObserver hooks.",
+    "keyCharacteristics": [
+      "Two-tone-plus-one-accent palette: near-black text, off-white background, single deep-teal accent used only on links/hover/active states and the focus ring.",
+      "One self-hosted typeface (IBM Plex Sans, two weights) carrying a deliberate 1.25-ratio modular scale.",
+      "No card surfaces, no drop shadows on content (only shadow-lg on the two overlay/dialog surfaces).",
+      "Hairline borders (1px) remain the primary structural device; their sub-3:1 contrast is a documented, deliberate trade-off, not an oversight.",
+      "Large, generous section rhythm: ~128-160px of vertical padding per full-height section, with a max-w-3xl content column - confirmed, not redesigned.",
+      "A token-driven :focus-visible outline and a CSS-only scroll-reveal utility now exist for every future interactive element/section to use."
+    ],
+    "rules": [
+      {
+        "name": "The One-Accent Rule",
+        "body": "The accent (accent / accent-muted) appears only on interactive elements - links, hover states, active nav indicators, focus rings, code accents. It never appears as a background fill, a section header color, or a decorative element. Unchanged this wave; only the hue moved from blue to teal.",
+        "section": "colors"
+      },
+      {
+        "name": "The Explicit Dark-Scale Rule",
+        "body": "Dark mode still expresses itself through Tailwind's zinc-* utility classes at every component call site - that could not change without editing every component. What changed: every zinc stop the app depends on is now pinned explicitly inside the same @theme block as the light-mode tokens, and the one place light and dark values had actually drifted apart (a hardcoded dark body background) has been closed.",
+        "section": "colors"
+      },
+      {
+        "name": "The Border-Contrast Caveat",
+        "body": "border and the dark zinc-800/zinc-700 borders measure well under the 3:1 UI-component floor. Treated as decorative content separators (WCAG 1.4.11 exempts graphical objects not required to identify a component), consistent with the Border-Not-Shadow Rule - not fixed by darkening, which would be a visible redesign. One exception (the ReadmeDropdown disclosure toggle's boundary) is flagged, unresolved, for wave 3a.",
+        "section": "colors"
+      },
+      {
+        "name": "The Uppercase-Eyebrow Rule",
+        "body": "Every section is introduced by a text-sm uppercase tracking-wider label in the secondary/muted color before its bold headline. Unchanged.",
+        "section": "typography"
+      },
+      {
+        "name": "The Modular-Scale Rule",
+        "body": "Every text-lg through text-7xl step is 1rem x 1.25^n for a fixed integer n, declared once in @theme and inherited by every component using these existing utility names - replacing the arbitrary, undocumented jumps the previous DESIGN.md flagged.",
+        "section": "typography"
+      },
+      {
+        "name": "The Max-Width-3XL Rule",
+        "body": "All five homepage sections share one max-w-3xl reading column, centered with w-full. Only the project detail template widens to max-w-4xl. Unchanged.",
+        "section": "layout"
+      },
+      {
+        "name": "The 70ch Measure Rule",
+        "body": "Any paragraph-length text block using leading-relaxed and not already constrained by its own max-w-* utility is capped to 70ch - closing the 85-96 characters-per-line defect the audit measured, without touching any component's max-w-3xl/max-w-4xl section width.",
+        "section": "layout"
+      },
+      {
+        "name": "The Border-Not-Shadow Rule",
+        "body": "Depth and separation within the page flow is conveyed by a single hairline border, never a shadow or a tonal surface change. Shadows are reserved exclusively for the two modal/overlay surfaces. Unchanged.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep the accent teal (#0c6e66 / #59a69a) confined to interactive states (links, hover, focus, active nav indicator) - it does not appear as a fill or section color anywhere in the build.",
+      "Do use hairline 1px borders (border-border / dark:border-zinc-800) as the default separator between content blocks; reserve shadow-lg for true overlay surfaces (modal, mobile drawer) only.",
+      "Do keep homepage sections on the shared max-w-3xl column with py-32/lg:py-40 vertical rhythm and px-6/md:px-12 horizontal rhythm.",
+      "Do treat text-links as the default CTA pattern; the bordered outline-to-fill button exists as a single accent for the Hero's primary action, not a general button system.",
+      "Do use .reveal-on-scroll for any new scroll-triggered entrance instead of a fresh IntersectionObserver - it is CSS-only, visible-by-default, and already handles no-JS/no-support/reduced-motion.",
+      "Do rely on the baseline :focus-visible rule for new interactive elements rather than adding another one-off focus-visible:ring-* utility."
+    ],
+    "donts": [
+      "Don't read secondary/zinc-500 as still being Tailwind's stock neutral-500/zinc-500 - both were deliberately retuned this wave to clear WCAG AA as real content.",
+      "Don't assume dark mode inherits the light-mode custom token names (primary, background, surface, border) - every dark: variant still reaches for raw zinc-* utility classes; only the values backing those utilities are now a single declared source of truth.",
+      "Don't darken border/zinc-800/zinc-700 to chase a 3:1 UI-component ratio without deciding to redesign the whole hairline-divider visual language - treat the current values as a deliberate, documented trade-off, except for the flagged ReadmeDropdown toggle boundary.",
+      "Don't add a second self-hosted family. IBM Plex Sans at two weights covers every role already in use; a display/editorial face would contradict PRODUCT.md's backend-engineer-not-design-agency positioning.",
+      "Don't add card-style shadows or background-tinted surfaces to inline content - the build's depth model is flat-plus-hairline-border everywhere except the two modal/overlay surfaces."
+    ]
+  }
+}
