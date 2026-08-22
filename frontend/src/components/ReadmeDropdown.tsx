@@ -7,9 +7,9 @@ const MarkdownRenderer = dynamic(() => import('./MarkdownRenderer'), {
   ssr: false,
   loading: () => (
     <div className="animate-pulse space-y-3">
-      <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-3/4" />
-      <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-1/2" />
-      <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-5/6" />
+      <div className="h-4 bg-control rounded w-3/4" />
+      <div className="h-4 bg-control rounded w-1/2" />
+      <div className="h-4 bg-control rounded w-5/6" />
     </div>
   ),
 });
@@ -22,15 +22,15 @@ export default function ReadmeDropdown({ content }: ReadmeDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border border-secondary dark:border-zinc-500 rounded-lg overflow-hidden">
+    <div className="border border-border-interactive rounded-lg overflow-hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
-        className="relative w-full flex items-center justify-between px-6 py-4 min-h-11 bg-surface dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors overflow-hidden before:absolute before:inset-0 before:animate-shimmer before:bg-[length:200%_100%] before:bg-[linear-gradient(90deg,transparent_0%,color-mix(in_srgb,var(--color-accent)_8%,transparent)_50%,transparent_100%)] dark:before:bg-[linear-gradient(90deg,transparent_0%,color-mix(in_srgb,var(--color-accent-muted)_10%,transparent)_50%,transparent_100%)]"
+        className="relative w-full flex items-center justify-between px-6 py-4 min-h-11 bg-surface dark:bg-surface/50 hover:bg-surface-hover transition-colors overflow-hidden before:absolute before:inset-0 before:animate-shimmer before:bg-[length:200%_100%] before:bg-[linear-gradient(90deg,transparent_0%,color-mix(in_srgb,var(--color-accent)_8%,transparent)_50%,transparent_100%)] dark:before:bg-[linear-gradient(90deg,transparent_0%,color-mix(in_srgb,var(--color-accent-muted)_10%,transparent)_50%,transparent_100%)]"
       >
         <span className="font-mono text-sm font-medium">README.md</span>
         <svg
-          className={`w-5 h-5 text-secondary dark:text-zinc-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-secondary transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -40,7 +40,7 @@ export default function ReadmeDropdown({ content }: ReadmeDropdownProps) {
         </svg>
       </button>
       {isOpen && (
-        <div className="px-6 py-6 border-t border-secondary dark:border-zinc-500">
+        <div className="px-6 py-6 border-t border-border-interactive">
           <div className="prose-wrapper">
             <MarkdownRenderer content={content} />
           </div>

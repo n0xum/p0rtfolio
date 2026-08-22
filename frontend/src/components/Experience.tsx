@@ -4,7 +4,6 @@ export default function Experience() {
       period: 'seit 06.2026',
       position: 'IT-Berater / Softwareentwickler',
       company: 'Lufthansa Industry Solutions',
-      category: 'Berufserfahrung',
       description: 'Backend-Entwicklung in Projekten der Lufthansa Group mit Fokus auf robuste Services, klare Architektur und moderne Schnittstellen.',
       highlights: [
         'Mitarbeit in einem Aviation-Großprojekt mit einem bestehenden Backend-Stack aus C#, gRPC und Protocol Buffers. Die Einarbeitung in Sprache und Technologien läuft.',
@@ -17,7 +16,6 @@ export default function Experience() {
       period: '08.2023 – 06.2026',
       position: 'Ausbildung zum Fachinformatiker für Anwendungsentwicklung',
       company: 'Lufthansa Industry Solutions · Abschluss: 2,0',
-      category: 'Berufserfahrung',
       description: 'Praxisnahe Ausbildung mit Schwerpunkt auf Backend-Entwicklung, Web-Technologien und dem Betrieb produktiver Anwendungen.',
       highlights: [
         'Backend-Services in Golang, MongoDB und Redis in einem einjährigen Automotive-Projekt',
@@ -31,16 +29,7 @@ export default function Experience() {
       period: '08.2021 – 07.2023',
       position: 'Fachhochschulreife: Informationstechnik',
       company: 'Fachoberschule',
-      category: 'Ausbildung',
-      description: 'Fachhochschulreife mit Schwerpunkt Informationstechnik.',
-      highlights: []
-    },
-    {
-      period: '08.2016 – 06.2021',
-      position: 'Erweiterter Realschulabschluss',
-      company: 'Realschule',
-      category: 'Ausbildung',
-      description: 'Erweiterter Realschulabschluss.',
+      description: '',
       highlights: []
     }
   ];
@@ -52,7 +41,7 @@ export default function Experience() {
     >
       <div className="max-w-3xl w-full">
         <div className="reveal-on-scroll">
-          <h2 className="text-sm uppercase tracking-wider text-secondary dark:text-zinc-400 mb-4">
+          <h2 className="text-sm uppercase tracking-wider text-secondary mb-4">
             Erfahrung
           </h2>
           <h3 className="text-3xl md:text-4xl font-bold mb-12">
@@ -81,7 +70,7 @@ export default function Experience() {
                     declares and sat 1.5% off the actual `#fafafa` page
                     ground it was meant to punch through. */}
                 <span
-                  className="timeline-marker absolute -left-[7px] top-1.5 w-4 h-4 rounded-full bg-primary dark:bg-zinc-50 border-4 border-background dark:border-zinc-950"
+                  className="timeline-marker absolute -left-[7px] top-1.5 w-4 h-4 rounded-full bg-primary border-4 border-background"
                   aria-hidden="true"
                 />
 
@@ -89,28 +78,27 @@ export default function Experience() {
                   <div>
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
                       <h4 className="text-xl font-bold">{exp.position}</h4>
-                      <span className="text-sm text-secondary dark:text-zinc-400 font-mono">{exp.period}</span>
+                      <span className="text-sm text-secondary font-mono">{exp.period}</span>
                     </div>
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-primary dark:text-zinc-50">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-primary">
                       <span className="font-medium">{exp.company}</span>
-                    </div>
-                    <div className="text-xs uppercase tracking-wider text-secondary dark:text-zinc-500 mt-2">
-                      {exp.category}
                     </div>
                   </div>
 
-                  <p className="text-secondary dark:text-zinc-400 leading-relaxed">{exp.description}</p>
+                  {exp.description && (
+                    <p className="text-secondary leading-relaxed">{exp.description}</p>
+                  )}
 
                   {exp.highlights.length > 0 && (
                     <div className="space-y-2 pt-2">
-                      <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400">
+                      <h5 className="text-sm font-medium uppercase tracking-wider text-secondary">
                         Highlights
                       </h5>
                       <ul className="space-y-2">
                         {exp.highlights.map((highlight, i) => (
                           <li key={i} className="flex items-start gap-3">
-                            <span className="text-primary dark:text-zinc-50 mt-1">→</span>
-                            <span className="text-secondary dark:text-zinc-400">{highlight}</span>
+                            <span className="text-primary mt-1">→</span>
+                            <span className="text-secondary">{highlight}</span>
                           </li>
                         ))}
                       </ul>
@@ -122,54 +110,54 @@ export default function Experience() {
           </div>
         </div>
 
-        <div className="reveal-on-scroll mt-16 p-8 border border-border dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900/20">
+        <div className="reveal-on-scroll mt-16 p-8 border border-border bg-panel dark:bg-panel/20">
           <h4 className="font-bold mb-6">Technologien & Methoden</h4>
           <div className="grid md:grid-cols-2 gap-x-8 gap-y-6">
               <div>
-                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary mb-2">
                   Sprachen
                 </h5>
-                <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
+                <p className="text-sm text-secondary leading-relaxed">
                   Golang, C#, Java, TypeScript
                 </p>
               </div>
               <div>
-                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary mb-2">
                   Frameworks & Protokolle
                 </h5>
-                <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
+                <p className="text-sm text-secondary leading-relaxed">
                   gRPC, Protocol Buffers, REST, Spring Boot, React, Next.js
                 </p>
               </div>
               <div>
-                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary mb-2">
                   Datenbanken
                 </h5>
-                <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
+                <p className="text-sm text-secondary leading-relaxed">
                   MongoDB, PostgreSQL, Redis
                 </p>
               </div>
               <div>
-                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary mb-2">
                   Cloud & Infrastruktur
                 </h5>
-                <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
+                <p className="text-sm text-secondary leading-relaxed">
                   AWS, Docker, Linux, CI/CD, Git
                 </p>
               </div>
               <div>
-                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary mb-2">
                   Observability
                 </h5>
-                <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
+                <p className="text-sm text-secondary leading-relaxed">
                   New Relic
                 </p>
               </div>
               <div>
-                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary dark:text-zinc-400 mb-2">
+                <h5 className="text-sm font-medium uppercase tracking-wider text-secondary mb-2">
                   Methoden & Tools
                 </h5>
-                <p className="text-sm text-secondary dark:text-zinc-400 leading-relaxed">
+                <p className="text-sm text-secondary leading-relaxed">
                   Scrum, Jira, Confluence, ADRs
                 </p>
               </div>

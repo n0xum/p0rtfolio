@@ -21,19 +21,14 @@ export const projects: Project[] = [
     slug: 'structify',
     title: 'structify',
     description: 'Go-Structs zu PostgreSQL-Schemas konvertieren, mit Web-Editor und Inline-Tags für Constraints, Indexes und Foreign Keys.',
+    about: 'Structify liest Go-Structs ein und generiert daraus zwei Dinge: ein PostgreSQL-Schema und einsatzbereiten database/sql-CRUD-Code. Kein ORM, keine Reflection zur Laufzeit — nur generiertes SQL und Go-Code, den man lesen und selbst verantworten kann. Sind Foreign Keys definiert, entstehen zusätzlich JOIN-Queries zwischen den verknüpften Tabellen.',
     githubRepo: 'n0xum/structify',
     tech: ['Go', 'PostgreSQL', 'Next.js', 'TypeScript', 'Docker'],
     type: 'Full-Stack',
     liveUrl: 'https://structify.alexander-kruska.dev',
     features: [
-      'Go-Structs mit db:-Tags zu SQL-DDL konvertieren',
-      'Constraints: CHECK, DEFAULT, ENUM',
-      'Indexes und Composite Indexes',
-      'Foreign Keys mit ON DELETE / ON UPDATE',
-      'Composite Primary Keys und Foreign Keys',
       'Interaktiver Web-Editor mit Live-Generierung',
-      'Dokumentationsseite mit Try-it-Buttons',
-      'CI/CD mit GitHub Actions, SonarQube, Docker'
+      'Dokumentationsseite mit Try-it-Buttons'
     ],
     codeSnippet: {
       language: 'go',
@@ -57,10 +52,7 @@ export const projects: Project[] = [
     features: [
       'HomeKit-Bridge über das HAP-Protokoll (brutella/hap): Lampen und Scrollrad erscheinen als native Apple-HomeKit-Accessories',
       'MQTT-Anbindung an Zigbee2MQTT (Eclipse Paho) mit bidirektionaler Zustandssynchronisierung zwischen HomeKit und den Geräten',
-      'Physisches Dimmen per Scrollrad über zwei MQTT-Befehle pro Geste statt eines Broadcasts pro Zwischenschritt, inklusive automatischer Korrektur bei zu niedriger Helligkeit',
-      'YAML-Konfiguration (Viper) für MQTT-Broker, HomeKit-Parameter und Geräte, inklusive Schnittstellen-Filter für die mDNS-Ankündigung im Docker-Host-Netzwerk',
-      'Containerisiert mit einem mehrstufigen Dockerfile (Non-Root-User) sowie docker-compose für Mosquitto und Zigbee2MQTT, gesteuert über ein Makefile',
-      'CI-Pipeline (GitHub Actions) mit go vet und go test bei jedem Push sowie Image-Build und -Push nach ghcr.io beim Merge auf main'
+      'YAML-Konfiguration (Viper) für MQTT-Broker, HomeKit-Parameter und Geräte, inklusive Schnittstellen-Filter für die mDNS-Ankündigung im Docker-Host-Netzwerk'
     ],
     codeSnippet: {
       language: 'go',

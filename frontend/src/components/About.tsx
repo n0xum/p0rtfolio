@@ -6,7 +6,7 @@ export default function About() {
     >
       <div className="max-w-3xl w-full">
         <div className="reveal-on-scroll">
-          <h2 className="text-sm uppercase tracking-wider text-secondary dark:text-zinc-400 mb-4">
+          <h2 className="text-sm uppercase tracking-wider text-secondary mb-4">
             Über mich
           </h2>
         </div>
@@ -17,24 +17,21 @@ export default function About() {
             and double the travel. */}
         <div className="reveal-stagger space-y-6">
             <h3 className="text-3xl md:text-4xl font-bold leading-tight">
-              IT-Berater mit Schwerpunkt Softwareentwicklung
+              Schwerpunkte und Arbeitsweise
             </h3>
 
-            {/* Recruiter-scannable, not essayistic. The technology *list*
-                already exists twice on this page (Hero lead, "Meine
-                Expertise" grid), so this section carries what neither of
-                those does: what the skills are actually applied to, and how
-                the work is done. Bullet vocabulary and the labelled-column
-                pattern are reused verbatim from Werdegang and Work rather
-                than invented here. */}
-            <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
-              Ich entwickle und entwerfe robuste Backend-Systeme bei der <span className="text-primary dark:text-zinc-50 font-medium">Lufthansa Industry Solutions</span>,
-              überwiegend mit <span className="text-primary dark:text-zinc-50 font-medium">Go</span>, aber auch C# und Java.
+            {/* Role, employer and primary stack are stated once, in the
+                Hero. This section deliberately does not repeat that claim -
+                it carries what the Hero doesn't: what the skills are
+                actually applied to, and how the work is done. Bullet
+                vocabulary and the labelled-column pattern are reused
+                verbatim from Werdegang and Work rather than invented here. */}
+            <p className="text-lg text-secondary leading-relaxed">
               Mein Fokus liegt auf Schnittstellen, wartbaren Architekturen und Software, die auch im
               produktiven Betrieb zuverlässig funktioniert.
             </p>
 
-            <p className="text-lg text-secondary dark:text-zinc-400 leading-relaxed">
+            <p className="text-lg text-secondary leading-relaxed">
               Neben meiner Arbeit im Unternehmensumfeld entwickle ich eigene Projekte, betreibe eigene
               Infrastruktur und beschäftige mich mit modernen Ansätzen rund um Softwareentwicklung und KI.
               Wenn es ein Projekt erfordert, bekommt die API auch das passende Frontend.
@@ -42,7 +39,7 @@ export default function About() {
 
             <div className="grid md:grid-cols-2 gap-8 pt-2">
               <div className="space-y-4">
-                <h4 className="font-medium text-lg border-b border-border dark:border-zinc-800 pb-2">
+                <h4 className="font-medium text-lg border-b border-border pb-2">
                   Schwerpunkte
                 </h4>
                 <ul className="space-y-2">
@@ -54,15 +51,15 @@ export default function About() {
                     'Frontend bei Bedarf mit React, Next.js und TypeScript',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
-                      <span className="text-primary dark:text-zinc-50 mt-1" aria-hidden="true">→</span>
-                      <span className="text-secondary dark:text-zinc-400">{item}</span>
+                      <span className="text-primary mt-1" aria-hidden="true">→</span>
+                      <span className="text-secondary">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               <div className="space-y-4">
-                <h4 className="font-medium text-lg border-b border-border dark:border-zinc-800 pb-2">
+                <h4 className="font-medium text-lg border-b border-border pb-2">
                   Arbeitsweise
                 </h4>
                 <ul className="space-y-2">
@@ -74,26 +71,11 @@ export default function About() {
                     'KI-gestützte Multi-Agenten-Workflows mit klarer Rollen- und Review-Trennung',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
-                      <span className="text-primary dark:text-zinc-50 mt-1" aria-hidden="true">→</span>
-                      <span className="text-secondary dark:text-zinc-400">{item}</span>
+                      <span className="text-primary mt-1" aria-hidden="true">→</span>
+                      <span className="text-secondary">{item}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-border dark:border-zinc-800">
-              <div>
-                <div className="text-3xl font-bold mb-1">seit 2023</div>
-                <div className="text-sm text-secondary dark:text-zinc-400">Praxis & Projekte</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold mb-1">Go</div>
-                <div className="text-sm text-secondary dark:text-zinc-400">Backend-Fokus</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold mb-1">C#</div>
-                <div className="text-sm text-secondary dark:text-zinc-400">gRPC & Protobuf</div>
               </div>
             </div>
         </div>

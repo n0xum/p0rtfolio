@@ -7,12 +7,12 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen bg-background dark:bg-zinc-950 pt-24 pb-32 flex items-center">
+    <main className="min-h-screen bg-background pt-24 pb-32 flex items-center">
       <div className="max-w-4xl mx-auto px-6 md:px-12 w-full">
         <div className="flex flex-col items-center justify-center text-center space-y-6 py-20">
           {/* Icon */}
           <svg
-            className="w-20 h-20 text-secondary dark:text-zinc-600"
+            className="w-20 h-20 text-icon-muted"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -31,7 +31,7 @@ export default function NotFound() {
             <h1 className="text-3xl md:text-4xl font-bold">
               404: Seite nicht gefunden
             </h1>
-            <p className="text-lg text-secondary dark:text-zinc-400 max-w-md">
+            <p className="text-lg text-secondary max-w-md">
               Die gesuchte Seite existiert nicht oder wurde verschoben.
             </p>
           </div>
@@ -40,7 +40,7 @@ export default function NotFound() {
           <div className="pt-4">
             <Link
               href="/"
-              className="inline-flex px-6 py-3 border-2 border-primary dark:border-zinc-50 text-primary dark:text-zinc-50 hover:bg-primary dark:hover:bg-zinc-50 hover:text-background dark:hover:text-zinc-950 transition-colors duration-150 ease-out-quart text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="inline-flex px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-background transition-colors duration-150 ease-out-quart text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               Zurück zur Startseite
             </Link>
