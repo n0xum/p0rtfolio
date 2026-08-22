@@ -19,22 +19,22 @@ export default function Footer() {
   const [rechtlichesOpen, setRechtlichesOpen] = useState(false);
 
   return (
-    <footer className="border-t border-border dark:border-zinc-800">
+    <footer className="border-t border-border">
       <div className="max-w-6xl mx-auto px-6 md:px-12 py-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-secondary dark:text-zinc-400">
+          <p className="text-sm text-secondary">
             © {new Date().getFullYear()} Alexander Kruska. Entwickelt mit Next.js
           </p>
           <div className="flex gap-6">
             <button
               onClick={() => setImpressumOpen(true)}
-              className="relative text-sm text-secondary dark:text-zinc-400 hover:text-primary dark:hover:text-zinc-50 transition-colors cursor-pointer after:absolute after:-inset-x-3 after:-inset-y-2 after:content-['']"
+              className="relative text-sm text-secondary hover:text-primary transition-colors cursor-pointer after:absolute after:-inset-x-3 after:-inset-y-2 after:content-['']"
             >
               Impressum
             </button>
             <button
               onClick={() => setRechtlichesOpen(true)}
-              className="relative text-sm text-secondary dark:text-zinc-400 hover:text-primary dark:hover:text-zinc-50 transition-colors cursor-pointer after:absolute after:-inset-x-3 after:-inset-y-2 after:content-['']"
+              className="relative text-sm text-secondary hover:text-primary transition-colors cursor-pointer after:absolute after:-inset-x-3 after:-inset-y-2 after:content-['']"
             >
               Rechtliches
             </button>

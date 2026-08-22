@@ -24,7 +24,7 @@ export default function ThemeToggle() {
     <>
       <button
         onClick={handleClick}
-        className="relative p-2 rounded-lg hover:bg-surface dark:hover:bg-zinc-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-950 after:absolute after:-inset-1 after:content-['']"
+        className="relative p-2 rounded-lg hover:bg-surface-interactive transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-950 after:absolute after:-inset-1 after:content-['']"
         aria-label={theme === 'light' ? 'Zu Dark Mode wechseln' : 'Zu Light Mode wechseln'}
         aria-pressed={theme === 'dark'}
         title={theme === 'light' ? 'Dark Mode aktivieren' : 'Light Mode aktivieren'}

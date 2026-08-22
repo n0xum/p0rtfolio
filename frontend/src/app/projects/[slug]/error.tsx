@@ -16,13 +16,13 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="min-h-screen bg-background dark:bg-zinc-950 pt-24 pb-32">
+    <main className="min-h-screen bg-background pt-24 pb-32">
       <div className="max-w-4xl mx-auto px-6 md:px-12">
         <div className="flex flex-col items-center justify-center text-center space-y-6 py-20">
           {/* Error Icon */}
           <div className="relative">
             <svg
-              className="w-20 h-20 text-secondary dark:text-zinc-600"
+              className="w-20 h-20 text-icon-muted"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -41,7 +41,7 @@ export default function Error({
             <h1 className="text-3xl md:text-4xl font-bold">
               Etwas ist schiefgelaufen
             </h1>
-            <p className="text-lg text-secondary dark:text-zinc-400 max-w-md">
+            <p className="text-lg text-secondary max-w-md">
               Beim Laden des Projekts ist ein Fehler aufgetreten. Dies kann an temporären Problemen mit der GitHub API liegen.
             </p>
           </div>
@@ -50,13 +50,13 @@ export default function Error({
           <div className="flex gap-4 pt-4">
             <button
               onClick={reset}
-              className="px-6 py-3 border-2 border-primary dark:border-zinc-50 text-primary dark:text-zinc-50 hover:bg-primary dark:hover:bg-zinc-50 hover:text-background dark:hover:text-zinc-950 transition-colors duration-150 ease-out-quart text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-background transition-colors duration-150 ease-out-quart text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               Erneut versuchen
             </button>
             <Link
               href="/#work"
-              className="px-6 py-3 text-sm text-secondary dark:text-zinc-400 hover:text-accent dark:hover:text-accent-muted transition-colors underline underline-offset-4 decoration-2"
+              className="px-6 py-3 text-sm text-secondary hover:text-accent transition-colors underline underline-offset-4 decoration-2"
             >
               Zurück zu Projekten
             </Link>
@@ -65,7 +65,7 @@ export default function Error({
           {/* Technical Details (only in development) */}
           {process.env.NODE_ENV === 'development' && (
             <details className="pt-8 text-left w-full max-w-2xl">
-              <summary className="cursor-pointer text-sm text-secondary dark:text-zinc-400 hover:text-accent dark:hover:text-accent-muted transition-colors">
+              <summary className="cursor-pointer text-sm text-secondary hover:text-accent transition-colors">
                 Technische Details
               </summary>
               <pre className="mt-4 p-4 bg-zinc-900 text-zinc-300 rounded-lg overflow-x-auto text-xs">

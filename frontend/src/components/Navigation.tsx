@@ -6,6 +6,79 @@ import ThemeToggle from './ThemeToggle';
 const FOCUSABLE_SELECTOR =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
+interface NavItem {
+  id: string;
+  label: string;
+}
+
+const navItems: NavItem[] = [
+  { id: 'home', label: 'Start' },
+  { id: 'about', label: 'Über mich' },
+  { id: 'work', label: 'Projekte' },
+  { id: 'experience', label: 'Werdegang' },
+  { id: 'contact', label: 'Kontakt' },
+];
+
+// Shared renderer for both the desktop bar and the mobile drawer - each
+// variant keeps its own markup (underline vs. left-border active state,
+// no onClick vs. onClick-to-close) since they're different responsive
+// presentations of the same five items, not accidental copies.
+function NavLinks({
+  variant,
+  activeSection,
+  onNavigate,
+}: {
+  variant: 'desktop' | 'mobile';
+  activeSection: string;
+  onNavigate?: () => void;
+}) {
+  if (variant === 'desktop') {
+    return (
+      <ul className="flex space-x-8">
+        {navItems.map((item) => (
+          <li key={item.id}>
+            <a
+              href={`#${item.id}`}
+              aria-current={activeSection === item.id ? 'page' : undefined}
+              className={`text-sm transition-colors duration-150 ease-out-quart relative ${
+                activeSection === item.id
+                  ? 'text-primary font-medium'
+                  : 'text-secondary hover:text-primary'
+              }`}
+            >
+              {item.label}
+              {activeSection === item.id && (
+                <span className="nav-underline absolute -bottom-[21px] left-0 w-full h-[1px] origin-left bg-primary" />
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  return (
+    <ul className="flex flex-col p-6 space-y-4">
+      {navItems.map((item) => (
+        <li key={item.id}>
+          <a
+            href={`#${item.id}`}
+            onClick={onNavigate}
+            aria-current={activeSection === item.id ? 'page' : undefined}
+            className={`block py-3 px-4 text-base transition-colors border-l-2 ${
+              activeSection === item.id
+                ? 'border-accent text-primary font-medium bg-surface'
+                : 'border-transparent text-secondary hover:text-accent hover:border-accent/30'
+            }`}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function Navigation() {
   const [activeSection, setActiveSection] = useState('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -100,19 +173,6 @@ export default function Navigation() {
     };
   }, [isMenuOpen]);
 
-  const closeMenu = (restoreFocus: boolean) => {
-    setIsMenuOpen(false);
-    if (restoreFocus) menuButtonRef.current?.focus();
-  };
-
-  const navItems = [
-    { id: 'home', label: 'Start' },
-    { id: 'about', label: 'Über mich' },
-    { id: 'work', label: 'Projekte' },
-    { id: 'experience', label: 'Werdegang' },
-    { id: 'contact', label: 'Kontakt' },
-  ];
-
   const handleNavClick = () => {
     setIsMenuOpen(false);
   };
@@ -129,7 +189,7 @@ export default function Navigation() {
     // time you are scrolling - and that cost scales with the radius. A
     // more opaque ground carries the same legibility for less work, and
     // reads flatter, which is the language DESIGN.md commits to anyway.
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-border dark:border-zinc-800">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border">
       {/* Reading progress through the page. Pure CSS: a scaleX driven by a
           `scroll(root block)` timeline, so it costs the main thread
           nothing. See `.scroll-progress` in globals.css. */}
@@ -139,7 +199,7 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           <a
             href="#home"
-            className="text-lg font-medium tracking-tight hover:text-accent dark:hover:text-accent-muted transition-colors duration-150 ease-out-quart"
+            className="text-lg font-medium tracking-tight hover:text-accent transition-colors duration-150 ease-out-quart"
             onClick={handleNavClick}
             aria-label="Portfolio, zurück zur Startseite"
           >
@@ -148,26 +208,7 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            <ul className="flex space-x-8">
-              {navItems.map((item) => (
-                <li key={item.id}>
-                  <a
-                    href={`#${item.id}`}
-                    aria-current={activeSection === item.id ? 'page' : undefined}
-                    className={`text-sm transition-colors duration-150 ease-out-quart relative ${
-                      activeSection === item.id
-                        ? 'text-primary dark:text-zinc-50 font-medium'
-                        : 'text-secondary dark:text-zinc-400 hover:text-primary dark:hover:text-zinc-50'
-                    }`}
-                  >
-                    {item.label}
-                    {activeSection === item.id && (
-                      <span className="nav-underline absolute -bottom-[21px] left-0 w-full h-[1px] origin-left bg-primary dark:bg-zinc-50" />
-                    )}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <NavLinks variant="desktop" activeSection={activeSection} />
             <ThemeToggle />
           </div>
 
@@ -183,17 +224,17 @@ export default function Navigation() {
               aria-controls="mobile-menu"
             >
               <span
-                className={`w-6 h-0.5 bg-primary dark:bg-zinc-50 transition-[transform,opacity] duration-200 ease-out-quart ${
+                className={`w-6 h-0.5 bg-primary transition-[transform,opacity] duration-200 ease-out-quart ${
                   isMenuOpen ? 'rotate-45 translate-y-2' : ''
                 }`}
               />
               <span
-                className={`w-6 h-0.5 bg-primary dark:bg-zinc-50 transition-[transform,opacity] duration-200 ease-out-quart ${
+                className={`w-6 h-0.5 bg-primary transition-[transform,opacity] duration-200 ease-out-quart ${
                   isMenuOpen ? 'opacity-0' : ''
                 }`}
               />
               <span
-                className={`w-6 h-0.5 bg-primary dark:bg-zinc-50 transition-[transform,opacity] duration-200 ease-out-quart ${
+                className={`w-6 h-0.5 bg-primary transition-[transform,opacity] duration-200 ease-out-quart ${
                   isMenuOpen ? '-rotate-45 -translate-y-2' : ''
                 }`}
               />
@@ -208,7 +249,7 @@ export default function Navigation() {
       {isMenuOpen && (
         <div
           className="md:hidden fixed inset-0 bg-black/50"
-          onClick={() => closeMenu(false)}
+          onClick={() => setIsMenuOpen(false)}
           style={{
             top: '64px',
             backdropFilter: 'blur(4px)',
@@ -222,31 +263,14 @@ export default function Navigation() {
       <div
         id="mobile-menu"
         ref={menuRef}
-        className={`md:hidden fixed top-16 right-0 h-[calc(100vh-64px)] w-64 bg-background dark:bg-zinc-950 border-l border-border dark:border-zinc-800 shadow-lg transition-transform duration-300 ease-out-expo ${
+        className={`md:hidden fixed top-16 right-0 h-[calc(100vh-64px)] w-64 bg-background border-l border-border shadow-lg transition-transform duration-300 ease-out-expo ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         role="navigation"
         aria-label="Mobile Navigation"
         inert={!isMenuOpen}
       >
-        <ul className="flex flex-col p-6 space-y-4">
-          {navItems.map((item) => (
-            <li key={item.id}>
-              <a
-                href={`#${item.id}`}
-                onClick={handleNavClick}
-                aria-current={activeSection === item.id ? 'page' : undefined}
-                className={`block py-3 px-4 text-base transition-colors border-l-2 ${
-                  activeSection === item.id
-                    ? 'border-accent dark:border-accent-muted text-primary dark:text-zinc-50 font-medium bg-surface dark:bg-zinc-900'
-                    : 'border-transparent text-secondary dark:text-zinc-400 hover:text-accent dark:hover:text-accent-muted hover:border-accent/30 dark:hover:border-accent-muted/30'
-                }`}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <NavLinks variant="mobile" activeSection={activeSection} onNavigate={handleNavClick} />
       </div>
     </nav>
   );

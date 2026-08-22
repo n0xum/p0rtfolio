@@ -55,10 +55,10 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
       components={{
         // Custom heading styles
         h1: ({ node, ...props }) => (
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 mt-12 first:mt-0 border-b border-border dark:border-zinc-800 pb-4" {...props} />
+          <h1 className="text-3xl md:text-4xl font-bold mb-6 mt-12 first:mt-0 border-b border-border pb-4" {...props} />
         ),
         h2: ({ node, ...props }) => (
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 mt-10 border-b border-border dark:border-zinc-800 pb-3" {...props} />
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 mt-10 border-b border-border pb-3" {...props} />
         ),
         h3: ({ node, ...props }) => (
           <h3 className="text-xl md:text-2xl font-semibold mb-3 mt-8" {...props} />
@@ -75,13 +75,13 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
         // Paragraph
         p: ({ node, ...props }) => (
-          <p className="text-base text-secondary dark:text-zinc-400 leading-relaxed mb-4" {...props} />
+          <p className="text-base text-secondary leading-relaxed mb-4" {...props} />
         ),
 
         // Links
         a: ({ node, ...props }) => (
           <a
-            className="text-accent dark:text-accent-muted hover:underline transition-colors"
+            className="text-accent hover:underline transition-colors"
             target={props.href?.startsWith('http') ? '_blank' : undefined}
             rel={props.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
             {...props}
@@ -90,10 +90,10 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
         // Lists
         ul: ({ node, ...props }) => (
-          <ul className="list-disc list-inside mb-4 space-y-2 text-secondary dark:text-zinc-400" {...props} />
+          <ul className="list-disc list-inside mb-4 space-y-2 text-secondary" {...props} />
         ),
         ol: ({ node, ...props }) => (
-          <ol className="list-decimal list-inside mb-4 space-y-2 text-secondary dark:text-zinc-400" {...props} />
+          <ol className="list-decimal list-inside mb-4 space-y-2 text-secondary" {...props} />
         ),
         li: ({ node, ...props }) => (
           <li className="leading-relaxed" {...props} />
@@ -106,7 +106,7 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
               tabIndex={0}
               role="region"
               aria-label="Codeblock"
-              className="overflow-x-auto p-4 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm font-mono text-zinc-900 dark:text-zinc-100"
+              className="overflow-x-auto p-4 rounded-lg bg-code-surface border border-code-border text-sm font-mono text-code-text"
               {...props}
             />
             <button
@@ -118,7 +118,7 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
                   e.currentTarget.textContent = 'Kopieren';
                 }, 2000);
               }}
-              className="absolute top-2 right-2 px-3 py-1 text-xs bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-2 right-2 px-3 py-1 text-xs bg-control hover:bg-control-hover text-control-text rounded opacity-0 group-hover:opacity-100 transition-opacity"
             >
               Kopieren
             </button>
@@ -143,7 +143,7 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
             </code>
           ) : (
             <code
-              className="px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-900 text-accent dark:text-accent-muted font-mono text-sm border border-zinc-200 dark:border-zinc-800"
+              className="px-1.5 py-0.5 rounded bg-code-surface-inline text-accent font-mono text-sm border border-code-border"
               {...props}
             >
               {children}
@@ -154,7 +154,7 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
         // Blockquote
         blockquote: ({ node, ...props }) => (
           <blockquote
-            className="border-l-4 border-accent dark:border-accent-muted pl-4 py-2 my-4 italic text-secondary dark:text-zinc-400 bg-surface dark:bg-zinc-900/50"
+            className="border-l-4 border-accent pl-4 py-2 my-4 italic text-secondary bg-surface dark:bg-surface/50"
             {...props}
           />
         ),
@@ -162,35 +162,35 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
         // Table
         table: ({ node, ...props }) => (
           <div className="overflow-x-auto my-6">
-            <table className="min-w-full border border-border dark:border-zinc-800" {...props} />
+            <table className="min-w-full border border-border" {...props} />
           </div>
         ),
         thead: ({ node, ...props }) => (
-          <thead className="bg-surface dark:bg-zinc-900" {...props} />
+          <thead className="bg-surface" {...props} />
         ),
         tbody: ({ node, ...props }) => (
           <tbody {...props} />
         ),
         tr: ({ node, ...props }) => (
-          <tr className="border-b border-border dark:border-zinc-800" {...props} />
+          <tr className="border-b border-border" {...props} />
         ),
         th: ({ node, ...props }) => (
-          <th className="px-4 py-2 text-left font-semibold text-primary dark:text-zinc-50" {...props} />
+          <th className="px-4 py-2 text-left font-semibold text-primary" {...props} />
         ),
         td: ({ node, ...props }) => (
-          <td className="px-4 py-2 text-secondary dark:text-zinc-400" {...props} />
+          <td className="px-4 py-2 text-secondary" {...props} />
         ),
 
         // Horizontal rule
         hr: ({ node, ...props }) => (
-          <hr className="my-8 border-border dark:border-zinc-800" {...props} />
+          <hr className="my-8 border-border" {...props} />
         ),
 
         // Images
         img: ({ node, alt, ...props }) => (
           <img
             alt={alt ?? ''}
-            className="rounded-lg my-6 border border-border dark:border-zinc-800 max-w-full h-auto"
+            className="rounded-lg my-6 border border-border max-w-full h-auto"
             {...props}
           />
         ),

@@ -16,28 +16,60 @@
 /* Tailwind v4 dropped darkMode: 'class' from tailwind.config.ts as a JS
    config key; this is its CSS-first equivalent. `.dark` is toggled on
    <html> by the pre-hydration script in layout.tsx (untouched by this
-   file) before first paint, so every existing `dark:` utility across the
-   208 call sites in src/components and src/app keeps resolving exactly as
-   it did under Tailwind v3 - verified by building and diffing the
-   generated CSS for `dark:text-zinc-400`, `dark:bg-zinc-950`, etc. against
-   the pre-migration output. */
+   file) before first paint. As of the token-extraction pass below, most
+   color tokens are theme-aware CSS custom properties (declared once in
+   @theme, overridden per-theme in the `.dark { }` block further down), so
+   this variant's job at most call sites is now just selecting `.dark` to
+   flip those custom properties - the ~200 paired `dark:text-zinc-400`
+   style utilities that used to carry the dark-mode color explicitly at
+   every call site are gone. A handful of `dark:` call sites remain
+   deliberately: ones where light/dark differ only in *opacity* on an
+   already-theme-aware token (`bg-surface dark:bg-surface/50`), and ones
+   with no light-mode counterpart at all (see the report for the full
+   list). */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* ---------------------------------------------------------------------
      COLOR TOKENS
-     Light-mode custom tokens + the dark-mode zinc-* scale the codebase
-     already depends on, declared together in one place. Components can't
-     be edited this wave, so `dark:bg-zinc-950` etc. must keep resolving
-     unchanged - the fix for the "two parallel palettes" seam DESIGN.md
-     documented is to stop treating the zinc-* stops as an *implicit*
-     inherited default and pin them here, explicitly, as first-class
-     project tokens living in the same block as the light tokens. Most
-     values are kept at Tailwind's stock zinc hex (no reason to change a
-     value that already passes contrast and that changing would be a
-     cosmetic-only redesign); `zinc-500` is deliberately retuned below
-     because it was failing AA as real content (see report/DESIGN.md).
-     --------------------------------------------------------------------- */
+     Semantic tokens, theme-aware. Each entry below declares its LIGHT
+     value here in @theme; the DARK value is set by a same-named override
+     in the `.dark { }` block further down this file, which is a plain CSS
+     custom-property re-assignment - `.dark` is a normal selector, and
+     `--color-x` is a normal custom property, so the cascade just works.
+     (Verified against this file's own pre-existing `--color-focus-ring`
+     token, which already did exactly this: Tailwind's generated utility
+     CSS references `var(--color-x)`, not a frozen literal, so a later
+     `.dark { --color-x: ... }` block correctly swaps every utility that
+     token backs - including opacity-modified ones like `bg-surface/40`,
+     which lower to `color-mix(in oklab, var(--color-surface) 40%,
+     transparent)`. No `@theme inline` indirection needed for this.)
+
+     This used to be a "two parallel palettes" system: components picked
+     the light color from one of six named tokens here and hand-paired it
+     with a raw `dark:text-zinc-400`-style utility at every call site -
+     ~200 such pairs across src/components and src/app, so the same
+     light/dark pairing was repeated by hand every time it was needed, and
+     six or so should-be-identical pairings had quietly drifted into
+     inconsistent zinc stops. This pass pulled every one of those pairs
+     into a token: the six original names (primary, secondary, accent,
+     background, surface, border) are now theme-aware directly, and every
+     *other* light/dark pairing that showed up in the inventory - and
+     several of those were their own distinct semantic role, not a
+     duplicate of one of the six, e.g. a chip border needing more visible
+     contrast than a hairline divider, or a decorative icon needing to sit
+     dimmer than body text - got its own new token below rather than being
+     flattened into one of the six. See the handoff report for the full
+     before/after inventory and the reasoning per token; the short version
+     is in each comment beside its dark-mode override in `.dark { }`
+     below.
+
+     Values are hex literals or `var(--color-zinc-N)` references into the
+     explicit zinc scale a few lines down - never a new invented color:
+     every value already rendered somewhere in the app before this pass,
+     this only gives it one declared name instead of N duplicated
+     `dark:*-zinc-N` call sites. `zinc-500` is deliberately retuned below
+     because it was failing AA as real content (see report/DESIGN.md). */
   --color-primary: #1a1a1a;
   --color-secondary: #666666; /* was #737373 (Tailwind neutral-500 verbatim); on
                                   --color-surface it measured 4.35:1, below the
@@ -58,10 +90,39 @@
                                      the neon-cyan-on-dark "AI slop" palette
                                      tell (RGB chroma 77, under the 80
                                      threshold) while still clearing 6:1+
-                                     contrast against both dark backgrounds. */
+                                     contrast against both dark backgrounds.
+                                     Kept as its own fixed (non-theme-swapped)
+                                     token: it's still referenced directly by
+                                     name in the motion section further down
+                                     this file (`.dark .timeline-fill`,
+                                     `.dark .scroll-progress`, `.dark
+                                     ::selection`), which this pass does not
+                                     touch, and it is now also the dark-mode
+                                     value `--color-accent` swaps to below. */
   --color-background: #fafafa;
   --color-surface: #f5f5f5;
   --color-border: #e5e7eb;
+
+  /* New semantic tokens (this pass). Each is a genuinely distinct role
+     that the old two-parallel-palettes system had no name for - it just
+     lived as a repeated `dark:` pairing at every call site. Light value
+     here; dark value is the matching override in `.dark { }` below, with
+     the reasoning for why it isn't one of the six tokens above. */
+  --color-icon-muted: #666666; /* decorative glyph icon (404 / error page) */
+  --color-marquee-muted: #666666; /* aria-hidden tech-strip marquee text */
+  --color-border-raised: #e5e7eb; /* border on a chip/ring, not a hairline */
+  --color-border-interactive: #666666; /* ReadmeDropdown toggle boundary */
+  --color-overlay: #fafafa; /* Dialog modal panel */
+  --color-code-surface: var(--color-zinc-50); /* code block ground */
+  --color-code-surface-inline: var(--color-zinc-100); /* inline code chip */
+  --color-code-border: var(--color-zinc-200); /* code block/chip border */
+  --color-code-text: var(--color-zinc-900); /* explicit code text color */
+  --color-control: var(--color-zinc-200); /* copy-button chip / skeleton */
+  --color-control-hover: var(--color-zinc-300); /* copy-button hover */
+  --color-control-text: var(--color-zinc-700); /* copy-button icon/text */
+  --color-surface-hover: var(--color-zinc-50); /* dropdown toggle hover */
+  --color-surface-interactive: #f5f5f5; /* icon-button hover (ThemeToggle) */
+  --color-panel: #f9fafb; /* decorative panel backdrop (photo ring, callout) */
 
   /* Focus-ring token (mandate 3). Declared as a --color-* token so it also
      ships as ordinary Tailwind utilities (`outline-focus-ring`,
@@ -192,11 +253,44 @@
   }
 }
 
-/* Dark-mode value for the focus-ring token (see --color-focus-ring above).
-   A plain CSS custom property, so a later `.dark` rule can swap its
-   runtime value without touching the @theme block or any component. */
+/* Dark-mode values for every theme-aware color token declared in @theme
+   above. Plain CSS custom-property re-assignments, so a later `.dark`
+   rule swaps each token's runtime value without touching the @theme
+   block or any component - this is the same mechanism the pre-existing
+   `--color-focus-ring` override already used, just extended to every
+   token this pass consolidated. Grouped to match @theme's declaration
+   order; each comment names the original `dark:*-zinc-N` pairing this
+   replaces and, for the new tokens, the call sites that need the role. */
 .dark {
   --color-focus-ring: #59a69a;
+
+  /* The six original tokens, now theme-aware. */
+  --color-primary: var(--color-zinc-50); /* was dark:text-zinc-50 / dark:bg-zinc-50 / dark:border-zinc-50 */
+  --color-secondary: var(--color-zinc-400); /* was dark:text-zinc-400 (the majority case) */
+  --color-accent: var(--color-accent-muted); /* was dark:text-accent-muted / dark:border-accent-muted / dark:hover:text-accent-muted etc. */
+  --color-background: var(--color-zinc-950); /* was dark:bg-zinc-950 / dark:border-zinc-950 */
+  --color-surface: var(--color-zinc-900); /* was dark:bg-zinc-900 */
+  --color-border: var(--color-zinc-800); /* was dark:border-zinc-800 */
+
+  /* New tokens: each pairs with the SAME light value as one of the six
+     above (so light mode renders identically to before) but needed a
+     genuinely different dark value - collapsing these into the token
+     above would have silently changed their rendered dark-mode color. */
+  --color-icon-muted: var(--color-zinc-600); /* was text-secondary dark:text-zinc-600 - not-found.tsx / error.tsx decorative glyph, deliberately dimmer than body text */
+  --color-marquee-muted: var(--color-zinc-500); /* was text-secondary dark:text-zinc-500 - ScrollTextCarousel's aria-hidden marquee */
+  --color-border-raised: var(--color-zinc-700); /* was border-border dark:border-zinc-700 - Hero photo ring, tech-chip borders (page.tsx, Work.tsx): needs to read as a visible edge on a raised element, lighter than the zinc-800 hairline-divider value */
+  --color-border-interactive: var(--color-zinc-500); /* was border-secondary dark:border-zinc-500 - ReadmeDropdown disclosure toggle's outer boundary, a real interactive-component edge (see DESIGN.md's Border-Contrast Caveat), stronger again than border-raised */
+  --color-overlay: var(--color-zinc-900); /* was bg-background dark:bg-zinc-900 - Dialog's modal panel. Lighter than the page ground in dark mode (elevation), but identical to it in light mode - a real, pre-existing light/dark elevation inconsistency, reported but deliberately not changed here (see handoff report) */
+  --color-code-surface: var(--color-zinc-900); /* was bg-zinc-50 dark:bg-zinc-900 - CodeSnippet / MarkdownRenderer <pre> ground */
+  --color-code-surface-inline: var(--color-zinc-900); /* was bg-zinc-100 dark:bg-zinc-900 - MarkdownRenderer inline <code> chip */
+  --color-code-border: var(--color-zinc-800); /* was border-zinc-200 dark:border-zinc-800 - code block / inline code border */
+  --color-code-text: var(--color-zinc-100); /* was text-zinc-900 dark:text-zinc-100 - MarkdownRenderer <pre> text color override */
+  --color-control: var(--color-zinc-800); /* was bg-zinc-200 dark:bg-zinc-800 - copy-button chip / ReadmeDropdown skeleton bars */
+  --color-control-hover: var(--color-zinc-700); /* was hover:bg-zinc-300 dark:hover:bg-zinc-700 - copy-button hover */
+  --color-control-text: var(--color-zinc-300); /* was text-zinc-700 dark:text-zinc-300 - copy-button icon/text */
+  --color-surface-hover: var(--color-zinc-900); /* was hover:bg-zinc-50 dark:hover:bg-zinc-900 - ReadmeDropdown toggle's own hover feedback, distinct from its resting bg-surface state */
+  --color-surface-interactive: var(--color-zinc-800); /* was hover:bg-surface dark:hover:bg-zinc-800 - ThemeToggle's icon-button hover, sits directly on the page canvas rather than a card, so it needs a bigger jump than the surface token's own dark value (zinc-900) to read against zinc-950 */
+  --color-panel: var(--color-zinc-900); /* was bg-gray-50 dark:bg-zinc-900(/20) - Hero photo-ring backdrop, Experience achievement callout */
 }
 
 /*
@@ -769,6 +863,13 @@ html {
    the strip never translates far enough to expose its own end - no seam
    to hide, no wrap to get wrong.
    --------------------------------------------------------------------- */
+/* The 11% is of the *track*, which is `w-max` (as wide as its 3x-repeated
+   content) - so the strip travels about a third of one repetition and never
+   reaches its own end. This only holds while the track sizes to its content:
+   on a viewport-width container the same 11% would be 11vw of an unrelated
+   box. Its ancestor must also use `overflow: clip`, not `overflow: hidden` -
+   `hidden` makes that ancestor a scroll container, and `view()` resolves
+   against the nearest one, which would freeze this animation at 0. */
 .marquee-track {
   translate: 0;
 }
