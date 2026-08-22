@@ -129,15 +129,15 @@ export default function Dialog({ isOpen, onClose, title, children }: DialogProps
     >
       <div
         ref={dialogRef}
-        className="bg-background dark:bg-zinc-900 max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-border dark:border-zinc-800 shadow-lg"
+        className="bg-overlay max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-border shadow-lg"
       >
-        <div className="sticky top-0 bg-background dark:bg-zinc-900 border-b border-border dark:border-zinc-800 p-6 flex justify-between items-center">
+        <div className="sticky top-0 bg-overlay border-b border-border p-6 flex justify-between items-center">
           <h2 id="dialog-title" className="text-2xl font-bold">
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="relative hover:text-accent dark:hover:text-accent-muted transition-colors w-8 h-8 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded after:absolute after:-inset-2 after:content-['']"
+            className="relative hover:text-accent transition-colors w-8 h-8 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded after:absolute after:-inset-2 after:content-['']"
             aria-label="Dialog schließen"
             title="Schließen"
           >

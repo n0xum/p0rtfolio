@@ -21,7 +21,7 @@ export default function CodeCopyButton({ code }: CodeCopyButtonProps) {
     <>
       <button
         onClick={handleCopy}
-        className="absolute top-4 right-4 px-3 py-1.5 text-xs bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-4 right-4 px-3 py-1.5 text-xs bg-control hover:bg-control-hover text-control-text rounded opacity-0 group-hover:opacity-100 transition-opacity"
       >
         {copied ? 'Kopiert!' : 'Kopieren'}
       </button>

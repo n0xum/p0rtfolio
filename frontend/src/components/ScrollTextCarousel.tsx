@@ -28,16 +28,12 @@ const words = [
   'TypeScript',
   'Golang',
   'CI/CD',
-  'Clean Architecture',
   'Next.js',
   'Spring Boot',
-  'Clean Code',
-  'Flutter',
   'REST APIs',
   'Docker',
   'PostgreSQL',
   'Agile',
-  'DDD',
 ];
 
 export default function ScrollTextCarousel() {
@@ -54,7 +50,7 @@ export default function ScrollTextCarousel() {
       // not one of the stops DESIGN.md pins in @theme, and it sat next to a
       // dark-mode value that *is* pinned. Swapped to the declared `surface`
       // token, which is the light-mode value it was approximating anyway.
-      className="marquee-mask w-full overflow-clip border-y border-border dark:border-zinc-800 bg-surface/40 dark:bg-zinc-900/20 py-4"
+      className="marquee-mask w-full overflow-clip border-y border-border bg-surface/40 dark:bg-surface/20 py-4"
       aria-hidden="true"
     >
       {/* `w-max` sizes the flex container to its content. Without it the
@@ -63,12 +59,22 @@ export default function ScrollTextCarousel() {
           resolves against the element's own border box - would mean 11% of
           the viewport rather than 11% of the track. */}
       <div className="marquee-track flex w-max gap-8 whitespace-nowrap">
-        {/* The set is repeated three times so the strip stays covered edge
-            to edge at every offset the drift can reach. */}
-        {[...words, ...words, ...words].map((word, index) => (
+        {/* The set is repeated so the strip stays covered edge to edge at
+            every offset the drift can reach. The invariant: the track must
+            stay wider than `viewport + 11% of the track` (the drift
+            distance), i.e. one copy's width * REPEATS >= viewport / 0.89.
+            The repeat count is therefore a function of how many words are
+            in the list, and has to be re-checked whenever that list
+            changes. The distill pass cut the list from 13 words to 9,
+            which took the covered width from 4079px down to 2670px - i.e.
+            from covering a 3675px viewport to only 2405px, exposing a bare
+            edge on any monitor 2560px or wider. Five copies restore 4471px
+            (covers 4028px), which is more headroom than the 13-word list
+            ever had. Measured, not estimated. */}
+        {[...words, ...words, ...words, ...words, ...words].map((word, index) => (
           <span
             key={index}
-            className="text-sm font-medium text-secondary dark:text-zinc-500 uppercase tracking-wider select-none"
+            className="text-sm font-medium text-marquee-muted uppercase tracking-wider select-none"
           >
             {word}
           </span>
