@@ -18,6 +18,20 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: 'cvgen',
+    title: 'cvgen',
+    description: 'Strukturierte CV-Daten in pixelgenaue, ATS-bewusste PDFs umwandeln. Als Go-Binary mit Typst, mehreren Templates und Sprachvarianten.',
+    about: 'cvgen behandelt den Lebenslauf als Daten statt als Dokument: Eine cv.yaml oder JSON Resume-Datei wird in mehrere PDF-Varianten übersetzt. Neben gestalteten Templates für Bewerbungen erzeugt das Tool eine portal-sichere Version und prüft mit cvgen lint, was ein ATS tatsächlich aus dem PDF ausliest. Alles läuft lokal, ohne Accounts, Cloud-Synchronisierung oder externe Requests.',
+    githubRepo: 'n0xum/cvgen',
+    tech: ['Go', 'Typst', 'templ', 'JSON Resume', 'Docker'],
+    type: 'CLI / Tooling',
+    features: [
+      'Mehrere Templates und Sprachen aus einer strukturierten CV-Datei',
+      'ATS-Linter für Lesereihenfolge, Datumsformate, Textlayer und eingebettete Fonts',
+      'Lokale Verarbeitung ohne Accounts, Telemetrie oder Cloud-Abhängigkeiten'
+    ]
+  },
+  {
     slug: 'structify',
     title: 'structify',
     description: 'Go-Structs zu PostgreSQL-Schemas konvertieren, mit Web-Editor und Inline-Tags für Constraints, Indexes und Foreign Keys.',
