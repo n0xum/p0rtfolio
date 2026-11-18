@@ -1,12 +1,11 @@
 # syntax=docker/dockerfile:1
-FROM node:22-alpine AS builder
+FROM oven/bun:1.4.4-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json bun.lock bunfig.toml ./
 
-RUN corepack enable && corepack prepare --activate && \
-    pnpm install --frozen-lockfile
+RUN bun install --frozen-lockfile
 
 COPY . .
 
@@ -16,7 +15,7 @@ COPY . .
 # (see src/lib/github.ts) and needs this token for authenticated, higher
 # rate-limited requests.
 RUN --mount=type=secret,id=github_token,env=GITHUB_TOKEN \
-    pnpm build
+    bun run build
 
 FROM nginx:alpine
 
