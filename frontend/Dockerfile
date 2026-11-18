@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY package.json bun.lock bunfig.toml ./
 
-RUN bun install --frozen-lockfile
+RUN bun install --frozen-lockfile --network-concurrency=6
 
 COPY . .
 
