@@ -14,7 +14,7 @@ const ibmPlexSans = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://alexander-kruska.dev"),
+  metadataBase: new URL("https://alexanderkruska.dev"),
   authors: [{ name: "Alexander Kruska" }],
   ...buildMetadata({
     title: SITE_NAME,

@@ -21,5 +21,5 @@ bun run dev
 ## Author
 
 Alexander Kruska
-- [alexander-kruska.dev](https://alexander-kruska.dev)
+- [alexanderkruska.dev](https://alexanderkruska.dev)
 - [github.com/n0xum](https://github.com/n0xum)

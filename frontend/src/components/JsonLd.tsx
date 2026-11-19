@@ -7,7 +7,7 @@ const personJsonLd = {
     "@type": "Organization",
     name: "Lufthansa Industry Solutions",
   },
-  url: "https://alexander-kruska.dev",
+  url: "https://alexanderkruska.dev",
   sameAs: [
     "https://github.com/n0xum",
     "https://www.linkedin.com/in/alexanderkruska",
