@@ -35,33 +35,21 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
-          # This repo has no root package.json - the app lives in frontend/.
-          # The action reads `packageManager` from this file, so the pnpm
-          # version stays declared in exactly one place. `working-directory`
-          # does not apply to an action's inputs, only to `run` steps.
-          package_json_file: frontend/package.json
-
-      - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version: 22
-          cache: pnpm
-          cache-dependency-path: frontend/pnpm-lock.yaml
+          bun-version: 1.4.4
 
       - name: Install dependencies
         working-directory: ./frontend
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Lint
         working-directory: ./frontend
-        run: pnpm lint
+        run: bun run lint
 
       - name: Typecheck
         working-directory: ./frontend
-        run: pnpm exec tsc --noEmit
+        run: bun run typecheck
 
       - name: Build
         working-directory: ./frontend
@@ -72,7 +60,7 @@ jobs:
         # token this step fails intermittently by design.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm build
+        run: bun run build
 
   build:
     name: Build image (${{ matrix.platform }})
@@ -121,7 +109,7 @@ jobs:
           provenance: false
           sbom: false
           # No tag here: the manifest job tags the merged image. GITHUB_TOKEN is a BuildKit secret, not a build ARG,
-          # so `pnpm build` (src/lib/github.ts) can use it without it ever being stored in a layer or the history.
+          # so `bun run build` (src/lib/github.ts) can use it without it ever being stored in a layer or the history.
           outputs: type=image,name=${{ env.IMAGE }},push-by-digest=true,name-canonical=true,push=true
           secrets: |
             github_token=${{ secrets.GITHUB_TOKEN }}
