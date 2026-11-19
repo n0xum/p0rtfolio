@@ -3,7 +3,7 @@ import { projects } from "@/lib/projects";
 
 export const dynamic = "force-static";
 
-const BASE_URL = "https://alexander-kruska.dev";
+const BASE_URL = "https://alexanderkruska.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const homeEntry: MetadataRoute.Sitemap[number] = {
