@@ -14,8 +14,8 @@ Personal portfolio website by Alexander Kruska -- software developer in training
 ```bash
 git clone https://github.com/n0xum/p0rtfolio.git
 cd p0rtfolio/frontend
-pnpm install
-pnpm dev
+bun install
+bun run dev
 ```
 
 ## Author
