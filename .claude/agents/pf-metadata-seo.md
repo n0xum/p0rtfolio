@@ -18,7 +18,7 @@ exact diff you need there in your final report under a "LAYOUT PATCH" heading.
 Read PRODUCT.md and DESIGN.md first.
 
 Tasks:
-1. layout.tsx needs `metadataBase: new URL("https://alexander-kruska.dev")`. Without it Next
+1. layout.tsx needs `metadataBase: new URL("https://alexanderkruska.dev")`. Without it Next
    resolves og:image to http://localhost:3000 — this is live in production right now on every
    page. Specify this in your LAYOUT PATCH.
 2. Delete the hand-written public/sitemap.xml. It is missing the `structify` project entirely,

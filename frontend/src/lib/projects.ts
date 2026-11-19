@@ -39,7 +39,7 @@ export const projects: Project[] = [
     githubRepo: 'n0xum/structify',
     tech: ['Go', 'PostgreSQL', 'Next.js', 'TypeScript', 'Docker'],
     type: 'Full-Stack',
-    liveUrl: 'https://structify.alexander-kruska.dev',
+    liveUrl: 'https://structify.alexanderkruska.dev',
     features: [
       'Interaktiver Web-Editor mit Live-Generierung',
       'Dokumentationsseite mit Try-it-Buttons'
